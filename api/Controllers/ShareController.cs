@@ -63,7 +63,7 @@ namespace api.Controllers
             return Ok(shareGraph.Graph);
         }
 
-        [HttpUpdate('/save/{id}')]
+        [HttpUpdate("/save/{id}")]
         public ActionResult save(string id, GraphNode graph)
         {
             // Check if ID exists
