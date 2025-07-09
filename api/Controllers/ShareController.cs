@@ -21,9 +21,77 @@ namespace api.Controllers
 
         // Make share URL for graph
         [HttpPost]
-        public ActionResult share()
+        public ActionResult share(GraphNode graph)
         {
+            // Make new ShareGraph record
+            ShareGraph shareGraph = _dataContext.Searches.Create();
+            shareGraph.Graph = graph;
+
+            // Generate unique ID
+            string id;
+            do
+            {
+                id = Guid.NewGuid().ToString();
+            } while (idExists(id));
+
+            shareGraph.id = id;
+
+            // Add to database
+            _dataContext.Searches.Add(shareGraph);
+            _dataContext.SaveChanges();
+
+
             return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<GraphNode> get(string id)
+        {
+            // Check if ID exists
+            if (!idExists(id))
+            {
+                return NotFound();
+            }
+
+            // Get the ShareGraph by ID
+            ShareGraph shareGraph = _dataContext.Searches.FirstOrDefault(sg => sg.id == id);
+            
+            if (shareGraph == null) // Make sure not null
+                return NotFound();
+
+
+            return Ok(shareGraph.Graph);
+        }
+
+        [HttpUpdate('/save/{id}')]
+        public ActionResult save(string id, GraphNode graph)
+        {
+            // Check if ID exists
+            if (!idExists(id))
+            {
+                return NotFound();
+            }
+
+            // Get the ShareGraph by ID
+            ShareGraph shareGraph = _dataContext.Searches.FirstOrDefault(sg => sg.id == id);
+
+            if (shareGraph == null) // Make sure not null
+                return NotFound();
+
+            // Update graph
+            shareGraph.Graph = graph;
+
+            // Save changes to database
+            _dataContext.SaveChanges();
+
+
+            return Ok();
+        }
+
+        // Check if ID exists
+        private bool idExists(string id)
+        {
+            return _dataContext.Searches.Any(sg => sg.id == id);
         }
     }
 }

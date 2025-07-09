@@ -17,7 +17,7 @@ namespace api.Data
 			: base(options)
 		{ }
 
-		public DbSet<ShareGraph> Searches => Set<ShareGraph>();
+		public DbSet<ShareGraph> Searches { get; set; };
 		// For searches
 		public DbSet<GraphNode> GraphNodes { get; set; }
 		public DbSet<Node> Nodes { get; set; }
