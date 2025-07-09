@@ -21,10 +21,10 @@ namespace api.Controllers
 
         // Make share URL for graph
         [HttpPost]
-        public ActionResult share(GraphNode graph)
+        public IActionResult share(GraphNode graph)
         {
             // Make new ShareGraph record
-            ShareGraph shareGraph = _dataContext.Searches.Create();
+            ShareGraph shareGraph = new ShareGraph();
             shareGraph.Graph = graph;
 
             // Generate unique ID
@@ -45,7 +45,7 @@ namespace api.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GraphNode> get(string id)
+        public IActionResult get(string id)
         {
             // Check if ID exists
             if (!idExists(id))
@@ -63,8 +63,8 @@ namespace api.Controllers
             return Ok(shareGraph.Graph);
         }
 
-        [HttpUpdate("/save/{id}")]
-        public ActionResult save(string id, GraphNode graph)
+        [HttpPost("/save/{id}")]
+        public IActionResult save(string id, GraphNode graph)
         {
             // Check if ID exists
             if (!idExists(id))
