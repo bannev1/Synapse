@@ -11,7 +11,7 @@ namespace api.Models.Graph
         public int id { get; set; }
 
         public string Name { get; set; }
-        public Dictionary<TopicNode, Node> TopicNodes { get; set; }
+        public List<TopicNode> TopicNodes { get; set; }
         public int Depth { get; set; }
         public virtual List<string> Sources { get; set; }
     }

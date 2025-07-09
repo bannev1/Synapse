@@ -41,6 +41,10 @@ namespace api.Data
 				.HasKey(gn => gn.id);
 
 			modelBuilder.Entity<GraphNode>()
+				.HasMany<TopicNode>(gn => gn.TopicNodes);
+
+			modelBuilder.Entity<Node>()
+				.
 		}
 	}
 }
