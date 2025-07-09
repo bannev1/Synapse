@@ -1,6 +1,6 @@
-﻿using api.Models;
+﻿using api.Models.Graph;
 
-namespace api.Models.Nodes
+namespace api.Models.Graph.Nodes
 {
     public class TopicNode : Node
     { }

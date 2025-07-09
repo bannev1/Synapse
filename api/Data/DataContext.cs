@@ -28,6 +28,14 @@ namespace api.Data
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
+
+			modelBuilder.Entity<ShareGraph>()
+				.HasKey(sg => sg.id);
+
+			modelBuilder.Entity<ShareGraph>()
+				.HasOne(sg => sg.Graph)
+				.WithOne()
+				.HasForeignKey<GraphNode>(g => g.;
 		}
 	}
 }
