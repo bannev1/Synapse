@@ -35,7 +35,12 @@ namespace api.Data
 			modelBuilder.Entity<ShareGraph>()
 				.HasOne(sg => sg.Graph)
 				.WithOne()
-				.HasForeignKey<GraphNode>(g => g.;
+				.HasForeignKey<GraphNode>(g => g);
+
+			modelBuilder.Entity<GraphNode>()
+				.HasKey(gn => gn.id);
+
+			modelBuilder.Entity<GraphNode>()
 		}
 	}
 }
