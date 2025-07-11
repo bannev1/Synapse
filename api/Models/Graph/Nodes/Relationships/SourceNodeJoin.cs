@@ -9,7 +9,7 @@ namespace api.Models.Graph.Nodes.Relationships
         public int id { get; set; }
 
         [Required]
-        public SourceNode SourceNode1 { get; set; }
+        public SourceNode SourceNode1 { get; set; } // Linked to SourceNodes (means need unidirectional)
         [Required]
         public SourceNode SourceNode2 { get; set; }
     }
