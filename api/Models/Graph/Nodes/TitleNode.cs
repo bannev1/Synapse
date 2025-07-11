@@ -7,5 +7,7 @@ namespace api.Models.Graph.Nodes
     {
         [Required]
         public GraphNode GraphNode { get; set; }
+
+        public virtual List<TopicNode> TopicNodes { get; set; }
     }
 }

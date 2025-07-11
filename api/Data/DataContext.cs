@@ -50,7 +50,8 @@ namespace api.Data
 			modelBuilder.Entity<TopicNode>()
 				.HasKey(t => t.id);
             modelBuilder.Entity<TopicNode>()
-                .HasOne<TitleNode>(t => t.TitleNode);
+                .HasOne<TitleNode>(t => t.TitleNode)
+				.WithMany(t => t.TopicNodes);
 
 			modelBuilder.Entity<TitleNode>()
                 .HasKey(t => t.id);
