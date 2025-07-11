@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using api.Models.Graph;
+using api.Models.Graph.Nodes.Relationships;
 
 namespace api.Models.Graph.Nodes
 {
@@ -18,6 +19,7 @@ namespace api.Models.Graph.Nodes
         [Required]
         public TitleNode TitleNode { get; set; }
 
-        public List<SourceNode> SourceNodes { get; set; }
+        public List<SourceNodeJoin> SourceNodes { get; set; }
+        public List<SourceTopicJoin> TopicNodes { get; set; }
     }
 }

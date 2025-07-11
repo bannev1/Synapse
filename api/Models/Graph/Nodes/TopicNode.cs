@@ -1,4 +1,5 @@
 ﻿using api.Models.Graph;
+using api.Models.Graph.Nodes.Relationships;
 using System.ComponentModel.DataAnnotations;
 
 namespace api.Models.Graph.Nodes
@@ -8,6 +9,6 @@ namespace api.Models.Graph.Nodes
         [Required]
         public TitleNode TitleNode { get; set; }
 
-        public virtual List<SourceNode> SourceNodes { get; set; }
+        public virtual List<SourceTopicJoin> SourceNodes { get; set; }
     }
 }

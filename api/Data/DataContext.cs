@@ -40,7 +40,9 @@ namespace api.Data
 			modelBuilder.Entity<GraphNode>()
 				.HasKey(g => g.id);
 			modelBuilder.Entity<GraphNode>()
-				.HasOne<TitleNode>(g => g.TitleNode);
+				.HasOne<TitleNode>(g => g.TitleNode)
+				.WithOne(g => g.GraphNode)
+				.OnDelete(DeleteBehavior.Cascade);
 
 			modelBuilder.Entity<SourceNode>()
 				.HasKey(s => s.id);
@@ -55,21 +57,25 @@ namespace api.Data
 
 			modelBuilder.Entity<TitleNode>()
                 .HasKey(t => t.id);
-            modelBuilder.Entity<TitleNode>()
-                .HasOne<GraphNode>(t => t.GraphNode);
 
             // Relationships
             modelBuilder.Entity<SourceTopicJoin>()
                 .HasKey(stj => stj.id);
 			modelBuilder.Entity<SourceTopicJoin>()
-				.HasOne<SourceNode>(stj => stj.SourceNode);
+				.HasOne<SourceNode>(stj => stj.SourceNode)
+				.WithMany(stj => stj.TopicNodes)
+				.OnDelete(DeleteBehavior.Cascade);
 			modelBuilder.Entity<SourceTopicJoin>()
-                .HasOne<TopicNode>(stj => stj.TopicNode);
+                .HasOne<TopicNode>(stj => stj.TopicNode)
+                .WithMany(stj => stj.SourceNodes)
+                .OnDelete(DeleteBehavior.Cascade);
 
 			modelBuilder.Entity<SourceNodeJoin>()
 				.HasKey(snj => snj.id);
 			modelBuilder.Entity<SourceNodeJoin>()
-                .HasOne<SourceNode>(snj => snj.SourceNode1);
+                .HasOne<SourceNode>(snj => snj.SourceNode1)
+				.WithMany(snj => snj.SourceNodes)
+				.OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<SourceNodeJoin>()
                 .HasOne<SourceNode>(snj => snj.SourceNode2);
 
