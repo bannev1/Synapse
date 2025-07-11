@@ -12,8 +12,12 @@ namespace api.Services
         // Construct topic type graph
         public static GraphNode? TopicalConstructor(string query)
         {
+            // Get topics
+            List<string>
             return null;
         }
+
+        public static GraphNode? TopicalConstructor(TitleNode titleNode, )
 
         // Construct media type graph
         public static GraphNode? MediumConstructor(string query)
