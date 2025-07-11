@@ -50,6 +50,14 @@ namespace api.Controllers
             return Ok(graph);
         }
 
+        [HttpGet("color")]
+        public IActionResult colorGraph([FromBody] GraphNode graph, [FromBody] List<List<int>> colors)
+        {
+            // Color the graph
+            GraphNode coloredGraph = GraphService.ColorGraph(graph, colors);
 
+            // Return the colored graph
+            return Ok(coloredGraph);
+        }
     }
 }
