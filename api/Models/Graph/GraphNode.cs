@@ -10,9 +10,11 @@ namespace api.Models.Graph
         [Key]
         public int id { get; set; }
 
+        [Required]
         public string Name { get; set; }
-        public List<TopicNode> TopicNodes { get; set; }
+        [Required]
         public int Depth { get; set; }
+        [Required]
         public virtual List<string> Sources { get; set; }
     }
 }

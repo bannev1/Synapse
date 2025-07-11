@@ -6,8 +6,6 @@ namespace api.Models.Graph.Nodes
     public class TitleNode : Node
     {
         [Required]
-        public virtual List<TopicNode> Topics { get; set; }
-
-        public new NodeTypes NodeType = NodeTypes.Title;
+        public GraphNode GraphNode { get; set; }
     }
 }

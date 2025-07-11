@@ -14,6 +14,9 @@ namespace api.Models
         public string GraphType { get; set; }
 
         [Required]
-        public CacheGraph Graph { get; set; }
+        public GraphNode Graph { get; set; }
+
+        [Required]
+        public DateTime Timestamp { get; set; }
     }
 }

@@ -8,11 +8,14 @@ namespace api.Models.Graph.Nodes
     {
         [Required]
         public string Source { get; set; }
-        public virtual List<TopicNode> TopicNodes { get; set; }
+        [Required]
         public virtual List<string> Topics { get; set; }
+        [Required]
         public virtual List<string> Mediums { get; set; }
+        [Required]
         public string Location { get; set; }
 
-        public new NodeTypes NodeType = NodeTypes.Source;
+        [Required]
+        public TitleNode TitleNode { get; set; }
     }
 }

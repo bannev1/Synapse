@@ -9,6 +9,7 @@ namespace api.Models
         [Key]
         public string id { get; set; }
 
+        [Required]
         public GraphNode Graph {  get; set; }
     }
 }
