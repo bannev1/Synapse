@@ -11,17 +11,38 @@ namespace api.Controllers
     public class SearchController : Controller
     {
         private readonly DataContext _dataContext;
+        private readonly CacheController _cacheController;
+
+        public readonly List<List<int>> DefaultColors;
 
         public SearchController(DataContext dataContext)
         {
             _dataContext = dataContext;
+
+            // Initialize CacheController with DataContext
+            _cacheController = new CacheController(dataContext);
+
+            // Initialize DefaultColors
+            DefaultColors = new List<List<int>>();
+            DefaultColors.Add(new List<int>{ 255, 0, 0 });
         }
 
         [HttpGet("construct/{query}")]
-        public IActionResult construct(string query, int depth, List<string> sources, string graphType, List<List<int>> colors)
+        public IActionResult construct(string query, int depth, List<string> sources, string graphType, List<List<int>>? colors)
         {
             // Convert back to base format
             query = Uri.UnescapeDataString(query);
+
+            // Check if query is in cache
+            GraphNode? cachedGraph = _cacheController.GetCachedGraph(query, graphType);
+
+            // If cached graph found, return it
+            if (cachedGraph != null)
+            {
+
+
+                return Ok(cachedGraph);
+            }
 
             GraphNode? graph;
 
