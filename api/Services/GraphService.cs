@@ -1,5 +1,8 @@
-﻿using api.Models.Graph;
-using Microsoft.AspNetCore.StaticFiles;
+﻿using Microsoft.AspNetCore.StaticFiles;
+
+using api.Models.Graph;
+using api.Models.Graph.Nodes;
+using api.Models.Graph.Nodes.Relationships;
 
 namespace api.Services
 {
@@ -66,9 +69,60 @@ namespace api.Services
 
 
         // LIST GRAPH
-        public static List<NodeList> GetNodeList(GraphNode graph)
+        public static NodeList GetNodeList(GraphNode graph, int depth = 5, Node? currNode = null, NodeList? currList = null, int currDepth = 0)
         {
-            
+            // Initialize
+            if (currNode == null) // If node not specified
+                currNode = graph.TitleNode;
+
+            NodeList nodeList = new NodeList(currNode); // initialize current nodelist
+
+            if (currList == null) // If not currList yet
+                currList = nodeList;
+
+            if (depth <= currDepth) // If max depth reached
+                return nodeList;
+
+            currDepth++; // Increase Depth
+
+            Type nodeType = currNode.GetType();
+
+            // If on TitleNode
+            if (nodeType == typeof(TitleNode))
+            {
+                // Go through each topic
+                foreach (TopicNode topic in ((TitleNode)currNode).TopicNodes)
+                {
+                    NodeList? result = GetNodeList(graph, depth, topic, currList, currDepth);
+
+                    if (result != null)
+                        currList.InnerNodes.Add(result); // Add to currList
+                }
+            } 
+            // If on TopicNode
+            else if (nodeType == typeof(TopicNode)) {
+                foreach (SourceTopicJoin nodeJoin in ((TopicNode)currNode).SourceNodes)
+                {
+                    NodeList? result = GetNodeList(graph, depth, nodeJoin.SourceNode, currList, currDepth);
+
+                    if (result != null)
+                        currList.InnerNodes.Add(result);
+                }
+            } 
+            // If on SourceNode
+            else if (nodeType == typeof(SourceNode))
+            {
+                foreach (SourceNodeJoin nodeJoin in ((SourceNode)currNode).SourceNodes)
+                {
+                    NodeList? result = GetNodeList(graph, depth, nodeJoin.SourceNode2, currList, currDepth);
+
+                    if (result != null)
+                        currList.InnerNodes.Add(result);
+                }
+            }
+
+            // Return list after having added all
+            return currList;
         }
 
 
@@ -95,7 +149,7 @@ namespace api.Services
     {
         public Node NodeValue { get; set; }
         public string Value { get; set; }
-        public List<NodeList>? InnerNodes { get; set; }
+        public List<NodeList> InnerNodes = new List<NodeList>();
         
 
         public NodeList(Node node)
@@ -108,6 +162,13 @@ namespace api.Services
         {
             NodeValue = node;
             Value = nodeValue;
+        }
+
+        public NodeList(NodeList nodeList)
+        {
+            NodeValue = nodeList.NodeValue;
+            Value = nodeList.Value;
+            InnerNodes = nodeList.InnerNodes ?? new List<NodeList>();
         }
     }
 }
