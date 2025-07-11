@@ -127,11 +127,76 @@ namespace api.Services
 
 
         // GET PATH OF NODE
-        public static List<Node> GetPath(GraphNode graph, Node targetNode)
+        public static List<Node>? GetPath(GraphNode graph, Node targetNode, List<Node>? path = null, Node? currNode = null)
         {
-            List<Node> path = new List<Node>();
+            if (path == null)
+                path = new List<Node>();
 
-            return path;
+            if (currNode == null)
+                currNode = graph.TitleNode;
+
+            path.Add(currNode);
+
+            if (targetNode == currNode)
+                return path;
+
+            Type nodeType = currNode.GetType();
+
+            List<Node>? min = null;
+
+            // If on TitleNode
+            if (nodeType == typeof(TitleNode))
+            {
+
+                // Go through each topic
+                foreach (TopicNode topic in ((TitleNode)currNode).TopicNodes)
+                {
+                    List<Node>? result = GetPath(graph, targetNode, path, topic);
+
+                    if (result != null) 
+                    {
+                        if (min == null)
+                            min = result;
+                        else if (min.Count() > result.Count()) // Check which path is shorter
+                            min = result;
+                    }
+                }
+            }
+            // If on TopicNode
+            else if (nodeType == typeof(TopicNode))
+            {
+                foreach (SourceTopicJoin nodeJoin in ((TopicNode)currNode).SourceNodes)
+                {
+                    List<Node>? result = GetPath(graph, targetNode, path, nodeJoin.SourceNode);
+
+                    if (result != null)
+                    {
+                        if (min == null)
+                            min = result;
+                        else if (min.Count() > result.Count())
+                            min = result;
+                    }
+                }
+            }
+            // If on SourceNode
+            else if (nodeType == typeof(SourceNode))
+            {
+                foreach (SourceNodeJoin nodeJoin in ((SourceNode)currNode).SourceNodes)
+                {
+                    List<Node>? result = GetPath(graph, targetNode, path, nodeJoin.SourceNode2);
+
+                    if (result != null)
+                    {
+                        if (min == null)
+                            min = result;
+                        else if (min.Count() > result.Count())
+                            min = result;
+                    }
+                }
+            }
+
+            // null meaning haven't returned path, thus not found targetNode through this path
+            return min;
         }
 
 
