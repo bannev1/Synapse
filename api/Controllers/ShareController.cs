@@ -37,7 +37,7 @@ namespace api.Controllers
             shareGraph.id = id;
 
             // Add to database
-            _dataContext.Searches.Add(shareGraph);
+            _dataContext.ShareGraphs.Add(shareGraph);
             _dataContext.SaveChanges();
 
 
@@ -54,7 +54,7 @@ namespace api.Controllers
             }
 
             // Get the ShareGraph by ID
-            ShareGraph shareGraph = _dataContext.Searches.FirstOrDefault(sg => sg.id == id);
+            ShareGraph shareGraph = _dataContext.ShareGraphs.FirstOrDefault(sg => sg.id == id);
             
             if (shareGraph == null) // Make sure not null
                 return NotFound();
@@ -73,7 +73,7 @@ namespace api.Controllers
             }
 
             // Get the ShareGraph by ID
-            ShareGraph shareGraph = _dataContext.Searches.FirstOrDefault(sg => sg.id == id);
+            ShareGraph shareGraph = _dataContext.ShareGraphs.FirstOrDefault(sg => sg.id == id);
 
             if (shareGraph == null) // Make sure not null
                 return NotFound();
@@ -91,7 +91,7 @@ namespace api.Controllers
         // Check if ID exists
         private bool idExists(string id)
         {
-            return _dataContext.Searches.Any(sg => sg.id == id);
+            return _dataContext.ShareGraphs.Any(sg => sg.id == id);
         }
     }
 }
