@@ -11,7 +11,6 @@ namespace api.Models.Graph
 
         [Required]
         public string Name { get; set; }
-        [Required]
-        public List<int> Colors { get; set; }
+        public List<int>? Colors { get; set; }
     }
 }

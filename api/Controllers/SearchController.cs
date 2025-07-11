@@ -1,5 +1,8 @@
-﻿using api.Models.Graph;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+
+using api.Data;
+using api.Models.Graph;
+using api.Services;
 
 namespace api.Controllers
 {
@@ -7,18 +10,46 @@ namespace api.Controllers
     [ApiController]
     public class SearchController : Controller
     {
-        [HttpGet("/construct/{query}")]
+        private readonly DataContext _dataContext;
+
+        public SearchController(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
+
+        [HttpGet("construct/{query}")]
         public IActionResult construct(string query, int depth, List<string> sources, string graphType, List<List<int>> colors)
         {
-            // Make sure correct graph type
-            if (graphType != "topical" || graphType != "medium" || graphType != "location")
+            // Convert back to base format
+            query = Uri.UnescapeDataString(query);
+
+            GraphNode? graph;
+
+            // Different graph types
+            switch (graphType)
             {
-                return BadRequest();
+                case "topical":
+                    graph = GraphService.TopicalConstructor(query);
+                    break;
+                case "medium":
+                    graph = GraphService.MediumConstructor(query);
+                    break;
+                case "location":
+                    graph = GraphService.LocationalConstructor(query);
+                    break;
+                default:
+                    return BadRequest("Invalid graph type");
             }
 
-            GraphNode graph = new GraphNode();
+            // If error/graph not properly constructed
+            if (graph == null)
+            {
+                return NotFound("Graph could not be constructed");
+            }
 
             return Ok(graph);
         }
+
+
     }
 }
