@@ -39,6 +39,8 @@ namespace api.Data
 			// Graph Entities/Models
 			modelBuilder.Entity<GraphNode>()
 				.HasKey(g => g.id);
+			modelBuilder.Entity<GraphNode>()
+				.HasOne<TitleNode>(g => g.TitleNode);
 
 			modelBuilder.Entity<SourceNode>()
 				.HasKey(s => s.id);
