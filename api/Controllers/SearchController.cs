@@ -59,5 +59,71 @@ namespace api.Controllers
             // Return the colored graph
             return Ok(coloredGraph);
         }
+
+        [HttpGet("list")]
+        public IActionResult listGraph([FromBody] GraphNode graph)
+        {
+            List<NodeList> nodeList = GraphService.GetNodeList(graph);
+
+            return Ok(nodeList);
+        }
+
+        [HttpGet("nodeAdd")]
+        public IActionResult addNode([FromBody] GraphNode graph, [FromBody] string? source, [FromBody] GraphNode? node)
+        {
+            // Make sure correct parameters are provided
+            if (source == null && node == null)
+                return BadRequest("Either source or node must be provided");
+
+            // Add node by source
+            if (source != null)
+                graph = GraphService.AddNodeBySource(graph, source);
+
+            // Add node by node
+            if (node != null)
+                graph = GraphService.AddNodeByNode(graph, node);
+
+            return Ok(graph);
+        }
+
+        [HttpGet("nodeDelete")]
+        public IActionResult deleteNode([FromBody] GraphNode graph, [FromBody] string? source, [FromBody] GraphNode? node)
+        {
+            // Make sure correct parameters are provided
+            if (source == null && node == null)
+                return BadRequest("Either source or node must be provided");
+
+            // Delete node by source
+            if (source != null)
+                graph = GraphService.DeleteNodeBySource(graph, source);
+
+            // Delete node by node
+            if (node != null)
+                graph = GraphService.DeleteNodeByNode(graph, node);
+
+            return Ok(graph);
+        }
+
+        [HttpGet("nodePath")]
+        public IActionResult getNodePath([FromBody] GraphNode graph, [FromBody] Node startingNode)
+        {
+            // Get the path of the node by source
+            List<Node>? path = GraphService.GetPath(graph, startingNode);
+
+            // If path is null, return not found
+            if (path == null)
+                return NotFound("Node not found");
+
+            return Ok(path);
+        }
+
+        [HttpGet("compare")]
+        public IActionResult compareGraphs([FromBody] GraphNode graph1, [FromBody] GraphNode graph2)
+        {
+            // Create a compare graph
+            GraphNode compareGraph = GraphService.CreateCompareGraph(graph1, graph2);
+
+            return Ok(compareGraph);
+        }
     }
 }
