@@ -583,9 +583,32 @@ namespace api.Services
         // Color blender given a list of [R, G, B, weight (%)]
         private static List<int> ColorBlender(List<List<int>> colors)
         {
-            List<int> finalColor = new List<int>();
+            if (colors == null || colors.Count == 0)
+                return new List<int> { 128, 128, 128 }; // Default gray
 
-            return finalColor;
+            int totalR = 0, totalG = 0, totalB = 0;
+            int totalWeight = 0;
+
+            foreach (var color in colors)
+            {
+                if (color.Count < 4) continue; // Skip invalid entries
+
+                int weight = color[3];
+                totalR += color[0] * weight;
+                totalG += color[1] * weight;
+                totalB += color[2] * weight;
+                totalWeight += weight;
+            }
+
+            if (totalWeight == 0)
+                return new List<int> { 128, 128, 128 }; // Fallback gray
+
+            return new List<int>
+            {
+                totalR / totalWeight,
+                totalG / totalWeight,
+                totalB / totalWeight
+            };
         }
 
 
