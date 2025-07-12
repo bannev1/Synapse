@@ -253,7 +253,7 @@ namespace api.Services
                                     ? countryElem.GetString() ?? "Unknown"
                                     : "Unknown";
 
-                                source.Location = $"{city}, {country}";
+                                source.Location = country; // only save country
                             }
                         }
                     }
