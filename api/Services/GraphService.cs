@@ -659,12 +659,121 @@ namespace api.Services
 
         // ADD NODE
         // Add node by source
-        public static GraphNode AddNodeBySource(GraphNode graph, string source)
+        public static GraphNode? AddNodeBySource(GraphNode graph, string source, List<List<int>>? colors = null, bool addReferences = false, int referenceDepth = 3)
         {
-            // Get type
-            
+            // Node Creation
+            if (graph.Sources.Contains(source)) // If graph already has source
+                return graph;
+
+            // Set up title node
+            TitleNode titleNode = graph.TitleNode;
+
+            // Initialize node
+            SourceNode node = new SourceNode();
+            node.Source = source;
+            node.TitleNode = titleNode;
+            node.SourceNodes = new List<SourceNodeJoin>();
+            node.TopicNodes = new List<SourceTopicJoin>();
+
+            node = SearchService.SearchSourceInformation(node);
+            node.Name = SearchService.GetSourceName(source);
+
+            // Fetch references (if specified)
+            List<string>? references = null;
+
+            if (addReferences)
+                references = SearchService.SearchReferences(source);
+
+            switch (graph.Type)
+            {
+                // If graph is topical
+                case "topic":
+
+                    break;
+
+                // If graph is medium based
+                case "medium":
+                    // Assign to corresponding topics
+                    foreach (string medium in node.Mediums)
+                    {
+                        bool assigned = false;
+
+                        foreach (TopicNode topic in titleNode.TopicNodes)
+                        {
+                            if (topic.Name == medium)
+                            {
+                                // Add relationship
+                                SourceTopicJoin topicJoin = new SourceTopicJoin();
+                                topicJoin.TopicNode = topic;
+                                topicJoin.SourceNode = node;
+
+                                topic.SourceNodes.Add(topicJoin);
+                                node.TopicNodes.Add(topicJoin);
+
+                                assigned = true;
+
+                                break;
+                            }
+                        }
+
+                        // If haven't found corresponding topic, then make new
+                        if (!assigned)
+                        {
+                            // Create topic
+                            TopicNode topic = new TopicNode();
+                            topic.Name = medium;
+                            topic.TitleNode = titleNode;
+                            topic.SourceNodes = new List<SourceTopicJoin>();
+
+                            // Create relationship
+                            SourceTopicJoin topicJoin = new SourceTopicJoin();
+                            topicJoin.TopicNode = topic;
+                            topicJoin.SourceNode = node;
+
+                            topic.SourceNodes.Add(topicJoin);
+                            node.TopicNodes.Add(topicJoin);
+                        }
+                    }
+
+                    // Add references (if specified)
+                    if (addReferences)
+                        AddReferenceMedium(graph, node, referenceDepth, 0);
+
+                    break;
+
+                // If graph is location based
+                case "location":
+                    break;
+
+                // Else error
+                default:
+                    return null;
+            }
+
+            // Re-color graph (if colors specified)
+            if (colors != null)
+                ColorGraph(graph, colors);
 
             return graph;
+        }
+
+        private static void AddReferenceMedium(GraphNode graph, SourceNode currNode, int depth, int currDepth)
+        {
+            if (currDepth >= depth)
+                return;
+
+            currDepth++;
+
+            List<string> references = SearchService.SearchReferences(currNode.Source);
+
+            foreach (string source in references)
+            {
+                // Check if source already exists
+                if (graph.Sources.Contains(source))
+                {
+                    List<Node>? path = GetPath(graph, )
+                }
+            }
         }
 
         // Add node by node
@@ -822,6 +931,78 @@ namespace api.Services
             return min;
         }
 
+        
+        // GET PATH OF NODE BY SOURCE
+        public static List<Node>? GetPathBySource(GraphNode graph, string source)
+        {
+            List<Node> path = new List<Node>();
+
+            path.Add(graph.TitleNode);
+
+            List<Node>? minPath = null;
+
+            // Search every topic's connected source node
+            foreach (TopicNode topic in graph.TitleNode.TopicNodes)
+            {
+                foreach (SourceTopicJoin sourceJoin in topic.SourceNodes) 
+                {
+                    SourceNode currNode = sourceJoin.SourceNode;
+
+                    List<Node>? result = GetPathBySource(graph.TitleNode, source, currNode, path);
+
+                    // Check if shortest path
+                    if (result != null)
+                    {
+                        if (minPath != null)
+                        {
+                            if (result.Count < path.Count)
+                                minPath = result;
+                        } else
+                        {
+                            minPath = result;
+                        }
+                    }
+                }
+            }
+
+            // Return result if exists
+            return minPath;
+        }
+
+        // Recursively get path by source
+        private static List<Node>? GetPathBySource(TitleNode titleNode, string source, SourceNode currNode, List<Node> path)
+        {
+            path.Add(currNode);
+
+            if (source == currNode.Source)
+                return path;
+
+            List<Node>? minPath = null;
+
+            foreach (SourceNodeJoin nodeJoin in currNode.SourceNodes)
+            {
+                SourceNode neighborNode = nodeJoin.SourceNode2;
+
+                List<Node>? result = GetPathBySource(titleNode, source, neighborNode, path);
+
+                // Check if shortest path
+                if (result != null)
+                {
+                    if (minPath != null)
+                    {
+                        if (result.Count < path.Count)
+                            minPath = result;
+                    }
+                    else
+                    {
+                        minPath = result;
+                    }
+                }
+            }
+
+            // Return smallest or null path
+            return minPath;
+        }
 
         // CREATE COMPARE GRAPH
         public static GraphNode CreateCompareGraph(GraphNode graph1, GraphNode graph2)
