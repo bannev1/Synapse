@@ -493,132 +493,133 @@ namespace api.Services
             // Access titleNode
             TitleNode titleNode = graph.TitleNode;
 
-            Dictionary<SourceNode, List<List<int>>> ColorMaps = new Dictionary<SourceNode, List<List<int>>>();
-            
+            // Create a dictionary to store color contributions for each node
+            Dictionary<SourceNode, List<List<int>>> colorMaps = new Dictionary<SourceNode, List<List<int>>>();
+
             // Check colors and assign to each topic
-            for (int index = 0; index < titleNode.TopicNodes.Count(); index++) 
+            for (int index = 0; index < titleNode.TopicNodes.Count; index++)
             {
-                if (index >= colors.Count()) // If not enough colors
+                // Validate color availability
+                if (index >= colors.Count)
                     return null;
 
                 TopicNode currTopic = titleNode.TopicNodes[index];
-
                 currTopic.Colors = colors[index]; // Assign colors
 
+                // Process each source node under this topic
                 foreach (SourceTopicJoin source in currTopic.SourceNodes)
-                    ColorGraph(titleNode, source.SourceNode, ColorMaps);
+                {
+                    ColorNode(titleNode, source.SourceNode, colorMaps, new HashSet<SourceNode>());
+                }
             }
 
-            // Blend colors
-            foreach (SourceNode currNode in ColorMaps.Keys)
+            // Blend colors for all collected nodes
+            foreach (SourceNode currNode in colorMaps.Keys)
             {
-                List<List<int>> colorNode = new List<List<int>>();
+                List<List<int>> colorContributions = colorMaps[currNode];
 
-                // Add weighting
-                foreach (List<int> colorSet in ColorMaps[currNode])
+                // Only blend if we have valid contributions
+                if (colorContributions.Count > 0)
                 {
-                    colorSet.Add((int)((1 / (colorNode.Count())) * 100)); // Add weighting %
+                    // Apply proper weighting
+                    List<List<int>> weightedColors = new List<List<int>>();
+                    int weightPerContribution = 100 / colorContributions.Count;
 
-                    colorNode.Add(colorSet);
+                    foreach (List<int> colorSet in colorContributions)
+                    {
+                        // Create a copy to avoid modifying original
+                        List<int> weightedSet = new List<int>(colorSet);
+                        weightedSet.Add(weightPerContribution);
+                        weightedColors.Add(weightedSet);
+                    }
+
+                    currNode.Colors = ColorBlender(weightedColors);
                 }
-
-                // Use color blender
-                List<int> blendedColor = ColorBlender(colorNode);
-
-                // Assign colors in node
-                currNode.Colors = blendedColor;
+                else
+                {
+                    // Fallback to default color
+                    currNode.Colors = new List<int> { 128, 128, 128 };
+                }
             }
 
             return graph;
         }
 
-        // Color graph recursively
-        private static void ColorGraph(TitleNode titleNode, SourceNode currNode, Dictionary<SourceNode, List<List<int>>> colorMap, bool recurse = true)
+        // Helper method to color individual nodes
+        private static void ColorNode(TitleNode titleNode, SourceNode currNode, Dictionary<SourceNode, List<List<int>>> colorMap, HashSet<SourceNode> visited)
         {
-            List<List<int>> nodeColors = new List<List<int>>(); // Each inner list has 3 values – [R, G, B, weight (as a %)]
+            // Avoid cycles and re-processing
+            if (visited.Contains(currNode)) return;
+            visited.Add(currNode);
 
-            // Iterate through topic nodes – highest weighting
-            if (currNode.TopicNodes.Count() > 0)
+            List<List<int>> colorContributions = new List<List<int>>();
+            bool hasDirectTopics = false;
+
+            // Process direct topic connections first (highest priority)
+            if (currNode.TopicNodes != null && currNode.TopicNodes.Count > 0)
             {
-                int topicPercent = 90; // Percent topic nodes should color currNode
+                hasDirectTopics = true;
+                int topicPercent = 90; // Primary weight for topics
 
                 foreach (SourceTopicJoin topicJoin in currNode.TopicNodes)
                 {
-                    TopicNode currTopic = topicJoin.TopicNode;
+                    TopicNode topic = topicJoin.TopicNode;
 
-                    // Make sure not null
-                    if (currTopic.Colors == null)
-                        continue;
-
-                    List<int> topicColors = new List<int>();
-
-                    // Add fade
-                    foreach (int color in currTopic.Colors)
+                    if (topic?.Colors != null)
                     {
-                        topicColors.Add((int)(color * (topicPercent / 100))); // Fade color
+                        // Create a weighted color contribution
+                        List<int> weightedColor = new List<int>();
+                        foreach (int component in topic.Colors)
+                        {
+                            // Apply topic percentage
+                            weightedColor.Add((int)(component * (topicPercent / 100.0)));
+                        }
+                        // Add the weight for this contribution
+                        weightedColor.Add(topicPercent / currNode.TopicNodes.Count);
+                        colorContributions.Add(weightedColor);
                     }
                 }
             }
-            // Iterate through neighboring nodes – IF not directly under topic node
-            else {
-                // Check if colors already exist for node
-                if (colorMap.Keys.Contains(currNode))
-                    nodeColors = colorMap[currNode];
 
-                // Go through each neighbor
-                foreach (SourceNodeJoin neighboringJoin in currNode.SourceNodes)
+            // Process neighbor contributions (secondary)
+            if (!hasDirectTopics && currNode.SourceNodes != null && currNode.SourceNodes.Count > 0)
+            {
+                int validNeighbors = 0;
+
+                foreach (SourceNodeJoin neighborJoin in currNode.SourceNodes)
                 {
-                    SourceNode neighborNode = neighboringJoin.SourceNode2;
+                    SourceNode neighbor = neighborJoin.SourceNode2;
 
-                    // Check if has colors
-                    if (colorMap.Keys.Contains(neighborNode))
-                    {
-                        nodeColors.AddRange(colorMap[neighborNode]);
-                    } else
-                    {
-                        if (neighborNode.TopicNodes.Count() > 0)
-                        {
-                            ColorGraph(titleNode, neighborNode, colorMap, false); // Get neighbor node to get color
+                    if (neighbor == null) continue;
 
-                            // Add new neighbor color
-                            if (colorMap.Keys.Contains(neighborNode))
-                            {
-                                nodeColors.AddRange(colorMap[neighborNode]);
-                            }
-                        }
+                    // Ensure neighbor is processed first
+                    if (!colorMap.ContainsKey(neighbor))
+                    {
+                        ColorNode(titleNode, neighbor, colorMap, visited);
+                    }
+
+                    if (colorMap.ContainsKey(neighbor) && neighbor.Colors != null)
+                    {
+                        validNeighbors++;
+                        // Create a copy of neighbor's color
+                        List<int> neighborColor = new List<int>(neighbor.Colors);
+                        colorContributions.Add(neighborColor);
                     }
                 }
 
-                // Make sure all neighbors have connected colors
-                foreach (List<int> ColorSet in nodeColors) 
-                { 
-                    foreach (SourceNodeJoin neighboringJoin in currNode.SourceNodes)
+                // Add weights to neighbor contributions
+                if (validNeighbors > 0)
+                {
+                    int weightPerNeighbor = 100 / validNeighbors;
+                    foreach (List<int> contribution in colorContributions)
                     {
-                        SourceNode neighborNode = neighboringJoin.SourceNode2;
-
-                        if (neighborNode.TopicNodes.Count() == 0)
-                        {
-                            if (colorMap.Keys.Contains(neighborNode))
-                            {
-                                // If neighbor doesn't have current color and isn't directly topic node
-                                if (!colorMap[neighborNode].Contains(ColorSet))
-                                    colorMap[neighborNode].Add(ColorSet);
-                            }
-                        }
-                    }   
+                        contribution.Add(weightPerNeighbor);
+                    }
                 }
             }
 
-            // Add colors
-            colorMap[currNode] = nodeColors;
-
-            // Go through neighbors
-            if (recurse)
-                foreach (SourceNodeJoin neighboringJoin in currNode.SourceNodes)
-                {
-                    if (neighboringJoin.SourceNode2.Colors == null) // Make sure not yet colored
-                        ColorGraph(titleNode, neighboringJoin.SourceNode2, colorMap);
-                }
+            // Register contributions for this node
+            colorMap[currNode] = colorContributions;
         }
 
         // Color blender given a list of [R, G, B, weight (%)]
@@ -645,11 +646,11 @@ namespace api.Services
                 return new List<int> { 128, 128, 128 }; // Fallback gray
 
             return new List<int>
-            {
-                totalR / totalWeight,
-                totalG / totalWeight,
-                totalB / totalWeight
-            };
+                {
+                    Math.Clamp(totalR / totalWeight, 0, 255),
+                    Math.Clamp(totalG / totalWeight, 0, 255),
+                    Math.Clamp(totalB / totalWeight, 0, 255)
+                };
         }
 
 
