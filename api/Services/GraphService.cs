@@ -746,6 +746,49 @@ namespace api.Services
 
                 // If graph is location based
                 case "location":
+                    // Assign to corresponding topics
+                    bool assigned = false;
+
+                    foreach (TopicNode topic in titleNode.TopicNodes)
+                    {
+                        if (topic.Name == node.Location)
+                        {
+                            // Add relationship
+                            SourceTopicJoin topicJoin = new SourceTopicJoin();
+                            topicJoin.TopicNode = topic;
+                            topicJoin.SourceNode = node;
+
+                            topic.SourceNodes.Add(topicJoin);
+                            node.TopicNodes.Add(topicJoin);
+
+                            assigned = true;
+
+                            break;
+                        }
+                    }
+
+                    // If haven't found corresponding topic, then make new
+                    if (!assigned)
+                    {
+                        // Create topic
+                        TopicNode topic = new TopicNode();
+                        topic.Name = node.Location;
+                        topic.TitleNode = titleNode;
+                        topic.SourceNodes = new List<SourceTopicJoin>();
+
+                        // Create relationship
+                        SourceTopicJoin topicJoin = new SourceTopicJoin();
+                        topicJoin.TopicNode = topic;
+                        topicJoin.SourceNode = node;
+
+                        topic.SourceNodes.Add(topicJoin);
+                        node.TopicNodes.Add(topicJoin);
+                    }
+
+                    // Add references (if specified)
+                    if (addReferences)
+                        AddReferenceLocation(graph, node, referenceDepth, 0);
+
                     break;
 
                 // Else error
@@ -848,6 +891,95 @@ namespace api.Services
 
                 // Recursively search neighboring node
                 AddReferenceMedium(graph, neighborNode, depth, currDepth);
+            }
+        }
+
+        private static void AddReferenceLocation(GraphNode graph, SourceNode currNode, int depth, int currDepth)
+        {
+            // Make sure not at max depth yet
+            if (currDepth >= depth)
+                return;
+
+            currDepth++;
+
+            List<string> references = SearchService.SearchReferences(currNode.Source);
+
+            // Get all neighbors
+            foreach (string source in references)
+            {
+                // Add relationship basis
+                SourceNodeJoin nodeJoinParent = new SourceNodeJoin();
+                SourceNodeJoin nodeJoinChild = new SourceNodeJoin();
+
+                nodeJoinParent.SourceNode1 = currNode;
+                nodeJoinChild.SourceNode2 = currNode;
+
+                SourceNode neighborNode;
+
+                // Check if source already exists
+                if (graph.Sources.Contains(source))
+                {
+                    List<Node> path = GetPathBySource(graph, source);
+
+                    neighborNode = (SourceNode)path[path.Count - 1]; // Get last element of path (found node)
+                }
+                else
+                {
+                    // Create new node
+                    neighborNode = new SourceNode();
+                    neighborNode.TitleNode = graph.TitleNode;
+                    neighborNode.Source = source;
+                    neighborNode.SourceNodes = new List<SourceNodeJoin>();
+                    neighborNode.TopicNodes = new List<SourceTopicJoin>();
+
+                    neighborNode = SearchService.SearchSourceInformation(neighborNode);
+                    neighborNode.Name = SearchService.GetSourceName(source);
+
+                    // Add to graph
+                    graph.Sources.Add(source);
+
+                    // Assign to corresponding topicNode
+                    bool assigned = false;
+
+                    foreach (TopicNode topic in graph.TitleNode.TopicNodes)
+                    {
+                        if (topic.Name == neighborNode.Location)
+                        {
+                            // Add relationship
+                            SourceTopicJoin topicJoin = new SourceTopicJoin();
+                            topicJoin.TopicNode = topic;
+                            topicJoin.SourceNode = neighborNode;
+
+                            topic.SourceNodes.Add(topicJoin);
+                            neighborNode.TopicNodes.Add(topicJoin);
+
+                            assigned = true;
+
+                            break;
+                        }
+                    }
+
+                    // If haven't found corresponding topic, then make new
+                    if (!assigned)
+                    {
+                        // Create topic
+                        TopicNode topic = new TopicNode();
+                        topic.Name = neighborNode.Location;
+                        topic.TitleNode = graph.TitleNode;
+                        topic.SourceNodes = new List<SourceTopicJoin>();
+
+                        // Create relationship
+                        SourceTopicJoin topicJoin = new SourceTopicJoin();
+                        topicJoin.TopicNode = topic;
+                        topicJoin.SourceNode = neighborNode;
+
+                        topic.SourceNodes.Add(topicJoin);
+                        neighborNode.TopicNodes.Add(topicJoin);
+                    }
+                }
+
+                // Recursively search neighboring node
+                AddReferenceLocation(graph, neighborNode, depth, currDepth);
             }
         }
 
