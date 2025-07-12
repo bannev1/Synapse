@@ -170,10 +170,10 @@ namespace api.Services
         }
 
         // Construct media type graph
-        public static GraphNode? MediumConstructor(string query, int depth)
+        public static GraphNode? MediumConstructor(string query, int depth, int initialSize = 15)
         {
             // Add default sources which have the highest chance of being related to the prompt
-            List<string> searchSources = SearchService.SearchQuery(query);
+            List<string> searchSources = SearchService.SearchQuery(query, amount: initialSize);
 
             // Define base title
             TitleNode titleNode = new TitleNode();
@@ -324,9 +324,153 @@ namespace api.Services
         }
 
         // Construct location type graph
-        public static GraphNode? LocationalConstructor(string query)
+        public static GraphNode? LocationalConstructor(string query, int depth, int initialSize = 15)
         {
-            return null;
+            // Add default sources which have the highest chance of being related to the prompt
+            List<string> searchSources = SearchService.SearchQuery(query, amount: initialSize);
+
+            // Define base title
+            TitleNode titleNode = new TitleNode();
+            titleNode.Name = query;
+            titleNode.TopicNodes = new List<TopicNode>();
+
+            // Create sources dictionary reference
+            Dictionary<string, SourceNode> sources = new Dictionary<string, SourceNode>();
+
+            // Create main mediums list
+            Dictionary<string, TopicNode> locations = new Dictionary<string, TopicNode>();
+
+            foreach (string source in searchSources)
+            {
+                // Create current node
+                SourceNode currNode = new SourceNode();
+                currNode.Source = source;
+                currNode.TitleNode = titleNode;
+                currNode.TopicNodes = new List<SourceTopicJoin>();
+                currNode.Topics = new List<string>(); // Won't populize
+                currNode.SourceNodes = new List<SourceNodeJoin>();
+
+                if (sources.Keys.Contains(source))
+                    currNode = sources[source];
+                else
+                {
+                    currNode = SearchService.SearchSourceInformation(currNode);
+                    currNode.Name = SearchService.GetSourceName(source);
+                }
+
+                // Add locations
+                string location = currNode.Location;
+
+                // If location not already there, then create
+                if (!locations.Keys.Contains(location))
+                {
+                    TopicNode mediumTopic = new TopicNode();
+                    mediumTopic.Name = location;
+                    mediumTopic.SourceNodes = new List<SourceTopicJoin>();
+                    mediumTopic.TitleNode = titleNode;
+
+                    locations[location] = mediumTopic;
+
+                    titleNode.TopicNodes.Add(mediumTopic);
+                }
+
+                // Add relationship/references
+                SourceTopicJoin topicJoin = new SourceTopicJoin();
+                topicJoin.TopicNode = locations[location];
+                topicJoin.SourceNode = currNode;
+
+                currNode.TopicNodes.Add(topicJoin);
+                locations[location].SourceNodes.Add(topicJoin);
+
+                // Reference in sources
+                sources[source] = currNode;
+
+                // Create recursive links
+                LocationalConstructor(titleNode, depth, currNode, query, sources, locations, 1);
+            }
+
+            // Construct graph from titleNode
+            GraphNode graph = new GraphNode();
+            graph.TitleNode = titleNode;
+            graph.Name = query;
+            graph.Depth = depth;
+            graph.Sources = sources.Keys.ToList();
+
+            return graph;
+        }
+
+        // Construct graph recursively
+        public static void LocationalConstructor(TitleNode titleNode, int depth, SourceNode currNode, string query, Dictionary<string, SourceNode> sources, Dictionary<string, TopicNode> locations, int currDepth)
+        {
+            // Check if max depth reached
+            if (currDepth >= depth)
+                return;
+
+            currDepth++;
+
+            // Get references for each
+            List<string> sourceReferences = SearchService.SearchReferences(currNode.Source);
+
+            // Make sources
+            foreach (string source in sourceReferences)
+            {
+                SourceNodeJoin neighborJoinParent = new SourceNodeJoin();
+                SourceNodeJoin neighborJoinChild = new SourceNodeJoin();
+
+                // Set defaults
+                SourceNode currSource = new SourceNode();
+                currSource.Source = source;
+                currSource.TitleNode = titleNode;
+                currSource.TopicNodes = new List<SourceTopicJoin>();
+                currSource.Topics = new List<string>(); // Don't populate this
+                currSource.SourceNodes = new List<SourceNodeJoin>();
+
+                // Check if already exists in sources
+                if (sources.ContainsKey(source))
+                    currSource = sources[source];
+                else
+                {
+                    currSource = SearchService.SearchSourceInformation(currSource); // Populate source with information
+                    currSource.Name = SearchService.GetSourceName(source);
+                }
+
+                // Add topic
+                string location = currSource.Location;
+                if (!locations.Keys.Contains(location))
+                {
+                    TopicNode mediumTopic = new TopicNode();
+                    mediumTopic.Name = location;
+                    mediumTopic.SourceNodes = new List<SourceTopicJoin>();
+                    mediumTopic.TitleNode = titleNode;
+
+                    locations[location] = mediumTopic;
+
+                    titleNode.TopicNodes.Add(mediumTopic);
+                }
+
+                // Add relationship/references
+                SourceTopicJoin topicJoin = new SourceTopicJoin();
+                topicJoin.TopicNode = locations[location];
+                topicJoin.SourceNode = currSource;
+
+                currSource.TopicNodes.Add(topicJoin);
+                locations[location].SourceNodes.Add(topicJoin);
+
+                // Set relationships
+                neighborJoinParent.SourceNode1 = currNode;
+                neighborJoinParent.SourceNode2 = currSource;
+
+                neighborJoinChild.SourceNode1 = currSource;
+                neighborJoinChild.SourceNode2 = currNode;
+
+                // Add relationships
+                currNode.SourceNodes.Add(neighborJoinParent);
+                currSource.SourceNodes.Add(neighborJoinChild);
+
+                sources[source] = currSource;
+
+                MediumConstructor(titleNode, depth, currSource, query, sources, locations, currDepth);
+            }
         }
 
 
