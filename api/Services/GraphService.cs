@@ -3,6 +3,7 @@
 using api.Models.Graph;
 using api.Models.Graph.Nodes;
 using api.Models.Graph.Nodes.Relationships;
+using System.Xml.Linq;
 
 namespace api.Services
 {
@@ -665,6 +666,8 @@ namespace api.Services
             if (graph.Sources.Contains(source)) // If graph already has source
                 return graph;
 
+            graph.Sources.Add(source);
+
             // Set up title node
             TitleNode titleNode = graph.TitleNode;
 
@@ -759,6 +762,7 @@ namespace api.Services
 
         private static void AddReferenceMedium(GraphNode graph, SourceNode currNode, int depth, int currDepth)
         {
+            // Make sure not at max depth yet
             if (currDepth >= depth)
                 return;
 
@@ -766,13 +770,84 @@ namespace api.Services
 
             List<string> references = SearchService.SearchReferences(currNode.Source);
 
+            // Get all neighbors
             foreach (string source in references)
             {
+                // Add relationship basis
+                SourceNodeJoin nodeJoinParent = new SourceNodeJoin();
+                SourceNodeJoin nodeJoinChild = new SourceNodeJoin();
+
+                nodeJoinParent.SourceNode1 = currNode;
+                nodeJoinChild.SourceNode2 = currNode;
+
+                SourceNode neighborNode;
+
                 // Check if source already exists
                 if (graph.Sources.Contains(source))
                 {
-                    List<Node>? path = GetPath(graph, )
+                    List<Node> path = GetPathBySource(graph, source);
+
+                    neighborNode = (SourceNode)path[path.Count - 1]; // Get last element of path (found node)
+                } else
+                {
+                    // Create new node
+                    neighborNode = new SourceNode();
+                    neighborNode.TitleNode = graph.TitleNode;
+                    neighborNode.Source = source;
+                    neighborNode.SourceNodes = new List<SourceNodeJoin>();
+                    neighborNode.TopicNodes = new List<SourceTopicJoin>();
+
+                    neighborNode = SearchService.SearchSourceInformation(neighborNode);
+                    neighborNode.Name = SearchService.GetSourceName(source);
+
+                    // Add to graph
+                    graph.Sources.Add(source);
+
+                    // Assign to corresponding topics/mediums
+                    foreach (string medium in neighborNode.Mediums)
+                    {
+                        bool assigned = false;
+
+                        foreach (TopicNode topic in graph.TitleNode.TopicNodes)
+                        {
+                            if (topic.Name == medium)
+                            {
+                                // Add relationship
+                                SourceTopicJoin topicJoin = new SourceTopicJoin();
+                                topicJoin.TopicNode = topic;
+                                topicJoin.SourceNode = neighborNode;
+
+                                topic.SourceNodes.Add(topicJoin);
+                                neighborNode.TopicNodes.Add(topicJoin);
+
+                                assigned = true;
+
+                                break;
+                            }
+                        }
+
+                        // If haven't found corresponding topic, then make new
+                        if (!assigned)
+                        {
+                            // Create topic
+                            TopicNode topic = new TopicNode();
+                            topic.Name = medium;
+                            topic.TitleNode = graph.TitleNode;
+                            topic.SourceNodes = new List<SourceTopicJoin>();
+
+                            // Create relationship
+                            SourceTopicJoin topicJoin = new SourceTopicJoin();
+                            topicJoin.TopicNode = topic;
+                            topicJoin.SourceNode = neighborNode;
+
+                            topic.SourceNodes.Add(topicJoin);
+                            neighborNode.TopicNodes.Add(topicJoin);
+                        }
+                    }
                 }
+
+                // Recursively search neighboring node
+                AddReferenceMedium(graph, neighborNode, depth, currDepth);
             }
         }
 
