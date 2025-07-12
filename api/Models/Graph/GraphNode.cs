@@ -15,6 +15,8 @@ namespace api.Models.Graph
         [Required]
         public int Depth { get; set; }
         [Required]
+        public string Type { get; set; } // "topic" | "medium" | "location"
+        [Required]
         public virtual List<string> Sources { get; set; }
 
         [Required]

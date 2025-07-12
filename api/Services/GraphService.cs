@@ -107,6 +107,7 @@ namespace api.Services
             graph.Name = query;
             graph.Depth = depth;
             graph.Sources = sources.Keys.ToList();
+            graph.Type = "topic";
 
             // Color graph if colors specified
             if (colors != null)
@@ -246,6 +247,7 @@ namespace api.Services
             graph.Name = query;
             graph.Depth = depth;
             graph.Sources = sources.Keys.ToList();
+            graph.Type = "medium";
 
             // Color graph if colors specified
             if (colors != null)
@@ -403,6 +405,7 @@ namespace api.Services
             graph.Name = query;
             graph.Depth = depth;
             graph.Sources = sources.Keys.ToList();
+            graph.Type = "location";
 
             // Color graph if colors specified
             if (colors != null)
@@ -658,7 +661,9 @@ namespace api.Services
         // Add node by source
         public static GraphNode AddNodeBySource(GraphNode graph, string source)
         {
-            // Logic to add a node by source
+            // Get type
+            
+
             return graph;
         }
 
