@@ -10,14 +10,164 @@ namespace api.Services
     {
         // CONSTRUCT
         // Construct topic type graph
-        public static GraphNode? TopicalConstructor(string query)
+        public static GraphNode? TopicalConstructor(string query, int depth)
         {
+            List<string>? topics = new List<string>();
+
             // Get topics
-            List<string> topics = SearchService.GetTopics(query);
-            return null;
+            try
+            {
+                topics = SearchService.GetTopics(query);
+
+                if (topics == null)
+                    return null;
+            } catch (HttpRequestException)
+            {
+                return null;
+            }
+
+            TitleNode? titleNode = new TitleNode();
+
+            titleNode.Name = query;
+            titleNode.TopicNodes = new List<TopicNode>();
+
+            // Create sources dictionary reference
+            Dictionary<string, SourceNode> sources = new Dictionary<string, SourceNode>();
+
+            // Populate TitleNode with topics
+            foreach (string topic in topics)
+            {
+                if (topic == null)
+                    continue;
+
+                // Define current topic node
+                TopicNode currTopic = new TopicNode();
+                currTopic.Name = topic;
+                currTopic.TitleNode = titleNode;
+                currTopic.SourceNodes = new List<SourceTopicJoin>();
+
+                // Populate with first level of sourcenodes
+                string topicQuery = $"{query} {topic}";
+                List<string> topicSources = SearchService.SearchQuery(topicQuery);
+
+                // Create source nodes
+                foreach (string source in topicSources)
+                {
+                    SourceTopicJoin joinSource = new SourceTopicJoin();
+                    SourceNode currSource = new SourceNode();
+                    currSource.Source = source;
+                    currSource.TitleNode = titleNode;
+                    currSource.TopicNodes = new List<SourceTopicJoin>();
+                    currSource.Topics = new List<string>();
+                    currSource.SourceNodes = new List<SourceNodeJoin>();
+
+                    // Check if already exists in sources
+                    if (sources.ContainsKey(source))
+                        currSource = sources[source];
+                    else
+                    {
+                        currSource = SearchService.SearchSourceInformation(currSource); // Populate source with information
+                        currSource.Name = SearchService.GetSourceName(source);
+                    }
+
+                    // Add topics
+                    currSource.Topics.Add(topic);
+
+                    // Populate join table
+                    joinSource.SourceNode = currSource;
+                    joinSource.TopicNode = currTopic;
+                    
+                    // Add references
+                    currSource.TopicNodes.Add(joinSource);
+                    currTopic.SourceNodes.Add(joinSource);
+
+                    // Add reference to sources
+                    sources[source] = currSource;
+                }
+
+                titleNode.TopicNodes.Add(currTopic);
+            }
+
+
+            // Construct titleNode graph
+            foreach (TopicNode topic in titleNode.TopicNodes)
+            {
+                foreach (SourceTopicJoin source in topic.SourceNodes)
+                {
+                    TopicalConstructor(titleNode, depth, source.SourceNode, query, sources, 1);
+                }
+            }
+
+            if (titleNode == null)
+                return null;
+
+            // Construct graph from titleNode
+            GraphNode graph = new GraphNode();
+            graph.TitleNode = titleNode;
+            graph.Name = query;
+            graph.Depth = depth;
+            graph.Sources = sources.Keys.ToList();
+
+            return graph;
         }
 
-        public static GraphNode? TopicalConstructor(TitleNode titleNode, )
+        // Construct graph recursively
+        public static void TopicalConstructor(TitleNode titleNode, int depth, SourceNode currNode, string query, Dictionary<string, SourceNode> sources, int currDepth)
+        {
+            if (currDepth >= depth)
+                return;
+
+            currDepth++;
+
+            // Get references for each
+            List<string> sourceReferences = SearchService.SearchReferences(currNode.Source);
+
+            // Make sources
+            foreach (string source in sourceReferences)
+            {
+                SourceNodeJoin neighborJoinParent = new SourceNodeJoin();
+                SourceNodeJoin neighborJoinChild = new SourceNodeJoin();
+
+                // Set defaults
+                SourceNode currSource = new SourceNode();
+                currSource.Source = source;
+                currSource.TitleNode = titleNode;
+                currSource.TopicNodes = new List<SourceTopicJoin>();
+                currSource.Topics = new List<string>();
+                currSource.SourceNodes = new List<SourceNodeJoin>();
+
+                // Check if already exists in sources
+                if (sources.ContainsKey(source))
+                    currSource = sources[source];
+                else
+                {
+                    currSource = SearchService.SearchSourceInformation(currSource); // Populate source with information
+                    currSource.Name = SearchService.GetSourceName(source);
+                }
+
+                // Add topics
+                foreach (string topic in currNode.Topics)
+                {
+                    if (!currSource.Topics.Contains(topic)) // If topic is not already in node then add (not adding actual reference just string)
+                        currSource.Topics.Add(topic);
+                }
+
+                // Set relationships
+                neighborJoinParent.SourceNode1 = currNode;
+                neighborJoinParent.SourceNode2 = currSource;
+
+                neighborJoinChild.SourceNode1 = currSource;
+                neighborJoinChild.SourceNode2 = currNode;
+
+                // Add relationships
+                currNode.SourceNodes.Add(neighborJoinParent);
+                currSource.SourceNodes.Add(neighborJoinChild);
+
+                sources[source] = currSource;
+
+                TopicalConstructor(titleNode, depth, currSource, query, sources, currDepth);
+            }
+        }
 
         // Construct media type graph
         public static GraphNode? MediumConstructor(string query)
