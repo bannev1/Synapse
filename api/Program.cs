@@ -3,7 +3,29 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
 using api.Data;
+using api.Environment;
+
+// Function to check if all properties are defined/set
+bool AreAllPropertiesNotNull(object obj, params string[] excludedProperties)
+{
+    if (obj == null) return false;
+
+    return obj.GetType().GetProperties()
+        .Where(p => !excludedProperties.Contains(p.Name))
+        .All(p => p.GetValue(obj) != null);
+}
+
+// Make sure environment variables defined
+if (Variables.GetType() != typeof(IVariables))
+{
+    throw new Exception("Environemnt Variables is not of correct type");
+}
+
+if (AreAllPropertiesNotNull(Variables) {
+    throw new Exception("Environemnt Variables don't all contain a definition");
+}
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DataContext>(options =>

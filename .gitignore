@@ -458,3 +458,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# .NET Secrets
+Variables.cs
