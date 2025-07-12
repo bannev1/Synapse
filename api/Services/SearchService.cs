@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace api.Services
 {
     public static class SearchService
     {
         // Search Google via API and get URL results
-        public static List<string> SearchURLs(string query, string GoogleAPIkey, string engineID = "4454355756a844f0e", int amount = 10)
+        public static List<string> SearchQuery(string query, string GoogleAPIkey, string engineID = "4454355756a844f0e", int amount = 10)
         {
             HttpClient client = new HttpClient();
             query = Uri.EscapeDataString(query);
@@ -32,6 +35,7 @@ namespace api.Services
 
             return urls;
         }
+
 
         // Get topics as a list of strings from Wikipedia API
         public static List<string>? GetTopics(string query)
@@ -67,6 +71,65 @@ namespace api.Services
                 }
             }
             return headings;
+        }
+
+
+        // Get URLs referenced in webpage
+        public static List<string> SearchReferences(string url)
+        {
+            // Download HTML content
+            string html;
+            using (var client = new WebClient())
+            {
+                client.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36");
+                client.Encoding = System.Text.Encoding.UTF8;
+                try
+                {
+                    html = client.DownloadString(url);
+                }
+                catch (WebException ex)
+                {
+                    throw new ApplicationException($"Failed to download webpage: {ex.Message}");
+                }
+            }
+
+            // Extract links using regex
+            var links = new List<string>();
+            var baseUri = new Uri(url);
+            var pattern = @"href\s*=\s*[""'](?<url>[^""'#]+)[""']";
+
+            foreach (Match match in Regex.Matches(html, pattern, RegexOptions.IgnoreCase))
+            {
+                string rawUrl = match.Groups["url"].Value.Trim();
+
+                // Skip problematic links
+                if (string.IsNullOrWhiteSpace(rawUrl)) continue;
+                if (rawUrl.StartsWith("javascript:", StringComparison.OrdinalIgnoreCase)) continue;
+                if (rawUrl.StartsWith("mailto:", StringComparison.OrdinalIgnoreCase)) continue;
+                if (rawUrl.StartsWith("tel:", StringComparison.OrdinalIgnoreCase)) continue;
+                if (rawUrl.StartsWith("data:", StringComparison.OrdinalIgnoreCase)) continue;
+
+                try
+                {
+                    // Convert to absolute URL
+                    Uri absoluteUri = rawUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                        ? new Uri(rawUrl)
+                        : new Uri(baseUri, rawUrl);
+
+                    // Add only HTTP(S) URLs
+                    if (absoluteUri.Scheme == Uri.UriSchemeHttp || absoluteUri.Scheme == Uri.UriSchemeHttps)
+                    {
+                        links.Add(absoluteUri.AbsoluteUri);
+                    }
+                }
+                catch (UriFormatException)
+                {
+                    continue;
+                }
+            }
+
+            // Return unique links
+            return new HashSet<string>(links).ToList();
         }
     }
 }

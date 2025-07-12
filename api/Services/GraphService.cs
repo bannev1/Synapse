@@ -13,7 +13,7 @@ namespace api.Services
         public static GraphNode? TopicalConstructor(string query)
         {
             // Get topics
-            List<string>
+            List<string> topics = SearchService.GetTopics(query);
             return null;
         }
 
