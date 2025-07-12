@@ -6,13 +6,19 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
+using api.Models.Graph.Nodes;
+using api.Environment;
+
 namespace api.Services
 {
     public static class SearchService
     {
         // Search Google via API and get URL results
-        public static List<string> SearchQuery(string query, string GoogleAPIkey, string engineID = "4454355756a844f0e", int amount = 10)
+        public static List<string> SearchQuery(string query, string engineID = "4454355756a844f0e", int amount = 10)
         {
+            // Get API key
+            string GoogleAPIkey = Variables.GoogleAPIKey;
+
             HttpClient client = new HttpClient();
             query = Uri.EscapeDataString(query);
 
@@ -130,6 +136,138 @@ namespace api.Services
 
             // Return unique links
             return new HashSet<string>(links).ToList();
+        }
+
+
+        // Populate sourceNode information
+        public static SourceNode SearchSourceInformation(SourceNode source, bool getMediums = true, bool getLocation = true)
+        {
+            // Validate environment variables
+            string klazifyApiKey = Variables.KlazifyAPIKey;
+            string ipinfoToken = Variables.ipinfoAPIKey;
+
+            // Populate Mediums using Klazify API
+            if (getMediums)
+            {
+                try
+                {
+                    using (var klazifyClient = new HttpClient())
+                    {
+                        klazifyClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {klazifyApiKey}");
+                        string klazifyUrl = $"https://www.klazify.com/api/categorize?url={Uri.EscapeDataString(source.Source)}";
+
+                        var klazifyResponse = klazifyClient.GetAsync(klazifyUrl).GetAwaiter().GetResult();
+                        klazifyResponse.EnsureSuccessStatusCode();
+
+                        string klazifyJson = klazifyResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        using (JsonDocument klazifyDoc = JsonDocument.Parse(klazifyJson))
+                        {
+                            var categories = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                            if (klazifyDoc.RootElement.TryGetProperty("domain", out JsonElement domain) &&
+                                domain.TryGetProperty("categories", out JsonElement categoriesArray))
+                            {
+                                foreach (JsonElement category in categoriesArray.EnumerateArray())
+                                {
+                                    if (category.TryGetProperty("name", out JsonElement name))
+                                    {
+                                        string? fullPath = name.GetString();
+                                        if (!string.IsNullOrEmpty(fullPath))
+                                        {
+                                            string? mainCategory = fullPath.Split('/')
+                                                .Skip(1)
+                                                .FirstOrDefault()?
+                                                .Trim();
+
+                                            if (!string.IsNullOrEmpty(mainCategory))
+                                            {
+                                                categories.Add(mainCategory);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            source.Mediums = categories.ToList();
+                        }
+                    }
+                }
+                catch
+                {
+                    source.Mediums = new List<string> { "website" };
+                }
+            }
+
+            // Populate Location using DNS resolution and ipinfo.io
+            if (getLocation)
+            {
+                try
+                {
+                    // Extract domain from URL
+                    string domain = new Uri(source.Source).Host;
+                    string ip = "";
+
+                    // Resolve domain to IP using Google DNS
+                    using (var dnsClient = new HttpClient())
+                    {
+                        string dnsUrl = $"https://dns.google/resolve?name={domain}&type=A";
+                        var dnsResponse = dnsClient.GetAsync(dnsUrl).GetAwaiter().GetResult();
+                        dnsResponse.EnsureSuccessStatusCode();
+
+                        string dnsJson = dnsResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        using (JsonDocument dnsDoc = JsonDocument.Parse(dnsJson))
+                        {
+                            if (dnsDoc.RootElement.TryGetProperty("Answer", out JsonElement answer))
+                            {
+                                foreach (JsonElement record in answer.EnumerateArray())
+                                {
+                                    if (record.TryGetProperty("type", out JsonElement type) &&
+                                        type.GetInt32() == 1 &&
+                                        record.TryGetProperty("data", out JsonElement data))
+                                    {
+                                        ip = data.GetString() ?? "";
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Get location from ipinfo.io
+                    if (!string.IsNullOrEmpty(ip))
+                    {
+                        using (var ipClient = new HttpClient())
+                        {
+                            string ipUrl = $"https://ipinfo.io/{ip}/json?token={ipinfoToken}";
+                            var ipResponse = ipClient.GetAsync(ipUrl).GetAwaiter().GetResult();
+                            ipResponse.EnsureSuccessStatusCode();
+
+                            string ipJson = ipResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                            using (JsonDocument ipDoc = JsonDocument.Parse(ipJson))
+                            {
+                                JsonElement root = ipDoc.RootElement;
+                                string city = root.TryGetProperty("city", out JsonElement cityElem)
+                                    ? cityElem.GetString() ?? "Unknown"
+                                    : "Unknown";
+
+                                string country = root.TryGetProperty("country", out JsonElement countryElem)
+                                    ? countryElem.GetString() ?? "Unknown"
+                                    : "Unknown";
+
+                                source.Location = $"{city}, {country}";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        source.Location = "Unknown";
+                    }
+                }
+                catch
+                {
+                    source.Location = "Unknown";
+                }
+            }
+
+            return source;
         }
     }
 }
