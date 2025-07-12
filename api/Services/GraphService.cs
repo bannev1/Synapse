@@ -558,11 +558,6 @@ namespace api.Services
                         topicColors.Add((int)(color * (topicPercent / 100))); // Fade color
                     }
                 }
-
-                // Add fade
-                List<int> fade = new List<int>() { 0, 0, 0, (100-topicPercent) };
-
-                nodeColors.Add(fade);
             }
             // Iterate through neighboring nodes – IF not directly under topic node
             else {
