@@ -170,9 +170,151 @@ namespace api.Services
         }
 
         // Construct media type graph
-        public static GraphNode? MediumConstructor(string query)
+        public static GraphNode? MediumConstructor(string query, int depth)
         {
+            // Add default sources which have the highest chance of being related to the prompt
+            List<string> searchSources = SearchService.SearchQuery(query);
+
+            // Define base title
+            TitleNode titleNode = new TitleNode();
+            titleNode.Name = query;
+            titleNode.TopicNodes = new List<TopicNode>();
+
+            // Create sources dictionary reference
+            Dictionary<string, SourceNode> sources = new Dictionary<string, SourceNode>();
+
+            // Create main mediums list
+            Dictionary<string, TopicNode> mediums = new Dictionary<string, TopicNode>();
+
+            foreach (string source in searchSources)
+            {
+                // Create current node
+                SourceNode currNode = new SourceNode();
+                currNode.Source = source;
+                currNode.TitleNode = titleNode;
+                currNode.TopicNodes = new List<SourceTopicJoin>();
+                currNode.Topics = new List<string>(); // Won't populize
+                currNode.SourceNodes = new List<SourceNodeJoin>();
+
+                if (sources.Keys.Contains(source))
+                    currNode = sources[source];
+                else
+                {
+                    currNode = SearchService.SearchSourceInformation(currNode);
+                    currNode.Name = SearchService.GetSourceName(source);
+                }
+
+                // Add mediums
+                foreach (string medium in currNode.Mediums)
+                {
+                    // If medium not already there, then create
+                    if (!mediums.Keys.Contains(medium))
+                    {
+                        TopicNode mediumTopic = new TopicNode();
+                        mediumTopic.Name = medium;
+                        mediumTopic.SourceNodes = new List<SourceTopicJoin>();
+                        mediumTopic.TitleNode = titleNode;
+
+                        mediums[medium] = mediumTopic;
+
+                        titleNode.TopicNodes.Add(mediumTopic);
+                    }
+
+                    // Add relationship/references
+                    SourceTopicJoin topicJoin = new SourceTopicJoin();
+                    topicJoin.TopicNode = mediums[medium];
+                    topicJoin.SourceNode = currNode;
+
+                    currNode.TopicNodes.Add(topicJoin);
+                    mediums[medium].SourceNodes.Add(topicJoin);
+                }
+
+                // Reference in sources
+                sources[source] = currNode;
+
+                // Create recursive links
+                MediumConstructor(titleNode, depth, currNode, query, sources, mediums, 1);
+            }
+
+
             return null;
+        }
+
+        // Construct graph recursively
+        public static void MediumConstructor(TitleNode titleNode, int depth, SourceNode currNode, string query, Dictionary<string, SourceNode> sources, Dictionary<string, TopicNode> mediums, int currDepth)
+        {
+            // Check if max depth reached
+            if (currDepth >= depth)
+                return;
+
+            currDepth++;
+
+            // Get references for each
+            List<string> sourceReferences = SearchService.SearchReferences(currNode.Source);
+
+            // Make sources
+            foreach (string source in sourceReferences)
+            {
+                SourceNodeJoin neighborJoinParent = new SourceNodeJoin();
+                SourceNodeJoin neighborJoinChild = new SourceNodeJoin();
+
+                // Set defaults
+                SourceNode currSource = new SourceNode();
+                currSource.Source = source;
+                currSource.TitleNode = titleNode;
+                currSource.TopicNodes = new List<SourceTopicJoin>();
+                currSource.Topics = new List<string>(); // Don't populate this
+                currSource.SourceNodes = new List<SourceNodeJoin>();
+
+                // Check if already exists in sources
+                if (sources.ContainsKey(source))
+                    currSource = sources[source];
+                else
+                {
+                    currSource = SearchService.SearchSourceInformation(currSource); // Populate source with information
+                    currSource.Name = SearchService.GetSourceName(source);
+                }
+
+                // Add topics
+                foreach (string medium in currSource.Mediums)
+                {
+                    // If medium not already there, then create
+                    if (!mediums.Keys.Contains(medium))
+                    {
+                        TopicNode mediumTopic = new TopicNode();
+                        mediumTopic.Name = medium;
+                        mediumTopic.SourceNodes = new List<SourceTopicJoin>();
+                        mediumTopic.TitleNode = titleNode;
+
+                        mediums[medium] = mediumTopic;
+
+                        titleNode.TopicNodes.Add(mediumTopic);
+                    }
+
+                    // Add relationship/references
+                    SourceTopicJoin topicJoin = new SourceTopicJoin();
+                    topicJoin.TopicNode = mediums[medium];
+                    topicJoin.SourceNode = currSource;
+
+                    currSource.TopicNodes.Add(topicJoin);
+                    mediums[medium].SourceNodes.Add(topicJoin);
+                }
+
+                // Set relationships
+                neighborJoinParent.SourceNode1 = currNode;
+                neighborJoinParent.SourceNode2 = currSource;
+
+                neighborJoinChild.SourceNode1 = currSource;
+                neighborJoinChild.SourceNode2 = currNode;
+
+                // Add relationships
+                currNode.SourceNodes.Add(neighborJoinParent);
+                currSource.SourceNodes.Add(neighborJoinChild);
+
+                sources[source] = currSource;
+
+                MediumConstructor(titleNode, depth, currSource, query, sources, mediums, currDepth);
+            }
         }
 
         // Construct location type graph
