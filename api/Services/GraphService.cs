@@ -236,8 +236,14 @@ namespace api.Services
                 MediumConstructor(titleNode, depth, currNode, query, sources, mediums, 1);
             }
 
+            // Construct graph from titleNode
+            GraphNode graph = new GraphNode();
+            graph.TitleNode = titleNode;
+            graph.Name = query;
+            graph.Depth = depth;
+            graph.Sources = sources.Keys.ToList();
 
-            return null;
+            return graph;
         }
 
         // Construct graph recursively
