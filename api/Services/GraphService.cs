@@ -699,7 +699,7 @@ namespace api.Services
                     // Assign to corresponding topics
                     foreach (string medium in node.Mediums)
                     {
-                        bool assigned = false;
+                        bool assignedMed = false;
 
                         foreach (TopicNode topic in titleNode.TopicNodes)
                         {
@@ -713,14 +713,14 @@ namespace api.Services
                                 topic.SourceNodes.Add(topicJoin);
                                 node.TopicNodes.Add(topicJoin);
 
-                                assigned = true;
+                                assignedMed = true;
 
                                 break;
                             }
                         }
 
                         // If haven't found corresponding topic, then make new
-                        if (!assigned)
+                        if (!assignedMed)
                         {
                             // Create topic
                             TopicNode topic = new TopicNode();
@@ -747,7 +747,7 @@ namespace api.Services
                 // If graph is location based
                 case "location":
                     // Assign to corresponding topics
-                    bool assigned = false;
+                    bool assignedLoc = false;
 
                     foreach (TopicNode topic in titleNode.TopicNodes)
                     {
@@ -761,14 +761,14 @@ namespace api.Services
                             topic.SourceNodes.Add(topicJoin);
                             node.TopicNodes.Add(topicJoin);
 
-                            assigned = true;
+                            assignedLoc = true;
 
                             break;
                         }
                     }
 
                     // If haven't found corresponding topic, then make new
-                    if (!assigned)
+                    if (!assignedLoc)
                     {
                         // Create topic
                         TopicNode topic = new TopicNode();
