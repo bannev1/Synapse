@@ -102,7 +102,7 @@ namespace api.Services
                 return null;
 
             // Construct graph from titleNode
-            GraphNode graph = new GraphNode();
+            GraphNode? graph = new GraphNode();
             graph.TitleNode = titleNode;
             graph.Name = query;
             graph.Depth = depth;
@@ -116,7 +116,7 @@ namespace api.Services
         }
 
         // Construct graph recursively
-        public static void TopicalConstructor(TitleNode titleNode, int depth, SourceNode currNode, string query, Dictionary<string, SourceNode> sources, int currDepth)
+        private static void TopicalConstructor(TitleNode titleNode, int depth, SourceNode currNode, string query, Dictionary<string, SourceNode> sources, int currDepth)
         {
             if (currDepth >= depth)
                 return;
@@ -241,7 +241,7 @@ namespace api.Services
             }
 
             // Construct graph from titleNode
-            GraphNode graph = new GraphNode();
+            GraphNode? graph = new GraphNode();
             graph.TitleNode = titleNode;
             graph.Name = query;
             graph.Depth = depth;
@@ -255,7 +255,7 @@ namespace api.Services
         }
 
         // Construct graph recursively
-        public static void MediumConstructor(TitleNode titleNode, int depth, SourceNode currNode, string query, Dictionary<string, SourceNode> sources, Dictionary<string, TopicNode> mediums, int currDepth)
+        private static void MediumConstructor(TitleNode titleNode, int depth, SourceNode currNode, string query, Dictionary<string, SourceNode> sources, Dictionary<string, TopicNode> mediums, int currDepth)
         {
             // Check if max depth reached
             if (currDepth >= depth)
@@ -398,7 +398,7 @@ namespace api.Services
             }
 
             // Construct graph from titleNode
-            GraphNode graph = new GraphNode();
+            GraphNode? graph = new GraphNode();
             graph.TitleNode = titleNode;
             graph.Name = query;
             graph.Depth = depth;
@@ -412,7 +412,7 @@ namespace api.Services
         }
 
         // Construct graph recursively
-        public static void LocationalConstructor(TitleNode titleNode, int depth, SourceNode currNode, string query, Dictionary<string, SourceNode> sources, Dictionary<string, TopicNode> locations, int currDepth)
+        private static void LocationalConstructor(TitleNode titleNode, int depth, SourceNode currNode, string query, Dictionary<string, SourceNode> sources, Dictionary<string, TopicNode> locations, int currDepth)
         {
             // Check if max depth reached
             if (currDepth >= depth)
@@ -488,13 +488,104 @@ namespace api.Services
 
         // COLOR
         // Color GraphNode Nodes with colors given
-        public static GraphNode ColorGraph(GraphNode graph, List<List<int>> colors)
+        public static GraphNode? ColorGraph(GraphNode graph, List<List<int>> colors)
         {
+            // Access titleNode
             TitleNode titleNode = graph.TitleNode;
+            
+            // Check colors and assign to each topic
+            for (int index = 0; index < titleNode.TopicNodes.Count(); index++) 
+            {
+                if (index >= colors.Count()) // If not enough colors
+                    return null;
 
+                TopicNode currTopic = titleNode.TopicNodes[index];
 
+                currTopic.Colors = colors[index]; // Assign colors
+
+                foreach (SourceTopicJoin source in currTopic.SourceNodes)
+                    ColorGraph(titleNode, source.SourceNode, 0);
+            }
 
             return graph;
+        }
+
+        // Color graph recursively
+        private static void ColorGraph(TitleNode titleNode, SourceNode currNode, int depth)
+        {
+            // Make sure not colored already
+            if (currNode.Colors != null)
+                return;
+
+            depth++;
+
+            List<List<int>> nodeColors = new List<List<int>>(); // Each inner list has 3 values – [R, G, B, weight (as a %)]
+
+            // Iterate through topic nodes – highest weighting
+            if (currNode.TopicNodes.Count() > 0)
+            {
+                int topicPercent = 90; // Percent topic nodes should color currNode
+
+                foreach (SourceTopicJoin topicJoin in currNode.TopicNodes)
+                {
+                    TopicNode currTopic = topicJoin.TopicNode;
+
+                    // Make sure not null
+                    if (currTopic.Colors == null)
+                        continue;
+
+                    List<int> topicColors = new List<int>(currTopic.Colors);
+
+                    // Add weighting
+                    topicColors.Add((int)((1 / currNode.TopicNodes.Count()) * topicPercent));
+
+                    // Add to colors list
+                    nodeColors.Add(topicColors);
+                }
+
+                // Add fade
+                List<int> fade = new List<int>() { 0, 0, 0, (100-topicPercent) };
+
+                nodeColors.Add(fade);
+            }
+            // Iterate through neighboring nodes – IF not directly under topic node
+            else {
+                // Go through each neighbor
+                foreach (SourceNodeJoin neighboringJoin in currNode.SourceNodes)
+                {
+                    SourceNode neighborNode = neighboringJoin.SourceNode2;
+
+                    if (neighborNode.Colors != null)
+                    {
+                        List<int> neighborColor = new List<int>(neighborNode.Colors);
+
+                        // Add weighting
+                        neighborColor.Add((int)((1 / currNode.SourceNodes.Count()) * 100)); // Add weighting based on amount of neighbors
+                        
+                        nodeColors.Add(neighborNode.Colors);
+                    }
+                }
+            }
+
+            // Blend colors
+            List<int> finalColor = ColorBlender(nodeColors);
+
+            currNode.Colors = finalColor;
+
+            // Go through neighbors
+            foreach (SourceNodeJoin neighboringJoin in currNode.SourceNodes)
+            {
+                if (neighboringJoin.SourceNode2.Colors == null) // Make sure not yet colored
+                    ColorGraph(titleNode, neighboringJoin.SourceNode2, depth);
+            }
+        }
+
+        // Color blender given a list of [R, G, B, weight (%)]
+        private static List<int> ColorBlender(List<List<int>> colors)
+        {
+            List<int> finalColor = new List<int>();
+
+            return finalColor;
         }
 
 
