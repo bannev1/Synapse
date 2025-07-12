@@ -8,6 +8,7 @@ using System.Xml;
 
 using api.Models.Graph.Nodes;
 using api.Environment;
+using System.Globalization;
 
 namespace api.Services
 {
@@ -268,6 +269,61 @@ namespace api.Services
             }
 
             return source;
+        }
+
+        // Get name of source nodes
+        public static string GetSourceName(string url)
+        {
+            string apiKey = Variables.KlazifyAPIKey;
+
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+
+            string apiUrl = $"https://www.klazify.com/api/categorize?url={Uri.EscapeDataString(url)}";
+
+            var response = client.GetAsync(apiUrl).GetAwaiter().GetResult();
+            response.EnsureSuccessStatusCode();
+
+            string json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            using var doc = JsonDocument.Parse(json);
+
+            // Try to get company name
+            if (doc.RootElement.TryGetProperty("company", out JsonElement company) &&
+                company.TryGetProperty("name", out JsonElement nameElement))
+            {
+                return nameElement.GetString();
+            }
+
+            // Fallback to domain name extraction
+            try
+            {
+                var uri = new Uri(url);
+                string domain = uri.Host;
+
+                // Remove common prefixes
+                domain = domain.Replace("www.", "")
+                              .Replace("blog.", "")
+                              .Replace("news.", "");
+
+                // Extract main domain name
+                string[] parts = domain.Split('.');
+                if (parts.Length > 1)
+                {
+                    string brand = parts[0];
+
+                    // Clean up special characters
+                    brand = brand.Replace("-", " ")
+                                 .Replace("_", " ");
+
+                    // Convert to title case
+                    return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(brand.ToLower());
+                }
+                return domain;
+            }
+            catch
+            {
+                return "Unknown Source";
+            }
         }
     }
 }
