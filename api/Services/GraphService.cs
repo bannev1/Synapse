@@ -10,7 +10,7 @@ namespace api.Services
     {
         // CONSTRUCT
         // Construct topic type graph
-        public static GraphNode? TopicalConstructor(string query, int depth)
+        public static GraphNode? TopicalConstructor(string query, int depth, List<List<int>>? colors = null)
         {
             List<string>? topics = new List<string>();
 
@@ -108,6 +108,10 @@ namespace api.Services
             graph.Depth = depth;
             graph.Sources = sources.Keys.ToList();
 
+            // Color graph if colors specified
+            if (colors != null)
+                graph = ColorGraph(graph, colors);
+
             return graph;
         }
 
@@ -170,7 +174,7 @@ namespace api.Services
         }
 
         // Construct media type graph
-        public static GraphNode? MediumConstructor(string query, int depth, int initialSize = 15)
+        public static GraphNode? MediumConstructor(string query, int depth, int initialSize = 15, List<List<int>>? colors = null)
         {
             // Add default sources which have the highest chance of being related to the prompt
             List<string> searchSources = SearchService.SearchQuery(query, amount: initialSize);
@@ -242,6 +246,10 @@ namespace api.Services
             graph.Name = query;
             graph.Depth = depth;
             graph.Sources = sources.Keys.ToList();
+
+            // Color graph if colors specified
+            if (colors != null)
+                graph = ColorGraph(graph, colors);
 
             return graph;
         }
@@ -324,7 +332,7 @@ namespace api.Services
         }
 
         // Construct location type graph
-        public static GraphNode? LocationalConstructor(string query, int depth, int initialSize = 15)
+        public static GraphNode? LocationalConstructor(string query, int depth, int initialSize = 15, List<List<int>>? colors = null)
         {
             // Add default sources which have the highest chance of being related to the prompt
             List<string> searchSources = SearchService.SearchQuery(query, amount: initialSize);
@@ -395,6 +403,10 @@ namespace api.Services
             graph.Name = query;
             graph.Depth = depth;
             graph.Sources = sources.Keys.ToList();
+
+            // Color graph if colors specified
+            if (colors != null)
+                graph = ColorGraph(graph, colors);
 
             return graph;
         }
@@ -478,6 +490,10 @@ namespace api.Services
         // Color GraphNode Nodes with colors given
         public static GraphNode ColorGraph(GraphNode graph, List<List<int>> colors)
         {
+            TitleNode titleNode = graph.TitleNode;
+
+
+
             return graph;
         }
 
