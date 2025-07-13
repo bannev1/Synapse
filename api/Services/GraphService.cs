@@ -4,6 +4,7 @@ using api.Models.Graph;
 using api.Models.Graph.Nodes;
 using api.Models.Graph.Nodes.Relationships;
 using System.Xml.Linq;
+using Elfie.Serialization;
 
 namespace api.Services
 {
@@ -1018,9 +1019,171 @@ namespace api.Services
         }
 
         // Add node by node
-        public static GraphNode AddNodeByNode(GraphNode graph, GraphNode node)
+        public static GraphNode AddNodeByNode(GraphNode graph, SourceNode node, List<Node> linkedNodes, List<List<int>>? colors = null, bool addReferences = false, int referenceDepth = 3)
         {
-            // Logic to add a node by another node
+            // Node Creation
+            if (graph.Sources.Contains(node.Source)) // If graph already has source
+                return graph;
+
+            if (linkedNodes.Count == 0 && graph.Type == "topic") // Make sure linked nodes exist for topic
+                return graph;
+
+            graph.Sources.Add(node.Source);
+
+            // Set up title node
+            TitleNode titleNode = graph.TitleNode;
+
+            // Link node to linkedNodes
+            foreach (Node nodeLink in linkedNodes)
+            {
+                if (nodeLink.GetType() == typeof(SourceNode))
+                {
+                    SourceNode sourceNodeLink = (SourceNode)nodeLink;
+
+                    // Add references
+                    SourceNodeJoin nodeJoinParent = new SourceNodeJoin();
+                    SourceNodeJoin nodeJoinChild = new SourceNodeJoin();
+
+                    nodeJoinParent.SourceNode1 = sourceNodeLink;
+                    nodeJoinChild.SourceNode2 = sourceNodeLink;
+                    nodeJoinParent.SourceNode2 = node;
+                    nodeJoinChild.SourceNode1 = node;
+
+                    node.SourceNodes.Add(nodeJoinChild);
+                    sourceNodeLink.SourceNodes.Add(nodeJoinParent);
+                }
+                else if (nodeLink.GetType() == typeof(TopicNode))
+                {
+                    TopicNode topicNodeLink = (TopicNode)nodeLink;
+
+                    // Add references
+                    SourceTopicJoin nodeJoin = new SourceTopicJoin();
+                    nodeJoin.SourceNode = node;
+                    nodeJoin.TopicNode = topicNodeLink;
+
+                    topicNodeLink.SourceNodes.Add(nodeJoin);
+                    node.TopicNodes.Add(nodeJoin);
+                }
+            }
+
+            // Fetch references (if specified)
+            List<string>? references = null;
+
+            if (addReferences)
+                references = SearchService.SearchReferences(node.Source);
+
+            switch (graph.Type)
+            {
+                // If graph is topical
+                case "topic":
+                    break;
+
+                // If graph is medium based
+                case "medium":
+                    // Assign to corresponding topics
+                    foreach (string medium in node.Mediums)
+                    {
+                        bool assignedMed = false;
+
+                        foreach (TopicNode topic in titleNode.TopicNodes)
+                        {
+                            if (topic.Name == medium)
+                            {
+                                // Add relationship
+                                SourceTopicJoin topicJoin = new SourceTopicJoin();
+                                topicJoin.TopicNode = topic;
+                                topicJoin.SourceNode = node;
+
+                                topic.SourceNodes.Add(topicJoin);
+                                node.TopicNodes.Add(topicJoin);
+
+                                assignedMed = true;
+
+                                break;
+                            }
+                        }
+
+                        // If haven't found corresponding topic, then make new
+                        if (!assignedMed)
+                        {
+                            // Create topic
+                            TopicNode topic = new TopicNode();
+                            topic.Name = medium;
+                            topic.TitleNode = titleNode;
+                            topic.SourceNodes = new List<SourceTopicJoin>();
+
+                            // Create relationship
+                            SourceTopicJoin topicJoin = new SourceTopicJoin();
+                            topicJoin.TopicNode = topic;
+                            topicJoin.SourceNode = node;
+
+                            topic.SourceNodes.Add(topicJoin);
+                            node.TopicNodes.Add(topicJoin);
+                        }
+                    }
+
+                    // Add references (if specified)
+                    if (addReferences)
+                        AddReferenceMedium(graph, node, referenceDepth, 0);
+
+                    break;
+
+                // If graph is location based
+                case "location":
+                    // Assign to corresponding topics
+                    bool assignedLoc = false;
+
+                    foreach (TopicNode topic in titleNode.TopicNodes)
+                    {
+                        if (topic.Name == node.Location)
+                        {
+                            // Add relationship
+                            SourceTopicJoin topicJoin = new SourceTopicJoin();
+                            topicJoin.TopicNode = topic;
+                            topicJoin.SourceNode = node;
+
+                            topic.SourceNodes.Add(topicJoin);
+                            node.TopicNodes.Add(topicJoin);
+
+                            assignedLoc = true;
+
+                            break;
+                        }
+                    }
+
+                    // If haven't found corresponding topic, then make new
+                    if (!assignedLoc)
+                    {
+                        // Create topic
+                        TopicNode topic = new TopicNode();
+                        topic.Name = node.Location;
+                        topic.TitleNode = titleNode;
+                        topic.SourceNodes = new List<SourceTopicJoin>();
+
+                        // Create relationship
+                        SourceTopicJoin topicJoin = new SourceTopicJoin();
+                        topicJoin.TopicNode = topic;
+                        topicJoin.SourceNode = node;
+
+                        topic.SourceNodes.Add(topicJoin);
+                        node.TopicNodes.Add(topicJoin);
+                    }
+
+                    // Add references (if specified)
+                    if (addReferences)
+                        AddReferenceLocation(graph, node, referenceDepth, 0);
+
+                    break;
+
+                // Else error
+                default:
+                    return null;
+            }
+
+            // Re-color graph (if colors specified)
+            if (colors != null)
+                ColorGraph(graph, colors);
+
             return graph;
         }
 
