@@ -144,51 +144,69 @@ namespace api.Services
         public static SourceNode SearchSourceInformation(SourceNode source, bool getMediums = true, bool getLocation = true)
         {
             // Validate environment variables
-            string klazifyApiKey = Variables.KlazifyAPIKey;
+            string ip2LocationKey = Variables.IP2GeolocationAPIKey;
             string ipinfoToken = Variables.ipinfoAPIKey;
 
-            // Populate Mediums using Klazify API
+            // Populate Mediums using IP2Location API
             if (getMediums)
             {
                 try
                 {
-                    using (var klazifyClient = new HttpClient())
+                    string domain = new Uri(source.Source).Host;
+                    string ip = "";
+
+                    // DNS resolution directly in method
+                    using (var dnsClient = new HttpClient())
                     {
-                        klazifyClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {klazifyApiKey}");
-                        string klazifyUrl = $"https://www.klazify.com/api/categorize?url={Uri.EscapeDataString(source.Source)}";
+                        string dnsUrl = $"https://dns.google/resolve?name={domain}&type=A";
+                        var dnsResponse = dnsClient.GetAsync(dnsUrl).GetAwaiter().GetResult();
+                        dnsResponse.EnsureSuccessStatusCode();
 
-                        var klazifyResponse = klazifyClient.GetAsync(klazifyUrl).GetAwaiter().GetResult();
-                        klazifyResponse.EnsureSuccessStatusCode();
-
-                        string klazifyJson = klazifyResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                        using (JsonDocument klazifyDoc = JsonDocument.Parse(klazifyJson))
+                        string dnsJson = dnsResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        using (JsonDocument dnsDoc = JsonDocument.Parse(dnsJson))
                         {
-                            var categories = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                            if (klazifyDoc.RootElement.TryGetProperty("domain", out JsonElement domain) &&
-                                domain.TryGetProperty("categories", out JsonElement categoriesArray))
+                            if (dnsDoc.RootElement.TryGetProperty("Answer", out JsonElement answer))
                             {
-                                foreach (JsonElement category in categoriesArray.EnumerateArray())
+                                foreach (JsonElement record in answer.EnumerateArray())
                                 {
-                                    if (category.TryGetProperty("name", out JsonElement name))
+                                    if (record.TryGetProperty("type", out JsonElement type) &&
+                                        type.GetInt32() == 1 &&
+                                        record.TryGetProperty("data", out JsonElement data))
                                     {
-                                        string? fullPath = name.GetString();
-                                        if (!string.IsNullOrEmpty(fullPath))
-                                        {
-                                            string? mainCategory = fullPath.Split('/')
-                                                .Skip(1)
-                                                .FirstOrDefault()?
-                                                .Trim();
-
-                                            if (!string.IsNullOrEmpty(mainCategory))
-                                            {
-                                                categories.Add(mainCategory);
-                                            }
-                                        }
+                                        ip = data.GetString() ?? "";
+                                        break;
                                     }
                                 }
                             }
-                            source.Mediums = categories.ToList();
                         }
+                    }
+
+                    if (!string.IsNullOrEmpty(ip))
+                    {
+                        using (var client = new HttpClient())
+                        {
+                            string apiUrl = $"https://api.ip2location.io/?key={ip2LocationKey}&ip={ip}";
+                            var response = client.GetAsync(apiUrl).GetAwaiter().GetResult();
+                            response.EnsureSuccessStatusCode();
+
+                            string json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                            using (JsonDocument doc = JsonDocument.Parse(json))
+                            {
+                                if (doc.RootElement.TryGetProperty("domain_category", out JsonElement category))
+                                {
+                                    string categoryName = category.GetString();
+                                    if (!string.IsNullOrEmpty(categoryName))
+                                    {
+                                        // Map to your media types
+                                        source.Mediums = MapCategoryToMediaType(categoryName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        source.Mediums = new List<string> { "website" };
                     }
                 }
                 catch
@@ -206,7 +224,7 @@ namespace api.Services
                     string domain = new Uri(source.Source).Host;
                     string ip = "";
 
-                    // Resolve domain to IP using Google DNS
+                    // DNS resolution directly in method
                     using (var dnsClient = new HttpClient())
                     {
                         string dnsUrl = $"https://dns.google/resolve?name={domain}&type=A";
@@ -271,30 +289,85 @@ namespace api.Services
             return source;
         }
 
-        // Get name of source nodes
+        // Get name of source nodes using Wikipedia API
         public static string GetSourceName(string url)
         {
-            string apiKey = Variables.KlazifyAPIKey;
-
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-
-            string apiUrl = $"https://www.klazify.com/api/categorize?url={Uri.EscapeDataString(url)}";
-
-            var response = client.GetAsync(apiUrl).GetAwaiter().GetResult();
-            response.EnsureSuccessStatusCode();
-
-            string json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            using var doc = JsonDocument.Parse(json);
-
-            // Try to get company name
-            if (doc.RootElement.TryGetProperty("company", out JsonElement company) &&
-                company.TryGetProperty("name", out JsonElement nameElement))
+            try
             {
-                return nameElement.GetString();
-            }
+                // First extract domain from URL
+                var uri = new Uri(url);
+                string domain = uri.Host.ToLower();
 
-            // Fallback to domain name extraction
+                // Remove common prefixes and extract core domain
+                string coreDomain = domain
+                    .Replace("www.", "")
+                    .Replace("blog.", "")
+                    .Replace("news.", "")
+                    .Split('.')[0];
+
+                // Clean domain name for Wikipedia search
+                string searchQuery = coreDomain
+                    .Replace("-", " ")
+                    .Replace("_", " ");
+                searchQuery = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(searchQuery);
+
+                // Use Wikipedia API to find actual source name
+                using (var client = new HttpClient())
+                {
+                    // Search Wikipedia for pages related to the domain
+                    string apiUrl = $"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={Uri.EscapeDataString(searchQuery)}&format=json";
+                    var response = client.GetAsync(apiUrl).GetAwaiter().GetResult();
+                    response.EnsureSuccessStatusCode();
+
+                    string json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    using (JsonDocument doc = JsonDocument.Parse(json))
+                    {
+                        JsonElement root = doc.RootElement;
+                        if (root.TryGetProperty("query", out JsonElement query) &&
+                            query.TryGetProperty("search", out JsonElement search))
+                        {
+                            // Look for a result that matches our domain
+                            foreach (JsonElement item in search.EnumerateArray())
+                            {
+                                if (item.TryGetProperty("title", out JsonElement titleElement))
+                                {
+                                    string title = titleElement.GetString();
+
+                                    // Check if this is likely the correct source
+                                    if (IsValidSourceName(title, coreDomain))
+                                    {
+                                        return title;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Fallback to domain extraction if Wikipedia search fails
+                return GetSourceNameFromDomain(url);
+            }
+            catch
+            {
+                return "Unknown Source";
+            }
+        }
+
+        private static bool IsValidSourceName(string title, string coreDomain)
+        {
+            // Skip disambiguation pages and lists
+            if (title.Contains("(disambiguation)") || title.StartsWith("List of"))
+                return false;
+
+            // Check if title contains the domain keywords
+            string cleanTitle = title.ToLower().Replace(" ", "");
+            string cleanDomain = coreDomain.ToLower().Replace(" ", "");
+
+            return cleanTitle.Contains(cleanDomain);
+        }
+
+        private static string GetSourceNameFromDomain(string url)
+        {
             try
             {
                 var uri = new Uri(url);
@@ -325,5 +398,6 @@ namespace api.Services
                 return "Unknown Source";
             }
         }
+
     }
 }

@@ -4,7 +4,7 @@
     public interface IVariables
     {
         public static string GoogleAPIKey;
-        public static string KlazifyAPIKey;
+        public static string IP2GeolocationAPIKey;
         public static string ipinfoAPIKey;
     }
 }
