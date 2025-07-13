@@ -3,6 +3,7 @@
 using api.Data;
 using api.Models.Graph;
 using api.Services;
+using api.Models.Graph.Nodes;
 
 namespace api.Controllers
 {
@@ -38,11 +39,7 @@ namespace api.Controllers
 
             // If cached graph found, return it
             if (cachedGraph != null)
-            {
-
-
                 return Ok(cachedGraph);
-            }
 
             GraphNode? graph;
 
@@ -50,13 +47,13 @@ namespace api.Controllers
             switch (graphType)
             {
                 case "topical":
-                    graph = GraphService.TopicalConstructor(query);
+                    graph = GraphService.TopicalConstructor(query, depth, colors);
                     break;
                 case "medium":
-                    graph = GraphService.MediumConstructor(query);
+                    graph = GraphService.MediumConstructor(query, depth, colors: colors);
                     break;
                 case "location":
-                    graph = GraphService.LocationalConstructor(query);
+                    graph = GraphService.LocationalConstructor(query, depth, colors: colors);
                     break;
                 default:
                     return BadRequest("Invalid graph type");
@@ -75,7 +72,11 @@ namespace api.Controllers
         public IActionResult colorGraph([FromBody] GraphNode graph, [FromBody] List<List<int>> colors)
         {
             // Color the graph
-            GraphNode coloredGraph = GraphService.ColorGraph(graph, colors);
+            GraphNode? coloredGraph = GraphService.ColorGraph(graph, colors);
+
+            // Check if failure
+            if (coloredGraph == null)
+                return BadRequest("Failure to color");
 
             // Return the colored graph
             return Ok(coloredGraph);
@@ -84,13 +85,13 @@ namespace api.Controllers
         [HttpGet("list")]
         public IActionResult listGraph([FromBody] GraphNode graph)
         {
-            List<NodeList> nodeList = GraphService.GetNodeList(graph);
+            NodeList nodeList = GraphService.GetNodeList(graph);
 
             return Ok(nodeList);
         }
 
         [HttpGet("nodeAdd")]
-        public IActionResult addNode([FromBody] GraphNode graph, [FromBody] string? source, [FromBody] GraphNode? node)
+        public IActionResult addNode([FromBody] GraphNode graph, [FromBody] string? source, [FromBody] SourceNode? node, [FromBody] List<Node> linkedNodes)
         {
             // Make sure correct parameters are provided
             if (source == null && node == null)
@@ -98,17 +99,20 @@ namespace api.Controllers
 
             // Add node by source
             if (source != null)
-                graph = GraphService.AddNodeBySource(graph, source);
+                graph = GraphService.AddNodeBySource(graph, source, linkedNodes);
 
             // Add node by node
             if (node != null)
-                graph = GraphService.AddNodeByNode(graph, node);
+                graph = GraphService.AddNodeByNode(graph, node, linkedNodes);
+
+            if (graph == null)
+                return BadRequest("Failure to add node");
 
             return Ok(graph);
         }
 
         [HttpGet("nodeDelete")]
-        public IActionResult deleteNode([FromBody] GraphNode graph, [FromBody] string? source, [FromBody] GraphNode? node)
+        public IActionResult deleteNode([FromBody] GraphNode graph, [FromBody] string? source, [FromBody] SourceNode? node)
         {
             // Make sure correct parameters are provided
             if (source == null && node == null)
@@ -142,7 +146,10 @@ namespace api.Controllers
         public IActionResult compareGraphs([FromBody] GraphNode graph1, [FromBody] GraphNode graph2)
         {
             // Create a compare graph
-            GraphNode compareGraph = GraphService.CreateCompareGraph(graph1, graph2);
+            GraphNode? compareGraph = GraphService.CreateCompareGraph(graph1, graph2);
+
+            if (compareGraph == null)
+                return BadRequest("Failure to compare graphs");
 
             return Ok(compareGraph);
         }
