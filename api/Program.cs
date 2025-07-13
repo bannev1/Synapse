@@ -17,15 +17,10 @@ bool AreAllPropertiesNotNull(object obj, params string[] excludedProperties)
         .All(p => p.GetValue(obj) != null);
 }
 
-// Make sure environment variables defined
-if (Variables.GetType() != typeof(IVariables))
-{
-    throw new Exception("Environemnt Variables is not of correct type");
-}
-
-if (AreAllPropertiesNotNull(Variables) {
-    throw new Exception("Environemnt Variables don't all contain a definition");
-}
+//// Make sure environment variables defined
+//if (AreAllPropertiesNotNull(Variables) {
+//    throw new Exception("Environemnt Variables don't all contain a definition");
+//}
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DataContext>(options =>
