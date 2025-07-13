@@ -659,11 +659,14 @@ namespace api.Services
 
 
         // ADD NODE
-        // Add node by source
-        public static GraphNode? AddNodeBySource(GraphNode graph, string source, List<List<int>>? colors = null, bool addReferences = false, int referenceDepth = 3)
+        // Add node by source to linkedNodes
+        public static GraphNode? AddNodeBySource(GraphNode graph, string source, List<Node> linkedNodes, List<List<int>>? colors = null, bool addReferences = false, int referenceDepth = 3)
         {
             // Node Creation
             if (graph.Sources.Contains(source)) // If graph already has source
+                return graph;
+
+            if (linkedNodes.Count == 0 && graph.Type == "topic") // Make sure linked nodes exist for topic
                 return graph;
 
             graph.Sources.Add(source);
@@ -681,6 +684,38 @@ namespace api.Services
             node = SearchService.SearchSourceInformation(node);
             node.Name = SearchService.GetSourceName(source);
 
+            // Link node to linkedNodes
+            foreach (Node nodeLink in linkedNodes)
+            {
+                if (nodeLink.GetType() == typeof(SourceNode))
+                {
+                    SourceNode sourceNodeLink = (SourceNode)nodeLink;
+
+                    // Add references
+                    SourceNodeJoin nodeJoinParent = new SourceNodeJoin();
+                    SourceNodeJoin nodeJoinChild = new SourceNodeJoin();
+
+                    nodeJoinParent.SourceNode1 = sourceNodeLink;
+                    nodeJoinChild.SourceNode2 = sourceNodeLink;
+                    nodeJoinParent.SourceNode2 = node;
+                    nodeJoinChild.SourceNode1 = node;
+
+                    node.SourceNodes.Add(nodeJoinChild);
+                    sourceNodeLink.SourceNodes.Add(nodeJoinParent);
+                } else if (nodeLink.GetType() == typeof(TopicNode))
+                {
+                    TopicNode topicNodeLink = (TopicNode)nodeLink;
+
+                    // Add references
+                    SourceTopicJoin nodeJoin = new SourceTopicJoin();
+                    nodeJoin.SourceNode = node;
+                    nodeJoin.TopicNode = topicNodeLink;
+
+                    topicNodeLink.SourceNodes.Add(nodeJoin);
+                    node.TopicNodes.Add(nodeJoin);
+                }
+            }
+
             // Fetch references (if specified)
             List<string>? references = null;
 
@@ -691,7 +726,6 @@ namespace api.Services
             {
                 // If graph is topical
                 case "topic":
-
                     break;
 
                 // If graph is medium based
