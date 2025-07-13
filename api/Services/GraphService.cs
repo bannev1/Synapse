@@ -1192,15 +1192,112 @@ namespace api.Services
         // Delete node by source
         public static GraphNode DeleteNodeBySource(GraphNode graph, string source)
         {
-            // Logic to delete a node by source
+            // Check if graph actually has a source
+            if (!graph.Sources.Contains(source))
+                return graph;
+
+            // Go through each topic and delete references
+            foreach (TopicNode topic in graph.TitleNode.TopicNodes)
+            {
+                foreach (SourceTopicJoin sourceRef in topic.SourceNodes)
+                {
+                    SourceNode currNode = sourceRef.SourceNode;
+
+                    DeleteNode(graph, source, currNode);
+                }
+            }
+
             return graph;
         }
 
         // Delete node by node
-        public static GraphNode DeleteNodeByNode(GraphNode graph, GraphNode node)
+        public static GraphNode DeleteNodeByNode(GraphNode graph, SourceNode node)
         {
-            // Logic to delete a node by another node
+            // Check if graph actually has a source
+            if (!graph.Sources.Contains(node.Source))
+                return graph;
+
+            // Remove neighbor references
+            foreach (SourceNodeJoin neighborJoin in node.SourceNodes)
+            {
+                SourceNode neighbor = neighborJoin.SourceNode2;
+
+                for (int i = 0; i < neighbor.SourceNodes.Count; i++)
+                {
+                    if (neighbor.SourceNodes[i].SourceNode2 == node)
+                    {
+                        // Remove reference
+                        neighbor.SourceNodes.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+
+            // Remove topical references
+            foreach (SourceTopicJoin topicJoin in node.TopicNodes)
+            {
+                TopicNode topic = topicJoin.TopicNode;
+
+                for (int i = 0; i < topic.SourceNodes.Count; i++)
+                {
+                    if (topic.SourceNodes[i].SourceNode == node)
+                    {
+                        // Remove reference
+                        topic.SourceNodes.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+
             return graph;
+        }
+
+        public static void DeleteNode(GraphNode graph, string source, SourceNode currNode)
+        {
+            // If found
+            if (currNode.Source == source)
+            {
+                // Remove neighbor references
+                foreach (SourceNodeJoin neighborJoin in currNode.SourceNodes)
+                {
+                    SourceNode neighbor = neighborJoin.SourceNode2;
+
+                    for (int i = 0; i < neighbor.SourceNodes.Count; i++)
+                    {
+                        if (neighbor.SourceNodes[i].SourceNode2.Source == source)
+                        {
+                            // Remove reference
+                            neighbor.SourceNodes.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
+
+                // Remove topical references
+                foreach (SourceTopicJoin topicJoin in currNode.TopicNodes)
+                {
+                    TopicNode topic = topicJoin.TopicNode;
+
+                    for (int i = 0; i < topic.SourceNodes.Count; i++)
+                    {
+                        if (topic.SourceNodes[i].SourceNode.Source == source)
+                        {
+                            // Remove reference
+                            topic.SourceNodes.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
+
+                // Exit recursive loop
+                return;
+            }
+
+            // Recurse through other neighbors
+            foreach (SourceNodeJoin neighborJoin in currNode.SourceNodes)
+            {
+                DeleteNode(graph, source, neighborJoin.SourceNode2);
+            }
         }
 
 
