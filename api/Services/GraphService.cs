@@ -1506,10 +1506,75 @@ namespace api.Services
         }
 
         // CREATE COMPARE GRAPH
-        public static GraphNode CreateCompareGraph(GraphNode graph1, GraphNode graph2)
+        public static GraphNode? CreateCompareGraph(GraphNode graph1, GraphNode graph2)
         {
-            // Logic to create a compare graph
-            return new GraphNode();
+            // Make sure type of two graphs are the same
+            if (graph1.Type != graph2.Type)
+                return null;
+
+            // Create new graph
+            GraphNode comparison = new GraphNode();
+            comparison.Name = $"{graph1.Name} + {graph2.Name}";
+            comparison.Depth = graph1.Depth > graph2.Depth ? graph1.Depth : graph2.Depth; // Set depth to largest
+            comparison.Type = graph1.Type;
+
+            // Set up sources list
+            HashSet<string> graphSources = new HashSet<string>();
+
+            foreach (string source in graph1.Sources)
+                graphSources.Add(source);
+
+            foreach (string source in graph2.Sources)
+                graphSources.Add(source);
+
+            comparison.Sources = graphSources.ToList(); // Make sure unique
+
+            // Create titleNode
+            TitleNode comparisonTitle = new TitleNode();
+            comparisonTitle.Name = comparison.Name;
+            comparisonTitle.GraphNode = comparison;
+
+            comparisonTitle.TopicNodes = new List<TopicNode>();
+
+            comparison.TitleNode = comparisonTitle;
+
+            // Topic References
+            Dictionary<string, TopicNode> topics = new Dictionary<string, TopicNode>();
+
+            // Initialize topics
+            foreach (TopicNode topic in graph1.TitleNode.TopicNodes)
+            {
+                if (topics.Keys.Contains(topic.Name)) // Make sure topic nodes not already exist
+                {
+                    // Set up proper references
+                    foreach (SourceTopicJoin sourceJoin in topic.SourceNodes)
+                        sourceJoin.TopicNode = topics[topic.Name];
+
+                    topics[topic.Name].SourceNodes.AddRange(topic.SourceNodes);
+                } else
+                {
+                    comparisonTitle.TopicNodes.Add(topic);
+                }
+            }
+
+            foreach (TopicNode topic in graph2.TitleNode.TopicNodes)
+            {
+                if (topics.Keys.Contains(topic.Name)) // Make sure topic nodes not already exist
+                {
+                    // Set up proper references
+                    foreach (SourceTopicJoin sourceJoin in topic.SourceNodes)
+                        sourceJoin.TopicNode = topics[topic.Name];
+
+                    topics[topic.Name].SourceNodes.AddRange(topic.SourceNodes);
+                }
+                else
+                {
+                    comparisonTitle.TopicNodes.Add(topic);
+                }
+            }
+
+            // Return comparison
+            return comparison;
         }
     }
 
