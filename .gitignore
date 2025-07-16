@@ -462,3 +462,6 @@ FodyWeavers.xsd
 # .NET Secrets
 Variables.cs
 api/Environment/Variables.cs
+
+# SCSS Compiler
+*.css.map
