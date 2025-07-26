@@ -1,11 +1,13 @@
 import React from 'react'
 
-import '../styles/search/styles.css'
+import SearchBar from '@/components/SearchBar'
+import '../../styles/search/styles.css'
 
 function Search() {
   return (
     <>
-    
+      <h1>Synapse</h1>
+      <SearchBar/>
     </>
   )
 }

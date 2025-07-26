@@ -1,6 +1,6 @@
 import React from 'react'
 
-import '../styles/view/styles.css'
+import '../../styles/view/styles.css'
 
 function View() {
   return (

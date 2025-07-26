@@ -1,11 +1,41 @@
-$background-color: #FEEFDD;
-$blue: #50B2C0;
-$peach: #e9deda;
-$red: #FF4000;
-$black: #201E1F;
+@import './variables';
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
+// Defaults
 :root {
     font-family: 'Montserrat';
+}
+
+* {
+    font-family: 'Montserrat';
+}
+
+body {
+    background-color: $background-color;
+    color: $black;
+}
+
+
+// Components
+#search {
+    padding: 5px;
+    width: auto;
+    max-width: 50px;
+    margin: 0 10px;
+    border-radius: 100%;
+    color: $black;
+    background-color: $background-color;
+
+    &.inverted {
+        color: $background-color;
+        background-color: $black;
+
+        & .label {
+            color: $background-color;
+        }
+    }
+
+    & .label {
+        color: $grey;
+        font-style: italic;
+    }
 }

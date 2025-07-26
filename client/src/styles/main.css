@@ -1,4 +1,34 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 :root {
   font-family: "Montserrat";
+}
+
+* {
+  font-family: "Montserrat";
+}
+
+body {
+  background-color: #FEEFDD;
+  color: #201E1F;
+}
+
+#search {
+  padding: 5px;
+  width: auto;
+  max-width: 50px;
+  margin: 0 10px;
+  border-radius: 100%;
+  color: #201E1F;
+  background-color: #FEEFDD;
+}
+#search.inverted {
+  color: #FEEFDD;
+  background-color: #201E1F;
+}
+#search.inverted .label {
+  color: #FEEFDD;
+}
+#search .label {
+  color: #867F74;
+  font-style: italic;
 }/*# sourceMappingURL=main.css.map */
