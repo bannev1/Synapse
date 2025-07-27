@@ -1,5 +1,7 @@
 import '../styles/main.css'
 
+import { TabProvider } from '@/components/TabContext'
+
 
 export const metadata = {
   title: 'Synapse',
@@ -9,7 +11,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <TabProvider>
+          {children}
+        </TabProvider>
+      </body>
     </html>
   )
 }

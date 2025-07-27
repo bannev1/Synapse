@@ -1,6 +1,9 @@
 @import './variables';
 
-// Defaults
+// ----------------
+// --- DEFAULTS ---
+// ----------------
+
 :root {
     font-family: 'Montserrat';
 }
@@ -9,33 +12,183 @@
     font-family: 'Montserrat';
 }
 
+html,
+body {
+    margin: 0;
+}
+
 body {
     background-color: $background-color;
     color: $black;
+    height: 100dvh;
+    width: 100dvw;
+    position: relative;
 }
 
+// -----------------------
+// --- BASE COMPONENTS ---
+// -----------------------
 
-// Components
+// Input
+input[type="text"] {
+    outline: none;
+    background-color: transparent;
+    border: none;
+    width: inherit;
+}
+
+// -------------------------
+// --- CUSTOM COMPONENTS ---
+// -------------------------
+
+// Search bar
 #search {
-    padding: 5px;
-    width: auto;
-    max-width: 50px;
-    margin: 0 10px;
-    border-radius: 100%;
+    padding: calc(var(--search-height) - 15px);
+    width: 100%;
+    min-width: var(--search-minwidth);
+    max-width: var(--search-maxwidth);
+    margin: 0 auto;
+    border-radius: 50px;
     color: $black;
+    height: var(--search-height);
     background-color: $background-color;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 5px;
+    position: relative;
 
+    // Inverted
     &.inverted {
         color: $background-color;
         background-color: $black;
 
-        & .label {
+        & input[type="text"] {
             color: $background-color;
+
+            &::placeholder {
+                color: $light-grey;
+            }
+        }
+
+        & button {
+            &:hover,
+            &:focus {
+                background-color: $background-color;
+            }
         }
     }
 
-    & .label {
-        color: $grey;
-        font-style: italic;
+    // Textbox
+    & input[type="text"] {
+        color: $black;
+        width: calc(100% - (var(--search-height) + 37px));
+
+        &::placeholder {
+            color: $grey;
+            font-style: italic;
+        }
+    }
+
+    // Icon
+    & img {
+        padding: 0;
+    }
+
+    // Button
+    & button {
+        background-color: $red;
+        border-radius: 100%;
+        border: none;
+        aspect-ratio: 1;
+        height: calc(var(--search-height) + 5px);
+        right: 8px;
+        top: calc(50% - ((var(--search-height) + 5px)/2));
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        box-shadow: 14px 10px 21px -6px rgba(0,0,0,0.18);
+        transition: background-color 200ms ease-in-out;
+
+        // Image
+        & img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            left: 4px;
+        }
+
+        // Hover
+        &:hover,
+        &:focus {
+            background-color: $black;
+            cursor: pointer;
+        }
+    }
+}
+
+// Special Underlines
+.underline {
+    width: fit-content;
+    position: relative;
+    color: $black;
+    transform: translate3d(0px, 0px, 0px);
+    text-shadow: 2px 2px 0 $background-color, 2px -2px 0 $background-color, -2px 2px 0 $background-color, -2px -2px 0 $background-color, 2px 0px 0 $background-color, 0px 2px 0 $background-color, -2px 0px 0 $background-color, 0px -2px 0 $background-color;
+
+    // White text
+    &.inverted {
+        color: $background-color;
+        text-shadow: 2px 2px 0 $black, 2px -2px 0 $black, -2px 2px 0 $black, -2px -2px 0 $black, 2px 0px 0 $black, 0px 2px 0 $black, -2px 0px 0 $black, 0px -2px 0 $black;
+    }
+
+    // Underline
+    &::before {
+        content: '';
+        position: absolute;
+        width: calc(100% - 10px);
+        height: 3px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        bottom: 2px;
+        z-index: -1;
+    }
+
+    // Blue underline
+    &.blue::before {
+        background-color: $blue;
+    }
+
+    // Red underline
+    &.red::before {
+        background-color: $red;
+    }
+}
+
+// Tabs
+#tabs {
+	height: 70px;
+	width: 100%;
+}
+
+// Autocompleter
+#autocomplete {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: $black;
+    color: $background-color;
+    align-items: center;
+    height: fit-content;
+    padding: 5px;
+
+    &.inverted {
+        background-color: $background-color;
+        color: $black;
     }
 }

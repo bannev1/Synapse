@@ -1,5 +1,43 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 body {
   background-color: #201E1F;
+  display: flex;
+  flex-direction: column;
+}
+
+#home {
+  background-color: #FEEFDD;
+  color: #201E1F;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+}
+#home.inverted {
+  background-color: #201E1F;
   color: #FEEFDD;
+}
+
+h1 {
+  margin: 0;
+  font-size: 50px;
+}
+h1::before {
+  height: 4px !important;
+}
+
+#slogan {
+  margin: 5px auto;
+  width: -moz-fit-content;
+  width: fit-content;
+  font-style: italic;
+  font-weight: 600;
+}
+
+#search {
+  margin: 0;
 }/*# sourceMappingURL=styles.css.map */

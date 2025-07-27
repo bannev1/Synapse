@@ -1,8 +1,9 @@
 import Graph from "./graph"
 
 class Tab {
-    constructor() {
-		
+    constructor(tabName, graph) {
+		this.tabName = tabName
+		this.graph = graph
 	}
 }
 

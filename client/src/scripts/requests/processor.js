@@ -1,5 +1,5 @@
 // Methods to manage searches and graphs
 
-function search() {
+export const search = () => {
 	// Function to search and construct a graph
 }

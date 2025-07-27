@@ -1,7 +1,50 @@
 @import '../variables';
 
 
+// Main screen
 body {
 	background-color: $black;
-	color: $background-color;
+	display: flex;
+	flex-direction: column;
+}
+
+#home {
+	background-color: $background-color;
+	color: $black;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+	padding: 20px;
+	width: calc(100% - 20px*2);
+	height: calc(100% - 20px*2);
+	
+	&.inverted {
+		background-color: $black;
+		color: $background-color;
+	}
+}
+
+// Logo
+h1 {
+	margin: 0;
+	font-size: 50px;
+	
+	&::before {
+		height: 4px !important;
+	}
+}
+
+// Slogan
+#slogan {
+	margin: 5px auto;
+	width: fit-content;
+	font-style: italic;
+	font-weight: 600;
+}
+
+// Search bar
+#search {
+	margin: 0;
 }

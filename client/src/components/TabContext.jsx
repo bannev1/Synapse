@@ -1,16 +1,14 @@
-import React, { createContext } from 'react'
+'use client';
+
+import React, { createContext, useState } from 'react'
 
 
-const TabContext = createContext();
+export const TabContext = createContext();
 
-function TabProvider({ children }) {
-    const value = {
-        tabs
-    }
+export const TabProvider = ({ children }) => {
+    const [tabs, setTabs] = useState([]);
 
     return (
-        <TabContext.Provider value={value}>{children}</TabContext.Provider>
+        <TabContext.Provider value={{ tabs, setTabs }}>{children}</TabContext.Provider>
     )
 }
-
-export default TabProvider
