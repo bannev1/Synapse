@@ -197,8 +197,8 @@ namespace api.Services
                                     string categoryName = category.GetString();
                                     if (!string.IsNullOrEmpty(categoryName))
                                     {
-                                        // Map to your media types
-                                        source.Mediums = MapCategoryToMediaType(categoryName);
+                                        // Map to media types
+                                        source.Mediums = categoryName;
                                     }
                                 }
                             }

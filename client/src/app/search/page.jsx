@@ -6,6 +6,7 @@ import SearchBar from '@/components/SearchBar'
 import TabBar from '@/components/TabBar';
 import '../../styles/search/styles.css'
 import { TabContext } from '@/components/TabContext';
+import ConfirmModal from '@/components/modals/ConfirmModal';
 
 function Search() {
   const {tabs, setTabs} = useContext(TabContext)
@@ -32,6 +33,8 @@ function Search() {
         <div id="options">
 
         </div>
+
+        <ConfirmModal content="Confirm?"/>
       </div>
     </>
   )
