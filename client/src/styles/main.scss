@@ -223,6 +223,21 @@ input[type="text"] {
             }
         }
     }
+
+    // Inverted
+    &.inverted {
+        color: $background-color;
+
+        & #depthSelect {
+            & input[type='text'] {
+                color: $background-color;
+            }
+
+            & label {
+                background-color: $black;
+            }
+        }
+    }
 }
 
 // Special Underlines

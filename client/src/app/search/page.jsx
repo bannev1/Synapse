@@ -12,7 +12,7 @@ import SearchOptions from '@/components/SearchOptions';
 function Search() {
   const {tabs, setTabs} = useContext(TabContext)
   
-  const tabsExist = tabs.length >= 0 // If tabs, then show tab bar
+  const tabsExist = tabs.length > 0 // If tabs, then show tab bar
   const inverted = tabsExist ? '' : 'inverted'
 
   const [searchOptions, setSearchOptions] = useState({})
