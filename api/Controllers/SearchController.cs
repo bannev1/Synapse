@@ -153,5 +153,11 @@ namespace api.Controllers
 
             return Ok(compareGraph);
         }
+
+        [HttpGet("autocomplete")]
+        public IActionResult autocomplete([FromBody] string query, [FromBody] int maxOptions)
+        {
+            return Ok(SearchService.GetAutocompleteOptions(query, maxOptions));
+        }
     }
 }

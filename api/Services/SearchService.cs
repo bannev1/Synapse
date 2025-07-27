@@ -399,5 +399,39 @@ namespace api.Services
             }
         }
 
+
+        public static List<string> GetAutocompleteOptions(string query, int maxOptions)
+        {
+            List<string> options = new List<string>();
+
+            using (var client = new HttpClient())
+            {
+                string url = $"https://en.wikipedia.org/w/api.php?action=query&format=json&assert=anon&list=prefixsearch&formatversion=2&pssearch={query}&pslimit={maxOptions}";
+                var response = client.GetAsync(url).GetAwaiter().GetResult();
+                response.EnsureSuccessStatusCode();
+
+                string json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                using (JsonDocument doc = JsonDocument.Parse(json))
+                {
+                    JsonElement root = doc.RootElement;
+                    if (root.TryGetProperty("query", out JsonElement queryRes) &&
+                        queryRes.TryGetProperty("prefixsearch", out JsonElement search))
+                    {
+                        // Look for suggestion
+                        foreach (JsonElement item in search.EnumerateArray())
+                        {
+                            if (item.TryGetProperty("title", out JsonElement titleElement))
+                            {
+                                string title = titleElement.GetString();
+
+                                options.Add(title);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return options;
+        }
     }
 }
