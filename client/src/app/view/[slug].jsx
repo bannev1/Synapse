@@ -14,7 +14,7 @@ function View() {
 
 	// Find tab
 	var tab = undefined;
-	tabs.array.forEach(tabElem => {
+	tabs.forEach(tabElem => {
 		if (tabElem.name == refTab)
 			tab = tabElem
 	});

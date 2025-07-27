@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 
 import { search } from '@/scripts/requests/processor';
@@ -9,6 +9,7 @@ import { search } from '@/scripts/requests/processor';
 import searchBlack from '/public/icons/searchBlack.svg';
 import searchWhite from '/public/icons/searchWhite.svg';
 import sendWhite from '/public/icons/sendWhite.svg';
+import Autocompleter from './Autocompleter';
 
 
 function SearchBar({
@@ -25,6 +26,8 @@ function SearchBar({
     '--search-height': `${height}px`
   }
 
+  const [searchTerm, setSearchTerm] = useState('')
+
   return (
 	  <div 
         id="search" 
@@ -33,6 +36,7 @@ function SearchBar({
     >
       <Image src={inverted ? searchWhite : searchBlack} alt="Search Icon"/>
       <input type="text" placeholder={placeholder}/>
+      <Autocompleter query='comp' setAutocomplete={setSearchTerm}/>
       <button onClick={onSearch}>
         <Image src={sendWhite} alt="Submit Icon"/>
       </button>

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { TabContext } from './TabContext'
+import Tab from './Tab'
 
 
 function TabBar({ currTabIndex, isNewTab = false }) {
@@ -16,7 +17,7 @@ function TabBar({ currTabIndex, isNewTab = false }) {
 		<div id="tabs">
 			{
 				isNewTab && 
-				<div className="tab"></div>
+				<Tab tabName='New Tab' isCurrTab={true} graph={undefined}/>
 			}
 
 			{

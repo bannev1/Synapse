@@ -5,11 +5,14 @@ function Tab({
 	graph,
 	isCurrTab = false
 }) {
-  return (
-	<div className="tab">
-		{tabName}
-	</div>
-  )
+	if (graph == undefined && !isCurrTab)
+		return
+	
+	return (
+		<div className="tab">
+			{tabName}
+		</div>
+	)
 }
 
 export default Tab
