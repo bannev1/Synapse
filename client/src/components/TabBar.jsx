@@ -3,28 +3,31 @@ import { TabContext } from './TabContext'
 import Tab from './Tab'
 
 
-function TabBar({ currTabIndex, isNewTab = false }) {
+function TabBar({ currTab, isNewTab = false }) {
 	const {tabs, setTabs} = useContext(TabContext)
 
-	if (isNewTab && currTabIndex < 0)
-		return
-
-	if (currTabIndex > tabs.length - 1)
+	if (isNewTab && currTab != '')
 		return
 	
 	
 	return (
-		<div id="tabs">
-			{
-				isNewTab && 
-				<Tab tabName='New Tab' isCurrTab={true} graph={undefined}/>
-			}
+		<div id="tabGroup">
+			<h1 id="tabLogo" className='underline blue inverted'>
+				Synapse
+			</h1>
 
-			{
-				tabs.forEach(tab => {
-					<div className="tab"></div>
-				})
-			}
+			<div id="tabs">
+				{
+					isNewTab && 
+					<Tab tabName='New Tab' isCurrTab={true} graph={undefined}/>
+				}
+
+				{
+					tabs.forEach(tab => {
+						<div className="tab"></div>
+					})
+				}
+			</div>
 		</div>
 	)
 }

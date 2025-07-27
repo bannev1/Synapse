@@ -43,6 +43,7 @@ input[type=text] {
   align-items: center;
   gap: 5px;
   position: relative;
+  box-shadow: 14px 10px 21px -6px rgba(0, 0, 0, 0.18);
 }
 #search.inverted {
   color: #FEEFDD;
@@ -101,6 +102,87 @@ input[type=text] {
   cursor: pointer;
 }
 
+#searchOptions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 30px;
+  position: relative;
+  gap: 20px;
+}
+#searchOptions div {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 100%;
+  padding: 0;
+}
+#searchOptions div:first-child::before, #searchOptions div::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 2px;
+  background-color: #867F74;
+  opacity: 0.5;
+  top: 0;
+  bottom: 0;
+}
+#searchOptions div::after {
+  right: -10px;
+}
+#searchOptions div:first-child::before {
+  left: -10px;
+}
+#searchOptions #sourcesSelect select {
+  border: none;
+}
+#searchOptions #depthSelect {
+  gap: 2px;
+}
+#searchOptions #depthSelect input[type=text] {
+  width: 23px;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+  border: #867F74 solid 3px;
+  border-radius: 5px;
+}
+#searchOptions #depthSelect label {
+  position: absolute;
+  font-size: 7px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: -5px;
+  width: -moz-fit-content;
+  width: fit-content;
+  background-color: #FEEFDD;
+  padding: 0 1px;
+  font-weight: 600;
+}
+#searchOptions #depthSelect button {
+  border: none;
+  transition: opacity 200ms ease-in-out;
+  background-color: transparent;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  transition: opacity 200ms ease-in-out;
+}
+#searchOptions #depthSelect button:hover, #searchOptions #depthSelect button:focus {
+  opacity: 0.7;
+  cursor: pointer;
+}
+#searchOptions #depthSelect button img {
+  width: 20px;
+  height: 20px;
+}
+
 .underline {
   width: -moz-fit-content;
   width: fit-content;
@@ -131,9 +213,112 @@ input[type=text] {
   background-color: #FF4000;
 }
 
-#tabs {
-  height: 70px;
+#tabGroup {
   width: 100%;
+  height: 70px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+#tabGroup #tabLogo {
+  font-size: 33px;
+  margin: auto 10px;
+}
+#tabGroup #tabLogo::before {
+  height: 3px !important;
+}
+#tabGroup #tabs {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 0 10px;
+  align-items: end;
+  position: relative;
+  overflow-x: scroll;
+}
+#tabGroup #tabs .tab {
+  background-color: #FEEFDD;
+  color: #201E1F;
+  height: 45px;
+  width: 150px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  position: relative;
+  opacity: 0.8;
+}
+#tabGroup #tabs .tab:hover {
+  cursor: pointer;
+}
+#tabGroup #tabs .tab.active {
+  opacity: 1;
+  z-index: 5;
+}
+#tabGroup #tabs .tab.active:hover {
+  cursor: default;
+}
+#tabGroup #tabs .tab p {
+  font-size: 13px;
+  text-align: left;
+  width: calc(100% - 70px);
+}
+#tabGroup #tabs .tab button {
+  border: none;
+  border-radius: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  transition: opacity 200ms ease-in-out;
+}
+#tabGroup #tabs .tab button:hover, #tabGroup #tabs .tab button:focus {
+  opacity: 0.6;
+  cursor: pointer;
+}
+#tabGroup #tabs .tab button img {
+  margin: auto;
+  width: 20px;
+  height: 20px;
+}
+#tabGroup #tabs .tab::before, #tabGroup #tabs .tab::after, #tabGroup #tabs .tab div::before, #tabGroup #tabs .tab div::after {
+  content: "";
+  background-color: #FEEFDD;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+}
+#tabGroup #tabs .tab::before {
+  left: -10px;
+}
+#tabGroup #tabs .tab::after {
+  right: -10px;
+}
+#tabGroup #tabs .tab div {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+#tabGroup #tabs .tab div::before, #tabGroup #tabs .tab div::after {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #201E1F;
+  z-index: 2;
+}
+#tabGroup #tabs .tab div::before {
+  left: -20px;
+}
+#tabGroup #tabs .tab div::after {
+  right: -20px;
 }
 
 #autocomplete {

@@ -27,7 +27,7 @@ function View() {
 
 	return (
 		<>
-			<TabBar/>
+			<TabBar currTab={refTab}/>
 
 			<div id="home">
 				<div id="toolbar">

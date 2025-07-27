@@ -7,6 +7,7 @@ import TabBar from '@/components/TabBar';
 import '../../styles/search/styles.css'
 import { TabContext } from '@/components/TabContext';
 import ConfirmModal from '@/components/modals/ConfirmModal';
+import SearchOptions from '@/components/SearchOptions';
 
 function Search() {
   const {tabs, setTabs} = useContext(TabContext)
@@ -18,7 +19,7 @@ function Search() {
     <>
       { // Tab viewer
         tabsExist && 
-        <TabBar/>
+        <TabBar currTab='' isNewTab={true}/>
       }
 
       {/* Main content */}
@@ -30,11 +31,7 @@ function Search() {
 
         <SearchBar inverted={tabsExist} placeholder="What's your next search?" height={25}/>
 
-        <div id="options">
-
-        </div>
-
-        <ConfirmModal content="Confirm?"/>
+        <SearchOptions/>
       </div>
     </>
   )

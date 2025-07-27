@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function ConfirmModal({
 	content,
 	onConfirm,
+	refresh,
 	backdrop = true,
 	inverted = false,
 	noConfirmText = 'No',
 	yesConfirmText = 'Yes'
 }) {
-	const [exists, setExists] = useState(true);
+	const [exists, setExists] = useState(refresh);
+
+	useEffect(() => {
+		setExists(refresh)
+	}, [refresh])
 
 	return (
 		<>
