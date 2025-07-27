@@ -34,8 +34,8 @@ This project is licensed under the MIT license. See our [LICENSE](LICENSE) for m
 
 ## Credits
 
-- [Valentina Banner](https://github.com/realhuman101) - *Creator*
+- [Valentina Banner](https://valentinabanner.com/) - *Creator*
   
 ## Contact
 
-- **GitHub:** [@realhuman101](https://github.com/realhuman101)
+- **GitHub:** [@bannev1](https://github.com/bannev1)
