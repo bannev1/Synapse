@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 import SearchBar from '@/components/SearchBar'
 import TabBar from '@/components/TabBar';
@@ -14,6 +14,8 @@ function Search() {
   
   const tabsExist = tabs.length >= 0 // If tabs, then show tab bar
   const inverted = tabsExist ? '' : 'inverted'
+
+  const [searchOptions, setSearchOptions] = useState({})
 
   return (
     <>
@@ -31,7 +33,7 @@ function Search() {
 
         <SearchBar inverted={tabsExist} placeholder="What's your next search?" height={25}/>
 
-        <SearchOptions/>
+        <SearchOptions onChangeOptions={setSearchOptions} inverted={!tabsExist}/>
       </div>
     </>
   )

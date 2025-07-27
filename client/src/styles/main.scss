@@ -266,14 +266,14 @@ input[type="text"] {
 // Tabs
 #tabGroup {
     width: 100%;
-    height: 70px;
+    height: 55px;
     position: relative;
     display: flex;
     flex-direction: row;
 
     // Logo
     & #tabLogo {
-        font-size: 33px;
+        font-size: 30px;
         margin: auto 10px;
     
         &::before {
@@ -296,7 +296,7 @@ input[type="text"] {
         & .tab {
             background-color: $background-color;
             color: $black;
-            height: 45px;
+            height: 40px;
             width: 150px;
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
@@ -394,6 +394,27 @@ input[type="text"] {
                 &::after {
                     right: -20px;
                 }
+            }
+        }
+
+        // Add tab button
+        & #addTab {
+            border: none;
+            background-color: transparent;
+            padding: 0;
+            padding-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto 10px;
+            height: fit-content;
+            width: fit-content;
+            transition: opacity 200ms ease-in-out;
+
+            &:hover,
+            &:focus {
+                opacity: .7;
+                cursor: pointer;
             }
         }
     }
