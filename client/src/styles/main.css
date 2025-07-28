@@ -302,7 +302,7 @@ input[type=text] {
   color: #FEEFDD;
   border: 5px #201E1F solid;
 }
-#searchOptions.inverted #sourcesSelect #options .option .active {
+#searchOptions.inverted #sourcesSelect #options .option.active {
   background-color: #FEEFDD;
   color: #201E1F;
 }
