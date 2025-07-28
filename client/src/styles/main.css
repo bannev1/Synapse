@@ -180,7 +180,6 @@ input[type=text] {
   overflow-x: hidden;
 }
 #searchOptions #sourcesSelect #options .option {
-  font-weight: 500;
   padding: 0 10px;
   width: 100%;
   position: relative;
@@ -224,6 +223,7 @@ input[type=text] {
 }
 #searchOptions #sourcesSelect #options .option p {
   font-size: 12px;
+  font-weight: 600;
   width: 100%;
 }
 #searchOptions #sourcesSelect #options .option:not(:first-child)::after {

@@ -221,7 +221,6 @@ input[type="text"] {
 
             // Dropdown option
             & .option {
-                font-weight: 500;
                 padding: 0 10px;
                 width: 100%;
                 position: relative;
@@ -272,6 +271,7 @@ input[type="text"] {
                 // Dropdown text/source
                 & p {
                     font-size: 12px;
+                    font-weight: 600;
                     width: 100%;
                 }
 
