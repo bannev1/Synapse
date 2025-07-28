@@ -15,15 +15,17 @@ function SearchOptions({
 	const [depthVal, setDepthVal] = useState(6)
 	const [sourceOptions, setSourceOptions] = useState([])
 	const [showSources, setShowSources] = useState(false)
+	const [useAllSource, setUseAllSource] = useState(true)
 
 	useEffect(() => {
 		onChangeOptions({
 			'depth': depthVal,
-			'sources': sourceOptions
+			'sources': sourceOptions,
+			'useAll': useAllSource
 		})
-	}, [depthVal, sourceOptions])
+	}, [depthVal, sourceOptions, useAllSource])
 
-	const allSources = [
+	const allSources = useRef([
 		['https://www.wikipedia.com/', 'Wikipedia'],
 		["https://www.nytimes.com/", 'The New York Times'],
 		["https://www.youtube.com", 'YouTube'],
@@ -35,13 +37,17 @@ function SearchOptions({
 		["https://www.ft.com/", 'Financial Times'],
 		["https://www.sciencedirect.com/", 'ScienceDirect'],
 		["https://www.britannica.com/", 'Britannica'],
-	]
+	]).current
 
 	return (
 		<div id="searchOptions" className={inverted ? 'inverted' : ''}>
 			<div id='sourcesSelect'>
 				<div id="sourcesDropdownTitle" className={showSources ? 'active' : ''} onClick={() => setShowSources(v => !v)}>
-					<p>{sourceOptions.length} Sources Selected</p>
+					{
+						useAllSource ?
+						<p>Using Any Source</p> :
+						<p>{sourceOptions.length} Sources Selected</p>
+					}
 					<Image src={inverted ? dropdownBlack : dropdownWhite} alt="Dropdown Icon"/>
 				</div>
 
@@ -59,12 +65,17 @@ function SearchOptions({
 												})
 											}}>
 
-											<label htmlFor={`source${index}`} className={sourceOptions.includes(link) ? 'active' : ''}/>
+											<label className={sourceOptions.includes(link) ? 'active' : ''}/>
 
 											<p>{name}</p>
 										</div>
 							})
 						}
+
+						<div className="useAll" onClick={() => setUseAllSource(v => !v)}>
+							<label className={useAllSource ? 'active' : ''}/>
+							<p>Use Any Source</p>
+						</div>
 					</div>
 				}
 			</div>
