@@ -49,14 +49,13 @@ function SearchOptions({
 					<div id="options">
 						{
 							allSources.map(([link, name], index) => {
-								return <div key={index} className={`option ${sourceOptions.includes(link) ? 'active' : ''}`} onClick={() => {
+								return <div key={index} className={`option ${sourceOptions.includes(link) ? 'active' : ''}`} 
+											onClick={() => {
 												setSourceOptions(v => {
 													if (!v.includes(link))
-														v.push(link)
+														return [...v, link]
 													else (v.includes(link))
-														v.filter(val => {return val != link})
-
-													return v
+														return v.filter(val => {return val != link})
 												})
 											}}>
 
