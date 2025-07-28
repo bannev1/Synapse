@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image';
 
 import addBlack from '/public/icons/addBlack.svg';
@@ -14,6 +14,7 @@ function SearchOptions({
 }) {
 	const [depthVal, setDepthVal] = useState(6)
 	const [sourceOptions, setSourceOptions] = useState([])
+	const [showSources, setShowSources] = useState(false)
 
 	useEffect(() => {
 		onChangeOptions({
@@ -22,43 +23,62 @@ function SearchOptions({
 		})
 	}, [depthVal, sourceOptions])
 
+	const allSources = [
+		['https://www.wikipedia.com/', 'Wikipedia'],
+		["https://www.nytimes.com/", 'The New York Times'],
+		["https://www.youtube.com", 'YouTube'],
+		["https://www.bbc.com/", 'BBC News'],
+		["https://www.researchgate.net/", 'ResearchGate'],
+		["https://medium.com/", 'Medium'],
+		["https://arxiv.org/", 'ArXiv'],
+		["https://edition.cnn.com/", 'CNN'],
+		["https://www.ft.com/", 'Financial Times'],
+		["https://www.sciencedirect.com/", 'ScienceDirect'],
+		["https://www.britannica.com/", 'Britannica'],
+	]
+
 	return (
 		<div id="searchOptions" className={inverted ? 'inverted' : ''}>
 			<div id='sourcesSelect'>
-				<div>
+				<div id="sourcesDropdownTitle" className={showSources ? 'active' : ''} onClick={() => setShowSources(v => !v)}>
 					<p>{sourceOptions.length} Sources Selected</p>
 					<Image src={inverted ? dropdownWhite : dropdownBlack} alt="Dropdown Icon"/>
 				</div>
 
-				<select multiple>
-					<option value="https://www.wikipedia.org/">Wikipedia</option>
-					<option value="https://www.nytimes.com/">The New York Times</option>
-					<option value="https://www.youtube.com">YouTube</option>
-					<option value="https://www.bbc.com/">BBC</option>
-					<option value="https://www.researchgate.net/">ResearchGate</option>
-					<option value="https://medium.com/">Medium</option>
-					<option value="https://arxiv.org/">ArXiv</option>
-					<option value="https://edition.cnn.com/">CNN</option>
-					<option value="https://www.ft.com/">Financial Times</option>
-					<option value="https://www.sciencedirect.com/">Science Direct</option>
-					<option value="https://www.britannica.com/">Britannica</option>
-				</select>
+				{ showSources &&
+					<div id="options">
+						{
+							allSources.map(([link, name], index) => {
+								return <div key={index} className={`option ${sourceOptions.includes(link) ? 'active' : ''}`} onClick={() => {
+												setSourceOptions(v => {
+													if (!v.includes(link))
+														v.push(link)
+													else (v.includes(link))
+														v.filter(val => {return val != link})
+
+													return v
+												})
+											}}>
+
+											<label htmlFor={`source${index}`} className={sourceOptions.includes(link) ? 'active' : ''}/>
+
+											<p>{name}</p>
+										</div>
+							})
+						}
+					</div>
+				}
 			</div>
 
 			<div id='depthSelect'>
-				<button onClick={() => {depthVal < 9 ? setDepthVal(depthVal+1) : setDepthVal(depthVal)}}>
+				<button onClick={() => setDepthVal(v => Math.min(9, v + 1))}>
 					<Image src={inverted ? addWhite : addBlack} alt='Add Icon' />
 				</button>
 
 				<label htmlFor='depthSelector'>Depth</label>
-				<input type='text' name='depthSelector' value={depthVal} 
-						onInput={(event) => {
-							if (!/[0-9]/.test(event.key)) {
-								event.preventDefault();
-							}
-						}}/>
+				<input type='text' name='depthSelector' value={depthVal} readOnly/>
 
-				<button onClick={() => {depthVal > 1 ? setDepthVal(depthVal-1) : setDepthVal(depthVal)}}>
+				<button onClick={() => setDepthVal(v => Math.max(1, v - 1))}>
 					<Image src={inverted ? removeWhite : removeBlack} alt='Remove Icon'/>
 				</button>
 			</div>
