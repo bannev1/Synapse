@@ -138,8 +138,27 @@ input[type=text] {
 #searchOptions div:first-child::before {
   left: -10px;
 }
+#searchOptions #sourcesSelect {
+  position: relative;
+}
+#searchOptions #sourcesSelect div {
+  font-weight: 600;
+  transition: opacity 200ms ease-in-out;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+#searchOptions #sourcesSelect div:hover, #searchOptions #sourcesSelect div:focus {
+  cursor: pointer;
+  opacity: 0.7;
+}
 #searchOptions #sourcesSelect select {
   border: none;
+  position: absolute;
+  top: 100%;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
 }
 #searchOptions #depthSelect {
   gap: 2px;
@@ -151,6 +170,11 @@ input[type=text] {
   text-align: center;
   border: #867F74 solid 3px;
   border-radius: 5px;
+  background-color: transparent;
+  margin: 0;
+}
+#searchOptions #depthSelect input[type=text]:focus {
+  outline: none;
 }
 #searchOptions #depthSelect label {
   position: absolute;

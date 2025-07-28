@@ -172,8 +172,31 @@ input[type="text"] {
     }
 
     // Sources Selector
-    & #sourcesSelect select {
-        border: none;
+    & #sourcesSelect {
+        position: relative;
+
+        & div {
+            font-weight: 600;
+            transition: opacity 200ms ease-in-out;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            &:hover,
+            &:focus {
+                cursor: pointer;
+                opacity: .7;
+            }
+        }
+
+        & select {
+            border: none;
+            position: absolute;
+            top: 100%;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+        }
     }
 
     // Depth Selector
@@ -187,6 +210,12 @@ input[type="text"] {
             text-align: center;
             border: $grey solid 3px;
             border-radius: 5px;
+            background-color: transparent;
+            margin: 0;
+            
+            &:focus {
+                outline: none;
+            }
         }
 
         & label {
