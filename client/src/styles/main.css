@@ -143,10 +143,11 @@ input[type=text] {
   position: relative;
   width: -moz-fit-content;
   width: fit-content;
-  min-width: 180px;
+  min-width: 170px;
 }
 #searchOptions #sourcesSelect #sourcesDropdownTitle {
   font-weight: 600;
+  font-size: 14px;
   transition: opacity 200ms ease-in-out;
   display: flex;
   flex-direction: row;

@@ -176,11 +176,12 @@ input[type="text"] {
     & #sourcesSelect {
         position: relative;
         width: fit-content;
-        min-width: 180px;
+        min-width: 170px;
 
         // Dropdown option button
         & #sourcesDropdownTitle {
             font-weight: 600;
+            font-size: 14px;
             transition: opacity 200ms ease-in-out;
             display: flex;
             flex-direction: row;

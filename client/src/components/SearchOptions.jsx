@@ -27,7 +27,7 @@ function SearchOptions({
 
 	const allSources = useRef([
 		['https://www.wikipedia.com/', 'Wikipedia'],
-		["https://www.nytimes.com/", 'The New York Times'],
+		["https://www.nytimes.com/", 'New York Times'],
 		["https://www.youtube.com", 'YouTube'],
 		["https://www.bbc.com/", 'BBC News'],
 		["https://www.researchgate.net/", 'ResearchGate'],
