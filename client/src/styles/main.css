@@ -16,6 +16,7 @@ body {
   background-color: #FEEFDD;
   color: #201E1F;
   height: 100dvh;
+  min-height: 500px;
   width: 100dvw;
   position: relative;
 }
@@ -153,6 +154,9 @@ input[type=text] {
 #searchOptions #sourcesSelect #sourcesDropdownTitle img {
   transition: transform 250ms ease-in-out;
 }
+#searchOptions #sourcesSelect #sourcesDropdownTitle.active {
+  opacity: 0.7;
+}
 #searchOptions #sourcesSelect #sourcesDropdownTitle.active img {
   transform: rotate(180deg);
 }
@@ -178,6 +182,7 @@ input[type=text] {
   box-sizing: border-box;
   overflow-y: scroll;
   overflow-x: hidden;
+  box-shadow: 14px 10px 21px -6px rgba(0, 0, 0, 0.18);
 }
 #searchOptions #sourcesSelect #options .option {
   padding: 0 10px;
@@ -255,6 +260,7 @@ input[type=text] {
   border-radius: 5px;
   background-color: transparent;
   margin: 0;
+  color: #FEEFDD;
 }
 #searchOptions #depthSelect input[type=text]:focus {
   outline: none;
@@ -268,7 +274,7 @@ input[type=text] {
   top: -5px;
   width: -moz-fit-content;
   width: fit-content;
-  background-color: #FEEFDD;
+  background-color: #201E1F;
   padding: 0 1px;
   font-weight: 600;
 }
@@ -289,13 +295,25 @@ input[type=text] {
   height: 20px;
 }
 #searchOptions.inverted {
+  color: #201E1F;
+}
+#searchOptions.inverted #sourcesSelect #options {
+  background-color: #201E1F;
   color: #FEEFDD;
+  border: 5px #201E1F solid;
+}
+#searchOptions.inverted #sourcesSelect #options .option .active {
+  background-color: #FEEFDD;
+  color: #201E1F;
+}
+#searchOptions.inverted #sourcesSelect #options .option label::after {
+  background-color: #FEEFDD;
 }
 #searchOptions.inverted #depthSelect input[type=text] {
-  color: #FEEFDD;
+  color: #201E1F;
 }
 #searchOptions.inverted #depthSelect label {
-  background-color: #201E1F;
+  background-color: #FEEFDD;
 }
 
 .underline {

@@ -33,7 +33,7 @@ function Search() {
 
         <SearchBar inverted={tabsExist} placeholder="What's your next search?" height={25}/>
 
-        <SearchOptions onChangeOptions={setSearchOptions} inverted={!tabsExist}/>
+        <SearchOptions onChangeOptions={setSearchOptions} inverted={tabsExist}/>
       </div>
     </>
   )

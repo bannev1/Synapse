@@ -42,7 +42,7 @@ function SearchOptions({
 			<div id='sourcesSelect'>
 				<div id="sourcesDropdownTitle" className={showSources ? 'active' : ''} onClick={() => setShowSources(v => !v)}>
 					<p>{sourceOptions.length} Sources Selected</p>
-					<Image src={inverted ? dropdownWhite : dropdownBlack} alt="Dropdown Icon"/>
+					<Image src={inverted ? dropdownBlack : dropdownWhite} alt="Dropdown Icon"/>
 				</div>
 
 				{ showSources &&
@@ -71,14 +71,14 @@ function SearchOptions({
 
 			<div id='depthSelect'>
 				<button onClick={() => setDepthVal(v => Math.min(9, v + 1))}>
-					<Image src={inverted ? addWhite : addBlack} alt='Add Icon' />
+					<Image src={inverted ? addBlack : addWhite} alt='Add Icon' />
 				</button>
 
 				<label htmlFor='depthSelector'>Depth</label>
 				<input type='text' name='depthSelector' value={depthVal} readOnly/>
 
 				<button onClick={() => setDepthVal(v => Math.max(1, v - 1))}>
-					<Image src={inverted ? removeWhite : removeBlack} alt='Remove Icon'/>
+					<Image src={inverted ? removeBlack : removeWhite} alt='Remove Icon'/>
 				</button>
 			</div>
 		</div>
