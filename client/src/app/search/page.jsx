@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react'
 
 import SearchBar from '@/components/SearchBar'
 import TabBar from '@/components/TabBar';
-import '../../styles/search/styles.css'
+import '@/styles/search/styles.css'
 import { TabContext } from '@/components/TabContext';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import SearchOptions from '@/components/SearchOptions';

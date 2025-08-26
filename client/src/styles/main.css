@@ -13,7 +13,7 @@ body {
 }
 
 body {
-  background-color: #FEEFDD;
+  background-color: #201E1F;
   color: #201E1F;
   height: 100dvh;
   min-height: 500px;
@@ -33,11 +33,10 @@ input[type=text] {
   width: 100%;
   min-width: var(--search-minwidth);
   max-width: var(--search-maxwidth);
-  margin: 0 auto;
   border-radius: 50px;
   color: #201E1F;
   height: var(--search-height);
-  background-color: #FEEFDD;
+  background-color: #fffaf4;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -60,7 +59,7 @@ input[type=text] {
   color: #dbcebe;
 }
 #search.inverted button:hover, #search.inverted button:focus {
-  background-color: #FEEFDD;
+  background-color: #dbcebe;
 }
 #search input[type=text] {
   color: #201E1F;
@@ -104,6 +103,7 @@ input[type=text] {
 }
 
 #searchOptions {
+  --searchoptions-gap: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -112,7 +112,7 @@ input[type=text] {
   width: fit-content;
   height: 30px;
   position: relative;
-  gap: 20px;
+  gap: var(--searchoptions-gap);
 }
 #searchOptions > div {
   position: relative;
@@ -134,10 +134,10 @@ input[type=text] {
   bottom: 0;
 }
 #searchOptions > div::after {
-  right: -10px;
+  right: calc(-1 * var(--searchoptions-gap) / 2);
 }
 #searchOptions > div:first-child::before {
-  left: -10px;
+  left: calc(-1 * var(--searchoptions-gap) / 2);
 }
 #searchOptions #sourcesSelect {
   position: relative;
@@ -367,13 +367,13 @@ input[type=text] {
 #searchOptions.inverted #sourcesSelect #options .option label::after {
   background-color: #FEEFDD;
 }
-#searchOptions.inverted #sourcesSelect #options #useAll {
+#searchOptions.inverted #sourcesSelect #options .useAll {
   background-color: #201E1F;
 }
-#searchOptions.inverted #sourcesSelect #options #useAll p {
+#searchOptions.inverted #sourcesSelect #options .useAll p {
   color: #FEEFDD;
 }
-#searchOptions.inverted #sourcesSelect #options #useAll label::after {
+#searchOptions.inverted #sourcesSelect #options .useAll label::after {
   background-color: #201E1F;
 }
 #searchOptions.inverted #depthSelect input[type=text] {

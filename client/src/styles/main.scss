@@ -18,7 +18,7 @@ body {
 }
 
 body {
-    background-color: $background-color;
+    background-color: $black;
     color: $black;
     height: 100dvh;
     min-height: 500px;
@@ -48,11 +48,10 @@ input[type="text"] {
     width: 100%;
     min-width: var(--search-minwidth);
     max-width: var(--search-maxwidth);
-    margin: 0 auto;
     border-radius: 50px;
     color: $black;
     height: var(--search-height);
-    background-color: $background-color;
+    background-color: $white;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -77,7 +76,7 @@ input[type="text"] {
         & button {
             &:hover,
             &:focus {
-                background-color: $background-color;
+                background-color: $light-grey;
             }
         }
     }
@@ -133,6 +132,8 @@ input[type="text"] {
 
 // Search Options
 #searchOptions {
+    --searchoptions-gap: 20px;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -140,7 +141,7 @@ input[type="text"] {
     width: fit-content;
     height: 30px;
     position: relative;
-    gap: 20px;
+    gap: var(--searchoptions-gap);
 
     // Border
     &>div {
@@ -164,11 +165,11 @@ input[type="text"] {
         }
         
         &::after {
-            right: -10px;
+            right: calc(-1 * var(--searchoptions-gap)/2);
         }
 
         &:first-child::before {
-            left: -10px;
+            left: calc(-1 * var(--searchoptions-gap)/2);
         }
     }
 
@@ -443,7 +444,7 @@ input[type="text"] {
                 }
             }
 
-            & #useAll {
+            & .useAll {
                 background-color: $black;
 
                 & p {
