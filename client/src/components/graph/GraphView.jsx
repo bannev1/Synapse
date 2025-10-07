@@ -4,6 +4,13 @@ import { useState, useCallback } from 'react';
 import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
+import { GraphProvider } from '@/components/contexts/GraphContext'
+
+// Components
+import GraphToolbar from './GraphToolbar';
+import GraphOptions from './GraphOptions';
+
+
 function GraphView() {
 	const [nodes, setNodes] = useState(initialNodes);
  	const [edges, setEdges] = useState(initialEdges);
@@ -24,15 +31,22 @@ function GraphView() {
 
 	return (
 		<div id='graph'>
-			<ReactFlow
-				nodes={nodes}
-				edges={edges}
-				onNodesChange={onNodesChange}
-				onEdgesChange={onEdgesChange}
-				onConnect={onConnect}
-				fitView
-			/>
-			</div>
+			<GraphProvider>
+				<ReactFlow
+					nodes={nodes}
+					edges={edges}
+					onNodesChange={onNodesChange}
+					onEdgesChange={onEdgesChange}
+					onConnect={onConnect}
+					colorMode='light'
+					fitView
+					/>
+
+				<GraphToolbar/>
+
+				<GraphOptions/>
+			</GraphProvider>
+		</div>
 	)
 }
 

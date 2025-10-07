@@ -23,7 +23,7 @@ import fullscreenExitWhite from '/public/icons/fullscreenExitWhite.svg';
 import appsWhite from '/public/icons/appsWhite.svg';
 
 // Components
-import GraphToolbar from '@/components/graph/GraphToolbar';
+import GraphView from '@/components/graph/GraphView';
 
 
 function View() {
@@ -101,15 +101,7 @@ function View() {
 					</div> */}
 				</div>
 
-				<div id="graph">
-
-				</div>
-
-				<GraphToolbar/>
-
-				<div id="options">
-
-				</div>
+				<GraphView/>
 			</div>
 		</>
 	)
