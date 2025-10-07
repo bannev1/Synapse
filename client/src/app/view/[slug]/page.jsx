@@ -75,7 +75,7 @@ function View() {
 
 					<SearchOptions onChangeOptions={setSearchOptions} inverted={true}/>
 
-					<div id="listView">
+					{/* <div id="listView">
 						<div className={`labels ${showListView ? 'active' : ''}`} onClick={() => setShowListView(v => !v)}>
 							<div>
 								<Image className='downArrow' src={downRed} alt='Down Icon'/>
@@ -97,7 +97,7 @@ function View() {
 								}
 							</div>
 						}
-					</div>
+					</div> */}
 				</div>
 
 				<div id="graph">
