@@ -6,24 +6,25 @@ import Image from 'next/image';
 
 import '@/styles/view/styles.css'
 
-import { TabContext } from '@/components/TabContext';
+import { TabContext } from '@/components/contexts/TabContext';
 import TabBar from '@/components/TabBar';
 import SearchBar from '@/components/SearchBar';
 import SearchOptions from '@/components/SearchOptions';
 
+// Icons
 import refresh from '/public/icons/refresh.svg';
 import downRed from '/public/icons/downRed.svg';
 import filterRed from '/public/icons/filterRed.svg';
-import panWhite from '/public/icons/panWhite.svg';
-import panBlack from '/public/icons/panBlack.svg';
-import infoWhite from '/public/icons/infoWhite.svg';
-import infoBlack from '/public/icons/infoBlack.svg';
 import compareWhite from '/public/icons/compareWhite.svg';
 import zoomWhite from '/public/icons/zoomWhite.svg';
 import listFilterWhite from '/public/icons/listFilterWhite.svg';
 import fullscreenWhite from '/public/icons/fullscreenWhite.svg';
 import fullscreenExitWhite from '/public/icons/fullscreenExitWhite.svg';
 import appsWhite from '/public/icons/appsWhite.svg';
+
+// Components
+import GraphToolbar from '@/components/graph/GraphToolbar';
+
 
 function View() {
 	const params = useParams()
@@ -104,38 +105,7 @@ function View() {
 
 				</div>
 
-				<div id="miniTools">
-					<div>
-						<button className={handTool == 0 ? 'active' : ''}>
-							<Image src={handTool == 0 ? panBlack : panWhite} alt='Pan Icon'/>
-						</button>
-
-						<button className={handTool == 1 ? 'active' : ''}>
-							<Image src={handTool == 1 ? infoBlack : infoWhite} alt='Info Icon'/>
-						</button>
-					</div>
-
-					<div>
-						<button onClick={() => setShowComparePopup(v => !v)}>
-
-						</button>
-
-						{
-							showComparePopup &&
-							<div id='compare'>
-								
-							</div>
-						}
-					</div>
-
-					<div>
-
-					</div>
-
-					<div>
-
-					</div>
-				</div>
+				<GraphToolbar/>
 
 				<div id="options">
 

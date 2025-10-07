@@ -1,6 +1,6 @@
 import '../styles/main.css'
 
-import { TabProvider } from '@/components/TabContext'
+import { TabProvider } from '@/components/contexts/TabContext'
 
 
 export const metadata = {

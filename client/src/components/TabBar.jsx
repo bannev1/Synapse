@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { TabContext } from './TabContext'
+import { TabContext } from './contexts/TabContext'
 import Tab from './Tab'
 
 import addWhite from '/public/icons/addWhite.svg'

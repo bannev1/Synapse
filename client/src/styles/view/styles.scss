@@ -1,4 +1,4 @@
-@import '../variables';
+@use '../variables';
 
 // Main
 #home {
@@ -8,7 +8,13 @@
 	position: relative;
 }
 
-// Internal
+// INTERNAL
+
+// Graph
+#graph {
+	width: 100vw;
+	height: 100%;
+}
 
 // Toolbar
 #toolbar {
