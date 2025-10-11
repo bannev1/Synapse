@@ -9,22 +9,23 @@ import { GraphContext } from '@/components/contexts/GraphContext'
 import GraphToolbar from './GraphToolbar';
 import GraphOptions from './GraphOptions';
 
-// Icons
-import openInNewWhite from '/public/icons/openInNewWhite.svg';
-import openInNewBlack from '/public/icons/openInNewBlack.svg';
-
 
 function Graph() {
 	const {nodes, setNodes, links, setLinks} = useContext(GraphContext)
 	const graphRef = useRef();
 
 	// Set up Images
-	const [iconImage, setIconImage] = useState(null);
+	const [whiteOpenNewImg, setWhiteOpenNewImg] = useState(null);
+	const [blackOpenNewImg, setBlackOpenNewImg] = useState(null);
 	
 	useEffect(() => {
-		const img = new Image();
-		img.src = openInNewBlack;
-		img.onload = () => setIconImage(img);
+		const imgWhite = new Image();
+		imgWhite.src = '/icons/openInNewWhite.svg';
+		imgWhite.onload = () => setWhiteOpenNewImg(imgWhite);
+
+		const imgBlack = new Image();
+		imgBlack.src = '/icons/openInNewBlack.svg';
+		imgBlack.onload = () => setBlackOpenNewImg(imgBlack);
 	}, []);
 
 	return (
@@ -40,9 +41,9 @@ function Graph() {
 					// Set up node
 					const label = node.site;
 					const fontSize = 16;
-					const iconSize = 16;
+					const iconSize = 24;
 					const iconSpacing = 8;
-					const padding = fontSize * 0.75;
+					const padding = fontSize * 0.8;
 
 					ctx.font = `700 ${fontSize}px Montserrat, Sans-Serif`;
 					ctx.fontWeight = '700';
@@ -54,8 +55,6 @@ function Graph() {
 					const bckgDimensions = [bckgWidth, bckgHeight];
 					node.__bckgDimensions = bckgDimensions;
 
-
-					
 					ctx.fillStyle = node.color;
 					const borderRadius = 5;
 					ctx.beginPath();
@@ -71,17 +70,16 @@ function Graph() {
 					ctx.textAlign = 'center';
 					ctx.textBaseline = 'middle';
 					ctx.fillStyle = 'rgb(0, 0, 0)';
-					ctx.fillText(label, node.x - (fontSize + iconSpacing) / 2, node.y);
-
+					ctx.fillText(label, node.x - (fontSize + iconSpacing + iconSize/2) / 2, node.y);
 					
 					// Draw img once loaded
-					if (iconImage) {
+					if (blackOpenNewImg) {
 						const iconX = node.x + (bckgWidth / 2) - iconSize - padding/2;
 						const iconY = node.y - iconSize / 2;
 
-						ctx.drawImage(iconImage, iconX, iconY, iconSize, iconSize);
+						ctx.drawImage(blackOpenNewImg, iconX, iconY, iconSize, iconSize);
 
-						node.__iconPos = { x: iconX, y: iconY, width: iconSize, height: iconSize };
+						node.__iconArea = { x: iconX, y: iconY, width: iconSize, height: iconSize };
 					}
 				}}
 				nodePointerAreaPaint={(node, color, ctx) => {
@@ -90,21 +88,18 @@ function Graph() {
 					bckgDimensions && ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
 				}}
 				onNodeClick={(node, event) => {
-					const rect = graphRef.current.getBoundingClientRect()
-					const x = event.clientX - rect.left
-					const y = event.clientY - rect.top
+					const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY);
 					
-					if (node.__iconArea && 
-						x >= node.__iconArea.x && 
-						x <= node.__iconArea.x + node.__iconArea.width &&
-						y >= node.__iconArea.y && 
-						y <= node.__iconArea.y + node.__iconArea.height) {
-						console.log('Icon clicked for node:', node)
-						// Handle icon click
-					} else {
-						console.log('Node clicked:', node)
-						// Handle node click
+					if (node.__iconArea) {
+						const ia = node.__iconArea;
+						if (graphCoords.x >= ia.x && graphCoords.x <= ia.x + ia.width && 
+							graphCoords.y >= ia.y && graphCoords.y <= ia.y + ia.height) {
+							console.log('Icon clicked for node:', node);
+							return; 
+						}
 					}
+
+					console.log('Node clicked:', node);
 				}}
 			/>
 
