@@ -28,6 +28,10 @@ function Graph() {
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack);
 	}, []);
 
+	// Hover
+	const [hoveredNode, setHoveredNode] = useState(null);
+
+	// Return
 	return (
 		<div id='graph'>
 			<ForceGraph2D
@@ -37,11 +41,13 @@ function Graph() {
 					"links": links
 				}}
 				nodeAutoColorBy="group"
+				onNodeHover={node => setHoveredNode(node)}
 				nodeCanvasObject={(node, ctx, globalScale) => {
 					// Set up node
 					const label = node.site;
 					const fontSize = 16;
-					const iconSize = 24;
+					const baseIconSize = 24;
+					const iconSize = hoveredNode === node ? baseIconSize * 1.3 : baseIconSize;
 					const iconSpacing = 8;
 					const padding = fontSize * 0.8;
 
@@ -50,7 +56,7 @@ function Graph() {
 
 					const textWidth = ctx.measureText(label).width;
 					
-					const bckgWidth = textWidth + iconSize + padding * 2 + iconSpacing;
+					const bckgWidth = textWidth + baseIconSize + padding * 2 + iconSpacing;
 					const bckgHeight = fontSize + padding * 2;
 					const bckgDimensions = [bckgWidth, bckgHeight];
 					node.__bckgDimensions = bckgDimensions;
@@ -70,12 +76,12 @@ function Graph() {
 					ctx.textAlign = 'center';
 					ctx.textBaseline = 'middle';
 					ctx.fillStyle = 'rgb(0, 0, 0)';
-					ctx.fillText(label, node.x - (fontSize + iconSpacing + iconSize/2) / 2, node.y);
+					ctx.fillText(label, node.x - (fontSize + iconSpacing + baseIconSize/2) / 2, node.y);
 					
 					// Draw img once loaded
 					if (blackOpenNewImg) {
-						const iconX = node.x + (bckgWidth / 2) - iconSize - padding/2;
-						const iconY = node.y - iconSize / 2;
+						const iconX = node.x + (bckgWidth / 2) - (iconSize - (iconSize - baseIconSize)/2) - padding/2;
+						const iconY = node.y - bckgHeight / 2 + (bckgHeight - (iconSize - (iconSize - baseIconSize)/2)) / 2;
 
 						ctx.drawImage(blackOpenNewImg, iconX, iconY, iconSize, iconSize);
 
@@ -88,18 +94,27 @@ function Graph() {
 					bckgDimensions && ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
 				}}
 				onNodeClick={(node, event) => {
+					if (!blackOpenNewImg || !whiteOpenNewImg) {
+						return;
+					}
+
 					const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY);
-					
 					if (node.__iconArea) {
 						const ia = node.__iconArea;
 						if (graphCoords.x >= ia.x && graphCoords.x <= ia.x + ia.width && 
-							graphCoords.y >= ia.y && graphCoords.y <= ia.y + ia.height) {
-							console.log('Icon clicked for node:', node);
+							graphCoords.y >= -ia.y && graphCoords.y <= -ia.y + ia.height) {
+							event.preventDefault();
+							window.open(node.link, '_blank');
 							return; 
 						}
 					}
 
 					console.log('Node clicked:', node);
+				}}
+				onNodeDragEnd={node => {
+					node.fx = node.x;
+					node.fy = node.y;
+					node.fz = node.z;
 				}}
 			/>
 
