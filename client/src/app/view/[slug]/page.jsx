@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 import '@/styles/view/styles.css'
 
-import { TabContext } from '@/components/contexts/TabContext';
+import { TabContext, TabProvider } from '@/components/contexts/TabContext';
 import TabBar from '@/components/TabBar';
 import SearchBar from '@/components/SearchBar';
 import SearchOptions from '@/components/SearchOptions';
@@ -23,7 +23,8 @@ import fullscreenExitWhite from '/public/icons/fullscreenExitWhite.svg';
 import appsWhite from '/public/icons/appsWhite.svg';
 
 // Components
-import GraphView from '@/components/graph/GraphView';
+import Graph from '@/components/graph/Graph';
+import { GraphProvider } from '@/components/contexts/GraphContext';
 
 
 function View() {
@@ -64,45 +65,49 @@ function View() {
 
 	return (
 		<>
-			<TabBar isNewTab={true}/>
+			<TabProvider>
+				<TabBar isNewTab={true}/>
 
-			<div id="home">
-				<div id="toolbar">
-					<button id="refresh">
-						<Image src={refresh} alt='Refresh Icon'/>
-					</button>
+				<GraphProvider>
+					<div id="home">
+						<div id="toolbar">
+							<button id="refresh">
+								<Image src={refresh} alt='Refresh Icon'/>
+							</button>
 
-					<SearchBar inverted={true}/>
+							<SearchBar inverted={true}/>
 
-					<SearchOptions onChangeOptions={setSearchOptions} inverted={true}/>
+							<SearchOptions onChangeOptions={setSearchOptions} inverted={true}/>
 
-					{/* <div id="listView">
-						<div className={`labels ${showListView ? 'active' : ''}`} onClick={() => setShowListView(v => !v)}>
-							<div>
+							{/* <div id="listView">
+								<div className={`labels ${showListView ? 'active' : ''}`} onClick={() => setShowListView(v => !v)}>
+								<div>
 								<Image className='downArrow' src={downRed} alt='Down Icon'/>
 								<p>List View</p>
-							</div>
-
-							<button>
+								</div>
+								
+								<button>
 								<Image src={filterRed} alt='Filter Icon'/>
-							</button>
+								</button>
+								</div>
+								
+								{
+									showListView &&
+									<div id='listContainer'>
+									{
+										listView.forEach((listItem, idx) => {
+											<div key={idx} className='container'></div>
+											})
+											}
+											</div>
+											}
+											</div> */}
 						</div>
 
-						{
-							showListView &&
-							<div id='listContainer'>
-								{
-									listView.forEach((listItem, idx) => {
-										<div key={idx} className='container'></div>
-									})
-								}
-							</div>
-						}
-					</div> */}
-				</div>
-
-				<GraphView/>
-			</div>
+						<Graph/>
+					</div>
+				</GraphProvider>
+			</TabProvider>
 		</>
 	)
 }
