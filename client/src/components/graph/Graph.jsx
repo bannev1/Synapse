@@ -9,7 +9,6 @@ import { GraphContext } from '@/components/contexts/GraphContext'
 import GraphToolbar from './GraphToolbar';
 import GraphOptions from './GraphOptions';
 
-
 function Graph() {
 	const {nodes, setNodes, links, setLinks} = useContext(GraphContext)
 	const graphRef = useRef();
@@ -17,6 +16,11 @@ function Graph() {
 	// Set up Images
 	const [whiteOpenNewImg, setWhiteOpenNewImg] = useState(null);
 	const [blackOpenNewImg, setBlackOpenNewImg] = useState(null);
+	
+	// Hover state with animation
+	const [hoveredNode, setHoveredNode] = useState(null);
+	const [animatedIconSizes, setAnimatedIconSizes] = useState({});
+	const animationRef = useRef();
 	
 	useEffect(() => {
 		const imgWhite = new Image();
@@ -28,8 +32,46 @@ function Graph() {
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack);
 	}, []);
 
-	// Hover
-	const [hoveredNode, setHoveredNode] = useState(null);
+	// Animation loop for smooth transitions
+	useEffect(() => {
+		const animate = () => {
+			setAnimatedIconSizes(prev => {
+				const newSizes = { ...prev };
+				let hasChanges = false;
+
+				nodes.forEach(node => {
+					const nodeId = node.id;
+					const targetSize = hoveredNode === node ? 31.2 : 24; // 24 * 1.3
+					const currentSize = prev[nodeId] || 24;
+					
+					// Smooth interpolation with easing
+					if (Math.abs(currentSize - targetSize) > 0.1) {
+						const direction = currentSize < targetSize ? 1 : -1;
+						const distance = Math.abs(targetSize - currentSize);
+						const easing = Math.min(distance * 0.3, 2); // Ease-in-out effect
+						
+						newSizes[nodeId] = currentSize + (easing * direction);
+						hasChanges = true;
+					} else if (currentSize !== targetSize) {
+						newSizes[nodeId] = targetSize;
+						hasChanges = true;
+					}
+				});
+
+				return hasChanges ? newSizes : prev;
+			});
+			
+			animationRef.current = requestAnimationFrame(animate);
+		};
+
+		animationRef.current = requestAnimationFrame(animate);
+		
+		return () => {
+			if (animationRef.current) {
+				cancelAnimationFrame(animationRef.current);
+			}
+		};
+	}, [hoveredNode, nodes]);
 
 	// Return
 	return (
@@ -47,13 +89,11 @@ function Graph() {
 					const label = node.site;
 					const fontSize = 16;
 					const baseIconSize = 24;
-					const iconSize = hoveredNode === node ? baseIconSize * 1.3 : baseIconSize;
+					const iconSize = animatedIconSizes[node.id] || baseIconSize;
 					const iconSpacing = 8;
 					const padding = fontSize * 0.8;
 
 					ctx.font = `700 ${fontSize}px Montserrat, Sans-Serif`;
-					ctx.fontWeight = '700';
-
 					const textWidth = ctx.measureText(label).width;
 					
 					const bckgWidth = textWidth + baseIconSize + padding * 2 + iconSpacing;
@@ -61,6 +101,7 @@ function Graph() {
 					const bckgDimensions = [bckgWidth, bckgHeight];
 					node.__bckgDimensions = bckgDimensions;
 
+					// Draw background
 					ctx.fillStyle = node.color;
 					const borderRadius = 5;
 					ctx.beginPath();
@@ -70,9 +111,10 @@ function Graph() {
 						bckgDimensions[0],
 						bckgDimensions[1],
 						borderRadius
-						);
+					);
 					ctx.fill();
 					
+					// Draw text
 					ctx.textAlign = 'center';
 					ctx.textBaseline = 'middle';
 					ctx.fillStyle = 'rgb(0, 0, 0)';
@@ -80,8 +122,9 @@ function Graph() {
 					
 					// Draw img once loaded
 					if (blackOpenNewImg) {
+						// Center the icon properly regardless of current animated size
 						const iconX = node.x + (bckgWidth / 2) - (iconSize - (iconSize - baseIconSize)/2) - padding/2;
-						const iconY = node.y - bckgHeight / 2 + (bckgHeight - (iconSize - (iconSize - baseIconSize)/2)) / 2;
+						const iconY = node.y - iconSize / 2;
 
 						ctx.drawImage(blackOpenNewImg, iconX, iconY, iconSize, iconSize);
 
@@ -102,7 +145,7 @@ function Graph() {
 					if (node.__iconArea) {
 						const ia = node.__iconArea;
 						if (graphCoords.x >= ia.x && graphCoords.x <= ia.x + ia.width && 
-							graphCoords.y >= -ia.y && graphCoords.y <= -ia.y + ia.height) {
+							graphCoords.y >= ia.y && graphCoords.y <= ia.y + ia.height) {
 							event.preventDefault();
 							window.open(node.link, '_blank');
 							return; 
@@ -114,12 +157,10 @@ function Graph() {
 				onNodeDragEnd={node => {
 					node.fx = node.x;
 					node.fy = node.y;
-					node.fz = node.z;
 				}}
 			/>
 
 			<GraphToolbar/>
-
 			<GraphOptions/>
 		</div>
 	)
