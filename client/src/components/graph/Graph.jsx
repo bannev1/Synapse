@@ -18,8 +18,9 @@ function Graph() {
 	const [blackOpenNewImg, setBlackOpenNewImg] = useState(null);
 	
 	// Hover state with animation
-	const [hoveredNode, setHoveredNode] = useState(null);
+	const [hoveredNodeLink, setHoveredNodeLink] = useState(null);
 	const [animatedIconSizes, setAnimatedIconSizes] = useState({});
+	const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 	const animationRef = useRef();
 	
 	useEffect(() => {
@@ -32,6 +33,17 @@ function Graph() {
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack);
 	}, []);
 
+	// For mouse effect check
+	const isMouseOverIcon = (node) => {
+		if (!node?.__iconArea) return false;
+		
+		const ia = node.__iconArea;
+		return mousePos.x >= ia.x && 
+			   mousePos.x <= ia.x + ia.width && 
+			   mousePos.y >= ia.y && 
+			   mousePos.y <= ia.y + ia.height;
+	};
+
 	// Animation loop for smooth transitions
 	useEffect(() => {
 		const animate = () => {
@@ -41,7 +53,7 @@ function Graph() {
 
 				nodes.forEach(node => {
 					const nodeId = node.id;
-					const targetSize = hoveredNode === node ? 31.2 : 24; // 24 * 1.3
+					const targetSize = hoveredNodeLink === node ? 31.2 : 24; // 24 * 1.3
 					const currentSize = prev[nodeId] || 24;
 					
 					// Smooth interpolation with easing
@@ -71,7 +83,7 @@ function Graph() {
 				cancelAnimationFrame(animationRef.current);
 			}
 		};
-	}, [hoveredNode, nodes]);
+	}, [hoveredNodeLink, nodes]);
 
 	// Return
 	return (
@@ -83,7 +95,15 @@ function Graph() {
 					"links": links
 				}}
 				nodeAutoColorBy="group"
-				onNodeHover={node => setHoveredNode(node)}
+				onNodeHover={(node, event) => {
+					if (event) {
+						const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY);
+						setMousePos(graphCoords);
+					}
+					
+					// Only set as hovered node if mouse is over the icon area
+					setHoveredNodeLink(node && isMouseOverIcon(node) ? node : null);
+				}}
 				nodeCanvasObject={(node, ctx, globalScale) => {
 					// Set up node
 					const label = node.site;
