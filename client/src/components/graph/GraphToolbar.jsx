@@ -19,7 +19,7 @@ import fullscreenWhite from '/public/icons/fullscreenWhite.svg'
 
 
 function GraphToolbar({handleFullScreen}) {
-	const {handTool, setHandTool, makeFullScreen} = useContext(GraphContext);
+	const {handTool, setHandTool} = useContext(GraphContext);
 	const [showComparePopup, setShowComparePopup] = useState(false);
 
 

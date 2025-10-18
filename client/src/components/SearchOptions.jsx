@@ -18,6 +18,7 @@ function SearchOptions({
 	const [sourceOptions, setSourceOptions] = useState([])
 	const [showSources, setShowSources] = useState(false)
 	const [useAllSource, setUseAllSource] = useState(true)
+	const [showGraphTypes, setShowGraphTypes] = useState(false)
 	const [graphType, setGraphType] = useState(0) // either 0 for topical, 1 for medium, and 2 for location
 
 
@@ -44,8 +45,15 @@ function SearchOptions({
 		["https://www.britannica.com/", 'Britannica'],
 	]).current
 
+	const graphTypes = {
+		'Topical': 0,
+		'Medium': 1,
+		'Locational': 2
+	}
+
 	return (
 		<div id="searchOptions" className={inverted ? 'inverted' : ''}>
+			{/* Sources Selector */}
 			<div id='sourcesSelect'>
 				<div id="sourcesDropdownTitle" className={showSources ? 'active' : ''} onClick={() => setShowSources(v => !v)}>
 					{
@@ -56,6 +64,7 @@ function SearchOptions({
 					<Image src={inverted ? dropdownBlack : dropdownWhite} alt="Dropdown Icon"/>
 				</div>
 
+				{/* Sources Dropdown */}
 				{ showSources &&
 					<div id="options">
 						{
@@ -85,6 +94,7 @@ function SearchOptions({
 				}
 			</div>
 
+			{/* Depth Selector */}
 			<div id='depthSelect'>
 				<button onClick={() => setDepthVal(v => Math.min(9, v + 1))}>
 					<Image src={inverted ? addBlack : addWhite} alt='Add Icon' />
@@ -97,6 +107,29 @@ function SearchOptions({
 					<Image src={inverted ? removeBlack : removeWhite} alt='Remove Icon'/>
 				</button>
 			</div>
+
+			{/* Graph Type Selector */}
+			<div id='graphType'>
+				<button className={showGraphTypes ? 'active' : ''} onClick={() => {setShowGraphTypes(v => !v)}}>
+
+				</button>
+			</div>
+
+			{/* Graph Type Dropdown */}
+			{ showGraphTypes &&
+				<div id='graphTypes'>
+					{
+						Object.keys(graphTypes).forEach((type, index) => {
+							return <div key={index} className={`type ${graphType == index ? 'active' : ''}`} onClick={() => {
+										setGraphType(index)
+										setShowGraphTypes(false)
+									}}>
+										{type}
+									</div>
+						})
+					}
+				</div>
+			}
 		</div>
   )
 }
