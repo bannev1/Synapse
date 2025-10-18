@@ -23,8 +23,8 @@ import fullscreenExitWhite from '/public/icons/fullscreenExitWhite.svg';
 import appsWhite from '/public/icons/appsWhite.svg';
 
 // Components
-import Graph from '@/components/graph/Graph';
 import { GraphProvider } from '@/components/contexts/GraphContext';
+import Graph from '@/components/graph/Graph';
 
 
 function View() {
@@ -68,7 +68,11 @@ function View() {
 			<TabProvider>
 				<TabBar isNewTab={true}/>
 
-				<GraphProvider>
+				<GraphProvider allNodes={[{
+					'id': 'id1',
+					'site': 'NY Times',
+					'url': 'https://nytimes.com'
+				}]} allLinks={[]}>
 					<div id="home">
 						<div id="toolbar">
 							<button id="refresh">

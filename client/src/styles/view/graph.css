@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+#miniTools {
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #201E1F;
+  padding: 15px;
+  margin: 0 auto;
+  border-radius: 25px 25px 0px 0px;
+}
+#miniTools .sideStyle {
+  --sideStyle-width: 18px;
+  --sideStyle-height: 20px;
+  position: absolute;
+  width: 100%;
+  height: var(--sideStyle-height);
+  bottom: 0;
+}
+#miniTools .sideStyle div {
+  position: absolute;
+  width: var(--sideStyle-width);
+  height: var(--sideStyle-height);
+  padding: 0;
+  bottom: 0;
+  display: block;
+}
+#miniTools .sideStyle div::before {
+  content: "";
+  position: absolute;
+  width: var(--sideStyle-width);
+  height: var(--sideStyle-height);
+  display: block;
+  background-color: #201E1F;
+}
+#miniTools .sideStyle div::after {
+  content: "";
+  position: absolute;
+  width: var(--sideStyle-width);
+  height: var(--sideStyle-height);
+  display: block;
+  background-color: #FEEFDD;
+}
+#miniTools .sideStyle div.left {
+  left: calc(var(--sideStyle-width) * -1);
+}
+#miniTools .sideStyle div.left::after {
+  border-bottom-right-radius: 100%;
+}
+#miniTools .sideStyle div.right {
+  right: calc(var(--sideStyle-width) * -1);
+}
+#miniTools .sideStyle div.right::after {
+  border-bottom-left-radius: 100%;
+}
+#miniTools div {
+  position: relative;
+}
+#miniTools button {
+  background-color: #201E1F;
+  border: none;
+  padding: 5px;
+  border-radius: 50%;
+  opacity: 1;
+  transition: opacity 250ms ease-in-out;
+}
+#miniTools button:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+#miniTools button.active {
+  background-color: #FEEFDD;
+}/*# sourceMappingURL=graph.css.map */

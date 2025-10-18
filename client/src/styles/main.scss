@@ -1,4 +1,4 @@
-@use './variables';
+@use './variables' as v;
 
 // ----------------
 // --- DEFAULTS ---
@@ -18,8 +18,8 @@ body {
 }
 
 body {
-    background-color: $black;
-    color: $black;
+    background-color: v.$black;
+    color: v.$black;
     height: 100dvh;
     min-height: 500px;
     width: 100dvw;
@@ -49,45 +49,45 @@ input[type="text"] {
     min-width: var(--search-minwidth);
     max-width: var(--search-maxwidth);
     border-radius: 50px;
-    color: $black;
+    color: v.$black;
     height: var(--search-height);
-    background-color: $white;
+    background-color: v.$white;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
     gap: 5px;
     position: relative;
-    box-shadow: $basic-shadow;
+    box-shadow: v.$basic-shadow;
 
     // Inverted
     &.inverted {
-        color: $background-color;
-        background-color: $black;
+        color: v.$background-color;
+        background-color: v.$black;
 
         & input[type="text"] {
-            color: $background-color;
+            color: v.$background-color;
 
             &::placeholder {
-                color: $light-grey;
+                color: v.$light-grey;
             }
         }
 
         & button {
             &:hover,
             &:focus {
-                background-color: $light-grey;
+                background-color: v.$light-grey;
             }
         }
     }
 
     // Textbox
     & input[type="text"] {
-        color: $black;
+        color: v.$black;
         width: calc(100% - (var(--search-height) + 37px));
 
         &::placeholder {
-            color: $grey;
+            color: v.$grey;
             font-style: italic;
         }
     }
@@ -99,7 +99,7 @@ input[type="text"] {
 
     // Button
     & button {
-        background-color: $red;
+        background-color: v.$red;
         border-radius: 100%;
         border: none;
         aspect-ratio: 1;
@@ -109,7 +109,7 @@ input[type="text"] {
         position: absolute;
         display: flex;
         justify-content: center;
-        box-shadow: $basic-shadow;
+        box-shadow: v.$basic-shadow;
         transition: background-color 200ms ease-in-out;
 
         // Image
@@ -124,7 +124,7 @@ input[type="text"] {
         // Hover
         &:hover,
         &:focus {
-            background-color: $black;
+            background-color: v.$black;
             cursor: pointer;
         }
     }
@@ -158,7 +158,7 @@ input[type="text"] {
             position: absolute;
             height: 100%;
             width: 2px;
-            background-color: $grey;
+            background-color: v.$grey;
             opacity: .5;
             top: 0;
             bottom: 0;
@@ -217,10 +217,10 @@ input[type="text"] {
             margin: 0 auto;
             left: 0;
             right: 0;
-            background-color: $background-color;
-            color: $black;
+            background-color: v.$background-color;
+            color: v.$black;
             border-radius: 10px;
-            border: 5px $background-color solid;
+            border: 5px v.$background-color solid;
             display: flex;
             flex-direction: column;
             gap: 5px;
@@ -228,7 +228,7 @@ input[type="text"] {
             box-sizing: border-box;
             overflow-y: scroll;
             overflow-x: hidden;
-            box-shadow: $basic-shadow;
+            box-shadow: v.$basic-shadow;
 
             // Dropdown option
             & .option {
@@ -246,8 +246,8 @@ input[type="text"] {
                             color 200ms ease-in-out;
 
                 &.active {
-                    background-color: $black;
-                    color: $background-color;
+                    background-color: v.$black;
+                    color: v.$background-color;
                 }
 
                 // Checkbox
@@ -265,7 +265,7 @@ input[type="text"] {
                         content: "";
                         position: absolute;
                         border-style: none none solid solid;
-                        background-color: $black;
+                        background-color: v.$black;
                         height: 4px;
                         transform: rotate(-45deg);
                         width: 10px;
@@ -289,7 +289,7 @@ input[type="text"] {
                 &:not(:first-child)::after {
                     content: '';
                     position: absolute;
-                    background-color: $grey;
+                    background-color: v.$grey;
                     height: 1px;
                     width: calc(100% - 10px);
                     top: -2.5px;
@@ -300,8 +300,8 @@ input[type="text"] {
 
                 &:hover {
                     cursor: pointer;
-                    background-color: $black;
-                    color: $background-color;
+                    background-color: v.$black;
+                    color: v.$background-color;
                     opacity: .3;
                 }
             }
@@ -314,7 +314,7 @@ input[type="text"] {
                 right: 0;
                 bottom: 0;
                 width: inherit;
-                background-color: $background-color;
+                background-color: v.$background-color;
                 display: flex;
                 flex-direction: row;
                 gap: 10px;
@@ -338,7 +338,7 @@ input[type="text"] {
                         content: "";
                         position: absolute;
                         border-style: none none solid solid;
-                        background-color: $background-color;
+                        background-color: v.$background-color;
                         height: 4px;
                         transform: rotate(-45deg);
                         width: 10px;
@@ -356,7 +356,7 @@ input[type="text"] {
                 & p {
                     font-size: 12px;
                     font-weight: 600;
-                    color: $black;
+                    color: v.$black;
                     width: fit-content;
                 }
 
@@ -378,11 +378,11 @@ input[type="text"] {
             font-weight: 700;
             font-size: 20px;
             text-align: center;
-            border: $grey solid 3px;
+            border: v.$grey solid 3px;
             border-radius: 5px;
             background-color: transparent;
             margin: 0;
-            color: $background-color;
+            color: v.$background-color;
             
             &:focus {
                 outline: none;
@@ -397,7 +397,7 @@ input[type="text"] {
             right: 0;
             top: -5px;
             width: fit-content;
-            background-color: $black;
+            background-color: v.$black;
             padding: 0 1px;
             font-weight: 600;
         }
@@ -425,34 +425,34 @@ input[type="text"] {
 
     // Inverted
     &.inverted {
-        color: $black;
+        color: v.$black;
 
         // Sources selector
         & #sourcesSelect #options {
-            background-color: $black;
-            color: $background-color;
-            border: 5px $black solid;
+            background-color: v.$black;
+            color: v.$background-color;
+            border: 5px v.$black solid;
 
             & .option {
                 &.active {
-                    background-color: $background-color;
-                    color: $black;
+                    background-color: v.$background-color;
+                    color: v.$black;
                 }
 
                 & label::after {
-                    background-color: $background-color;
+                    background-color: v.$background-color;
                 }
             }
 
             & .useAll {
-                background-color: $black;
+                background-color: v.$black;
 
                 & p {
-                    color: $background-color;
+                    color: v.$background-color;
                 }
 
                 & label::after {
-                    background-color: $black;
+                    background-color: v.$black;
                 }
             }
         }
@@ -460,11 +460,11 @@ input[type="text"] {
         // Depth selector
         & #depthSelect {
             & input[type='text'] {
-                color: $black;
+                color: v.$black;
             }
 
             & label {
-                background-color: $background-color;
+                background-color: v.$background-color;
             }
         }
     }
@@ -474,14 +474,14 @@ input[type="text"] {
 .underline {
     width: fit-content;
     position: relative;
-    color: $black;
+    color: v.$black;
     transform: translate3d(0px, 0px, 0px);
-    text-shadow: 2px 2px 0 $background-color, 2px -2px 0 $background-color, -2px 2px 0 $background-color, -2px -2px 0 $background-color, 2px 0px 0 $background-color, 0px 2px 0 $background-color, -2px 0px 0 $background-color, 0px -2px 0 $background-color;
+    text-shadow: 2px 2px 0 v.$background-color, 2px -2px 0 v.$background-color, -2px 2px 0 v.$background-color, -2px -2px 0 v.$background-color, 2px 0px 0 v.$background-color, 0px 2px 0 v.$background-color, -2px 0px 0 v.$background-color, 0px -2px 0 v.$background-color;
 
     // White text
     &.inverted {
-        color: $background-color;
-        text-shadow: 2px 2px 0 $black, 2px -2px 0 $black, -2px 2px 0 $black, -2px -2px 0 $black, 2px 0px 0 $black, 0px 2px 0 $black, -2px 0px 0 $black, 0px -2px 0 $black;
+        color: v.$background-color;
+        text-shadow: 2px 2px 0 v.$black, 2px -2px 0 v.$black, -2px 2px 0 v.$black, -2px -2px 0 v.$black, 2px 0px 0 v.$black, 0px 2px 0 v.$black, -2px 0px 0 v.$black, 0px -2px 0 v.$black;
     }
 
     // Underline
@@ -499,12 +499,12 @@ input[type="text"] {
 
     // Blue underline
     &.blue::before {
-        background-color: $blue;
+        background-color: v.$blue;
     }
 
     // Red underline
     &.red::before {
-        background-color: $red;
+        background-color: v.$red;
     }
 }
 
@@ -539,8 +539,8 @@ input[type="text"] {
         overflow-x: scroll;
     
         & .tab {
-            background-color: $background-color;
-            color: $black;
+            background-color: v.$background-color;
+            color: v.$black;
             height: 40px;
             width: 150px;
             border-top-left-radius: 15px;
@@ -601,7 +601,7 @@ input[type="text"] {
             & div::before,
             & div::after {
                 content: '';
-                background-color: $background-color;
+                background-color: v.$background-color;
                 width: 10px;
                 height: 10px;
                 position: absolute;
@@ -628,7 +628,7 @@ input[type="text"] {
                     width: 20px;
                     height: 20px;
                     border-radius: 10px;
-                    background-color: $black;
+                    background-color: v.$black;
                     z-index: 2;
                 }
     
@@ -674,23 +674,23 @@ input[type="text"] {
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    background-color: $black;
-    color: $background-color;
+    background-color: v.$black;
+    color: v.$background-color;
     align-items: center;
     height: fit-content;
     padding: 0px;
     gap: 0px;
 
     &.inverted {
-        background-color: $background-color;
-        color: $black;
+        background-color: v.$background-color;
+        color: v.$black;
 
         // suggestions
         & li button {
             &:hover,
             &:focus {
-                background-color: $black;
-                color: $background-color;
+                background-color: v.$black;
+                color: v.$background-color;
             }
         }
     }
@@ -714,8 +714,8 @@ input[type="text"] {
 
             &:hover,
             &:focus {
-                background-color: $background-color;
-                color: $black;
+                background-color: v.$background-color;
+                color: v.$black;
             }
         }
 
@@ -724,7 +724,7 @@ input[type="text"] {
             content: '';
             position: absolute;
             height: 1px;
-            background-color: $grey;
+            background-color: v.$grey;
             width: calc(100% - 10px);
             bottom: 0;
             left: 0;
@@ -742,7 +742,7 @@ input[type="text"] {
     width: 100dvw;
     height: 100dvh;
     overflow: hidden;
-    background-color: $black;
+    background-color: v.$black;
     opacity: .8;
     margin: 0;
     padding: 0;
@@ -760,8 +760,8 @@ input[type="text"] {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: $black;
-    color: $background-color;
+    background-color: v.$black;
+    color: v.$background-color;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -772,11 +772,11 @@ input[type="text"] {
     height: fit-content;
     gap: 10px;
     border-radius: 20px;
-    box-shadow: $basic-shadow;
+    box-shadow: v.$basic-shadow;
     
     &.inverted {
-        background-color: $background-color;
-        color: $black;
+        background-color: v.$background-color;
+        color: v.$black;
     }
 
     & h1 {
@@ -786,7 +786,7 @@ input[type="text"] {
     & .divider {
         height: 1.5px;
         width: 100%;
-        background-color: $grey;
+        background-color: v.$grey;
         opacity: .7;
     }
 
@@ -814,13 +814,13 @@ input[type="text"] {
             }
 
             &.no {
-                background-color: $black;
-                color: $background-color;
+                background-color: v.$black;
+                color: v.$background-color;
             }
             
             &.yes {
-                background-color: $background-color;
-                color: $black;
+                background-color: v.$background-color;
+                color: v.$black;
             }
         }
     }

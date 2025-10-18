@@ -3,6 +3,8 @@
 import React, { useContext, useRef, useState, useEffect } from 'react'
 import ForceGraph from 'react-force-graph-2d';
 
+import '@/styles/view/graph.css'
+
 import { GraphContext } from '@/components/contexts/GraphContext'
 
 // Components
@@ -112,10 +114,10 @@ function Graph() {
 				nodeCanvasObject={(node, ctx) => {
 					// Set up node
 					const label = node.site;
-					const fontSize = 16;
-					const baseIconSize = 24;
+					const fontSize = 8;
+					const baseIconSize = 12;
 					const iconSize = animatedIconSizes[node.id] || baseIconSize;
-					const iconSpacing = 8;
+					const iconSpacing = 4;
 					const padding = fontSize * 0.8;
 
 					ctx.font = `700 ${fontSize}px Montserrat, Sans-Serif`;
@@ -135,7 +137,7 @@ function Graph() {
 					
 					// Draw background with shadow
 					ctx.fillStyle = node.color;
-					const borderRadius = 5;
+					const borderRadius = 4;
 					ctx.beginPath();
 					ctx.roundRect(
 						node.x - bckgDimensions[0] / 2,
@@ -188,12 +190,9 @@ function Graph() {
 
 					console.log('Node clicked:', node);
 				}}
-				// onNodeDragEnd={node => {
-				// 	node.fx = node.x;
-				// 	node.fy = node.y;
-				// }}
-				onEngineStop={() => {
-					graphRef.current.zoomToFit(50, 50)
+				onNodeDragEnd={node => {
+					node.fx = node.x;
+					node.fy = node.y;
 				}}
 			/>
 

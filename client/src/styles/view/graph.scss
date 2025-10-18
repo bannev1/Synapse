@@ -1,0 +1,103 @@
+@use '../variables' as v;
+
+// TOOLBAR
+
+#miniTools {
+	width: fit-content;
+	height: 25px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: v.$black;
+	padding: 15px;
+	margin: 0 auto;
+	border-radius: 25px 25px 0px 0px;
+
+	// Side styling
+	& .sideStyle {
+		--sideStyle-width: 18px;
+		--sideStyle-height: 20px;
+
+		position: absolute;
+		width: 100%;
+		height: var(--sideStyle-height);
+		bottom: 0;
+
+
+		// Side parts
+		& div {
+			position: absolute;
+			width: var(--sideStyle-width);
+			height: var(--sideStyle-height);
+			padding: 0;
+			bottom: 0;
+			display: block;
+
+
+			&::before {
+				content: '';
+				position: absolute;
+				width: var(--sideStyle-width);
+				height: var(--sideStyle-height);
+				display: block;
+				background-color: v.$black;
+			}
+
+			&::after {
+				content: '';
+				position: absolute;
+				width: var(--sideStyle-width);
+				height: var(--sideStyle-height);
+				display: block;
+				background-color: v.$background-color;
+			}
+		
+			
+			&.left {
+				left: calc(var(--sideStyle-width) * -1);
+
+				&::after {
+					border-bottom-right-radius: 100%;
+				}
+			}
+			
+			&.right {
+				right: calc(var(--sideStyle-width) * -1);
+				
+				&::after {
+					border-bottom-left-radius: 100%;
+				}
+			}
+		}
+	}
+
+
+	// INNER COMPONENTS
+	& div {
+		position: relative;
+	}
+	
+	// Hand & icon buttons
+	& button {
+		background-color: v.$black;
+		border: none;
+		padding: 5px;
+		border-radius: 50%;
+		opacity: 1;
+		transition: opacity 250ms ease-in-out;
+
+		&:hover {
+			opacity: .7;
+			cursor: pointer;
+		}
+
+		&.active {
+			background-color: v.$background-color;
+		}
+	}
+}

@@ -4,14 +4,17 @@
 #home {
 	height: 100%;
 	width: 100%;
-	background-color: $background-color;
+	background-color: v.$background-color;
 	position: relative;
+	box-sizing: border-box;
+	overflow-y: hidden;
 }
 
 // INTERNAL
 
 // Graph
 #graph {
+	position: relative;
 	width: 100vw;
 	height: 100%;
 }
@@ -24,8 +27,8 @@
 	top: 0;
 	left: 0;
 	right: 0;
-	background-color: $background-color;
-	box-shadow: $basic-shadow;
+	background-color: v.$background-color;
+	box-shadow: v.$basic-shadow;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: row;
@@ -97,7 +100,7 @@
 				bottom: 5px;
 				width: 100%;
 				height: 2px;
-				background-color: $red;
+				background-color: v.$red;
 				transition: opacity 200ms ease-in-out;
 				opacity: inherit;
 			}
@@ -159,8 +162,8 @@
 			height: fit-content;
 			padding: 5px;
 			border-bottom-left-radius: 20px;
-			box-shadow: $basic-shadow;
-			background-color: $background-color;
+			box-shadow: v.$basic-shadow;
+			background-color: v.$background-color;
 			overflow-y: scroll;
 		}
 	}
