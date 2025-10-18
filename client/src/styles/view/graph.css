@@ -2,7 +2,7 @@
 #miniTools {
   width: -moz-fit-content;
   width: fit-content;
-  height: 25px;
+  height: 24px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -12,7 +12,7 @@
   left: 0;
   right: 0;
   background-color: #201E1F;
-  gap: 10px;
+  gap: 16px;
   padding: 15px;
   margin: 0 auto;
   border-radius: 25px 25px 0px 0px;
@@ -48,7 +48,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 5px;
+  gap: 7px;
   position: relative;
 }
 #miniTools > div:not(:first-child):not(:last-child)::after {
@@ -56,7 +56,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  right: -5px;
+  right: -8px;
   width: 2px;
   height: 35px;
   border-radius: 100%;
@@ -67,6 +67,12 @@
 #miniTools > div:not(:first-child) > button {
   background-color: #201E1F;
   border: none;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  aspect-ratio: 1/1;
+  margin: auto;
   padding: 5px;
   border-radius: 50%;
   opacity: 1;
@@ -78,6 +84,9 @@
 }
 #miniTools > div:not(:first-child) > button.active {
   background-color: #FEEFDD;
+}
+#miniTools > div:not(:first-child).noActive button {
+  padding: 0px;
 }
 
 #graph {

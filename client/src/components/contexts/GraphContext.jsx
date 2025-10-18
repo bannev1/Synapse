@@ -9,8 +9,9 @@ export const GraphProvider = ({ allNodes, allLinks, children }) => {
 	const [handTool, setHandTool] = useState(0);
 	const [nodes, setNodes] = useState(allNodes);
 	const [links, setLinks] = useState(allLinks);
+	const [makeFullScreen, setMakeFullScreen] = useState(() => {});
 
 	return (
-		<GraphContext.Provider value={{ handTool, setHandTool, nodes, setNodes, links, setLinks }}>{children}</GraphContext.Provider>
+		<GraphContext.Provider value={{ handTool, setHandTool, nodes, setNodes, links, setLinks, makeFullScreen, setMakeFullScreen }}>{children}</GraphContext.Provider>
 	)
 }

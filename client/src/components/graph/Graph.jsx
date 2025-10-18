@@ -12,7 +12,7 @@ import GraphToolbar from './GraphToolbar';
 import GraphOptions from './GraphOptions';
 
 function Graph() {
-	const {nodes, setNodes, links, setLinks} = useContext(GraphContext);
+	const {nodes, setNodes, links, setLinks, setMakeFullScreen} = useContext(GraphContext);
 	const graphRef = useRef(null);
 
 	// Set up Images
@@ -92,6 +92,13 @@ function Graph() {
 		};
 	}, [hoveredNodeLink, nodes]);
 
+
+	// Full screen ability
+	setMakeFullScreen(() => {
+		
+	})
+
+
 	// Return
 	return (
 		<div id='graph'>
@@ -101,6 +108,7 @@ function Graph() {
 					"nodes": nodes,
 					"links": links
 				}}
+				enableNodeDrag={false}
 				nodeAutoColorBy="group"
 				onNodeHover={(node, event) => {
 					if (event) {
@@ -189,10 +197,6 @@ function Graph() {
 					}
 
 					console.log('Node clicked:', node);
-				}}
-				onNodeDragEnd={node => {
-					node.fx = node.x;
-					node.fy = node.y;
 				}}
 			/>
 

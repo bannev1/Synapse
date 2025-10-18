@@ -18,14 +18,17 @@ function SearchOptions({
 	const [sourceOptions, setSourceOptions] = useState([])
 	const [showSources, setShowSources] = useState(false)
 	const [useAllSource, setUseAllSource] = useState(true)
+	const [graphType, setGraphType] = useState(0) // either 0 for topical, 1 for medium, and 2 for location
+
 
 	useEffect(() => {
 		onChangeOptions({
 			'depth': depthVal,
 			'sources': sourceOptions,
-			'useAll': useAllSource
+			'useAll': useAllSource,
+			'graphType': graphType
 		})
-	}, [depthVal, sourceOptions, useAllSource])
+	}, [depthVal, sourceOptions, useAllSource, graphType])
 
 	const allSources = useRef([
 		['https://www.wikipedia.com/', 'Wikipedia'],

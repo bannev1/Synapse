@@ -1,7 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Image from 'next/image'
+
+import { GraphContext } from '../contexts/GraphContext';
 
 // Components
 import SearchComparison from './components/SearchComparison';
@@ -13,12 +15,12 @@ import panBlack from '/public/icons/panBlack.svg';
 import panWhite from '/public/icons/panWhite.svg';
 import compareWhite from '/public/icons/compareWhite.svg';
 import compareBlack from '/public/icons/compareBlack.svg';
+import fullscreenWhite from '/public/icons/fullscreenWhite.svg'
 
 
 function GraphToolbar({}) {
-	// Tools
-	const [handTool, setHandTool] = useState(0) // 0 is pan, 1 is info
-	const [showComparePopup, setShowComparePopup] = useState(false)
+	const {handTool, setHandTool, makeFullScreen} = useContext(GraphContext);
+	const [showComparePopup, setShowComparePopup] = useState(false);
 
 
 	return (
@@ -43,7 +45,7 @@ function GraphToolbar({}) {
 			{/* Comparison button w/ popup */}
 			<div>
 				<button className={showComparePopup ? 'active' : ''} onClick={() => setShowComparePopup(v => !v)}>
-					<Image src={showComparePopup ? compareBlack : compareWhite}/>
+					<Image src={showComparePopup ? compareBlack : compareWhite} alt='Compare Icon'/>
 				</button>
 
 				{
@@ -52,12 +54,11 @@ function GraphToolbar({}) {
 				}
 			</div>
 
-			<div>
-
-			</div>
-
-			<div>
-
+			{/* Full-Screen */}
+			<div className='noActive'>
+				<button onClick={() => makeFullScreen()}>
+					<Image src={fullscreenWhite} alt='Fullscreen Icon'/>
+				</button>
 			</div>
 		</div>
 	)
