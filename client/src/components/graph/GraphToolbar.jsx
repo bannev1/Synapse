@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { GraphContext } from '../contexts/GraphContext';
 
 // Components
-import SearchComparison from './components/SearchComparison';
+import SearchComparison from '../modals/graphFunctions/SearchComparison';
 
 // Icons
 import infoBlack from '/public/icons/infoBlack.svg';
