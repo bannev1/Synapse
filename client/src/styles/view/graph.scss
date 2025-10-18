@@ -14,6 +14,7 @@
 	left: 0;
 	right: 0;
 	background-color: v.$black;
+	gap: 10px;
 	padding: 15px;
 	margin: 0 auto;
 	border-radius: 25px 25px 0px 0px;
@@ -36,7 +37,10 @@
 			height: var(--sideStyle-height);
 			padding: 0;
 			bottom: 0;
-			display: block;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			gap: 5px;
 
 
 			&::before {
@@ -78,26 +82,52 @@
 
 
 	// INNER COMPONENTS
-	& div {
-		position: relative;
-	}
+	& > div {
+		// Divider/line
+		&:not(:last-child):not(:first-child) {
+			position: relative;
+
+
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				right: -5px;
+				width: 1.5px;
+				height: 35px;
+				border-radius: 100%;
+				margin: auto 0;
+				background-color: v.$grey;
+			}
+		}
+
+
+		// Hand & icon buttons
+		& > button {
+			background-color: v.$black;
+			border: none;
+			padding: 5px;
+			border-radius: 50%;
+			opacity: 1;
+			transition: opacity 250ms ease-in-out;
 	
-	// Hand & icon buttons
-	& button {
-		background-color: v.$black;
-		border: none;
-		padding: 5px;
-		border-radius: 50%;
-		opacity: 1;
-		transition: opacity 250ms ease-in-out;
-
-		&:hover {
-			opacity: .7;
-			cursor: pointer;
-		}
-
-		&.active {
-			background-color: v.$background-color;
+			&:hover {
+				opacity: .7;
+				cursor: pointer;
+			}
+	
+			&.active {
+				background-color: v.$background-color;
+			}
 		}
 	}
+}
+
+// GRAPH
+#graph {
+	position: relative;
+	height: 100%;
+	width: 100vw;
+	overflow-y: hidden;
 }

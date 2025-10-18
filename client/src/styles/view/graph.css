@@ -12,6 +12,7 @@
   left: 0;
   right: 0;
   background-color: #201E1F;
+  gap: 10px;
   padding: 15px;
   margin: 0 auto;
   border-radius: 25px 25px 0px 0px;
@@ -30,7 +31,10 @@
   height: var(--sideStyle-height);
   padding: 0;
   bottom: 0;
-  display: block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
 }
 #miniTools .sideStyle div::before {
   content: "";
@@ -60,10 +64,22 @@
 #miniTools .sideStyle div.right::after {
   border-bottom-left-radius: 100%;
 }
-#miniTools div {
+#miniTools > div:not(:last-child):not(:first-child) {
   position: relative;
 }
-#miniTools button {
+#miniTools > div:not(:last-child):not(:first-child)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -5px;
+  width: 1.5px;
+  height: 35px;
+  border-radius: 100%;
+  margin: auto 0;
+  background-color: #867F74;
+}
+#miniTools > div > button {
   background-color: #201E1F;
   border: none;
   padding: 5px;
@@ -71,10 +87,17 @@
   opacity: 1;
   transition: opacity 250ms ease-in-out;
 }
-#miniTools button:hover {
+#miniTools > div > button:hover {
   opacity: 0.7;
   cursor: pointer;
 }
-#miniTools button.active {
+#miniTools > div > button.active {
   background-color: #FEEFDD;
+}
+
+#graph {
+  position: relative;
+  height: 100%;
+  width: 100vw;
+  overflow-y: hidden;
 }/*# sourceMappingURL=graph.css.map */
