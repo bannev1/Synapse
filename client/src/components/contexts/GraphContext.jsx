@@ -7,7 +7,7 @@ export const GraphContext = createContext();
 
 export const GraphProvider = ({ children }) => {
 	const [handTool, setHandTool] = useState(0);
-	const [nodes, setNodes] = useState([
+	const [nodes, setNodes] = useState([ // Make it all nodes
 		{ 
           "id": "id1",
 		  "site": "NY Times",

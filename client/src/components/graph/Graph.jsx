@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useContext, useRef, useState, useEffect } from 'react'
-import ForceGraph2D from 'react-force-graph-2d';
+import ForceGraph from 'react-force-graph-2d';
 
 import { GraphContext } from '@/components/contexts/GraphContext'
 
@@ -10,8 +10,8 @@ import GraphToolbar from './GraphToolbar';
 import GraphOptions from './GraphOptions';
 
 function Graph() {
-	const {nodes, setNodes, links, setLinks} = useContext(GraphContext)
-	const graphRef = useRef();
+	const {nodes, setNodes, links, setLinks} = useContext(GraphContext);
+	const graphRef = useRef(null);
 
 	// Set up Images
 	const [whiteOpenNewImg, setWhiteOpenNewImg] = useState(null);
@@ -24,6 +24,11 @@ function Graph() {
 	const animationRef = useRef();
 	
 	useEffect(() => {
+		// Check if nodes are valid
+		if (nodes == null)
+			return "Error: Nodes failed to upload";
+
+		// Load imgs
 		const imgWhite = new Image();
 		imgWhite.src = '/icons/openInNewWhite.svg';
 		imgWhite.onload = () => setWhiteOpenNewImg(imgWhite);
@@ -88,7 +93,7 @@ function Graph() {
 	// Return
 	return (
 		<div id='graph'>
-			<ForceGraph2D
+			<ForceGraph
 				ref={graphRef}
 				graphData={{
 					"nodes": nodes,
@@ -104,7 +109,7 @@ function Graph() {
 					// Only set as hovered node if mouse is over the icon area
 					setHoveredNodeLink(node && isMouseOverIcon(node) ? node : null);
 				}}
-				nodeCanvasObject={(node, ctx, globalScale) => {
+				nodeCanvasObject={(node, ctx) => {
 					// Set up node
 					const label = node.site;
 					const fontSize = 16;
@@ -121,7 +126,14 @@ function Graph() {
 					const bckgDimensions = [bckgWidth, bckgHeight];
 					node.__bckgDimensions = bckgDimensions;
 
-					// Draw background
+					// Draw backdrop shadow
+					ctx.save();
+					ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+					ctx.shadowBlur = 15;
+					ctx.shadowOffsetX = 0;
+					ctx.shadowOffsetY = 4;
+					
+					// Draw background with shadow
 					ctx.fillStyle = node.color;
 					const borderRadius = 5;
 					ctx.beginPath();
@@ -134,6 +146,8 @@ function Graph() {
 					);
 					ctx.fill();
 					
+					ctx.restore(); // Reset shadow for other elements
+
 					// Draw text
 					ctx.textAlign = 'center';
 					ctx.textBaseline = 'middle';
@@ -174,9 +188,12 @@ function Graph() {
 
 					console.log('Node clicked:', node);
 				}}
-				onNodeDragEnd={node => {
-					node.fx = node.x;
-					node.fy = node.y;
+				// onNodeDragEnd={node => {
+				// 	node.fx = node.x;
+				// 	node.fy = node.y;
+				// }}
+				onEngineStop={() => {
+					graphRef.current.zoomToFit(50, 50)
 				}}
 			/>
 
