@@ -49,11 +49,11 @@ function Graph() {
 
 		// Load imgs
 		const imgWhite = new Image();
-		imgWhite.src = '/icons/openInNewWhite.svg';
+		imgWhite.src = '/public/icons/openInNewWhite.svg';
 		imgWhite.onload = () => setWhiteOpenNewImg(imgWhite);
 
 		const imgBlack = new Image();
-		imgBlack.src = '/icons/openInNewBlack.svg';
+		imgBlack.src = '/public/icons/openInNewBlack.svg';
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack);
 	
 		// Initialize as full screen
