@@ -12,7 +12,7 @@ import GraphToolbar from './GraphToolbar';
 import GraphOptions from './GraphOptions';
 
 function Graph() {
-	const {nodes, setNodes, links, setLinks} = useContext(GraphContext);
+	const {nodes, links} = useContext(GraphContext);
 	const graphRef = useRef(null);
 	const graphContainerRef = useRef(null);
 
