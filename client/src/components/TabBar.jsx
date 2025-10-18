@@ -10,7 +10,7 @@ import { redirect } from 'next/navigation'
 
 
 function TabBar({ currTab, isNewTab = false }) {
-	const {tabs, setTabs} = useContext(TabContext)
+	const {tabs} = useContext(TabContext)
 
 	if (!isNewTab && currTab != '')
 		return
