@@ -4,10 +4,10 @@ import React from 'react'
 
 import Search from '../page'
 
-function page() {
+function View() {
 	return (
 		<Search/> // Show search in place of view
 	)
 }
 
-export default page
+export default View
