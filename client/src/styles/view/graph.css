@@ -21,9 +21,9 @@
   --sideStyle-width: 18px;
   --sideStyle-height: 20px;
   position: absolute;
+  bottom: 0;
   width: 100%;
   height: var(--sideStyle-height);
-  bottom: 0;
 }
 #miniTools .sideStyle div {
   position: absolute;
@@ -31,38 +31,18 @@
   height: var(--sideStyle-height);
   padding: 0;
   bottom: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 5px;
-}
-#miniTools .sideStyle div::before {
-  content: "";
-  position: absolute;
-  width: var(--sideStyle-width);
-  height: var(--sideStyle-height);
   display: block;
   background-color: #201E1F;
 }
-#miniTools .sideStyle div::after {
-  content: "";
-  position: absolute;
-  width: var(--sideStyle-width);
-  height: var(--sideStyle-height);
-  display: block;
-  background-color: #FEEFDD;
-}
 #miniTools .sideStyle div.left {
   left: calc(var(--sideStyle-width) * -1);
-}
-#miniTools .sideStyle div.left::after {
-  border-bottom-right-radius: 100%;
+  -webkit-mask: radial-gradient(var(--sideStyle-height) at left top, transparent var(--sideStyle-width), black var(--sideStyle-height));
+          mask: radial-gradient(var(--sideStyle-height) at left top, transparent var(--sideStyle-width), black var(--sideStyle-height));
 }
 #miniTools .sideStyle div.right {
   right: calc(var(--sideStyle-width) * -1);
-}
-#miniTools .sideStyle div.right::after {
-  border-bottom-left-radius: 100%;
+  -webkit-mask: radial-gradient(var(--sideStyle-height) at right top, transparent var(--sideStyle-width), black var(--sideStyle-height));
+          mask: radial-gradient(var(--sideStyle-height) at right top, transparent var(--sideStyle-width), black var(--sideStyle-height));
 }
 #miniTools > div:not(:last-child):not(:first-child) {
   position: relative;

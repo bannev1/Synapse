@@ -19,17 +19,17 @@
 	margin: 0 auto;
 	border-radius: 25px 25px 0px 0px;
 
-	// Side styling
-	& .sideStyle {
+	  // Side styling
+	  & .sideStyle {
 		--sideStyle-width: 18px;
 		--sideStyle-height: 20px;
-
+		
 		position: absolute;
+		bottom: 0;
 		width: 100%;
 		height: var(--sideStyle-height);
-		bottom: 0;
 
-
+		
 		// Side parts
 		& div {
 			position: absolute;
@@ -37,45 +37,18 @@
 			height: var(--sideStyle-height);
 			padding: 0;
 			bottom: 0;
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			gap: 5px;
-
-
-			&::before {
-				content: '';
-				position: absolute;
-				width: var(--sideStyle-width);
-				height: var(--sideStyle-height);
-				display: block;
-				background-color: v.$black;
-			}
-
-			&::after {
-				content: '';
-				position: absolute;
-				width: var(--sideStyle-width);
-				height: var(--sideStyle-height);
-				display: block;
-				background-color: v.$background-color;
-			}
-		
+			display: block;
+			background-color: v.$black;
+			
 			
 			&.left {
 				left: calc(var(--sideStyle-width) * -1);
-
-				&::after {
-					border-bottom-right-radius: 100%;
-				}
+				mask: radial-gradient(var(--sideStyle-height) at left top, transparent var(--sideStyle-width), black var(--sideStyle-height));
 			}
 			
 			&.right {
 				right: calc(var(--sideStyle-width) * -1);
-				
-				&::after {
-					border-bottom-left-radius: 100%;
-				}
+				mask: radial-gradient(var(--sideStyle-height) at right top, transparent var(--sideStyle-width), black var(--sideStyle-height));
 			}
 		}
 	}
