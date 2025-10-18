@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-function SearchComparison() {
+function SearchComparisonModal() {
 	return (
 		<div id="searchComparison" className='popup'>
 			SearchComparison
@@ -10,4 +10,4 @@ function SearchComparison() {
 	)
 }
 
-export default SearchComparison
+export default SearchComparisonModal

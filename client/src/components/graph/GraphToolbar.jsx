@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { GraphContext } from '../contexts/GraphContext';
 
 // Components
-import SearchComparison from '../modals/graphFunctions/SearchComparison';
+import SearchComparisonModal from '../modals/graphFunctions/SearchComparisonModal';
 
 // Icons
 import infoBlack from '/public/icons/infoBlack.svg';
@@ -50,7 +50,7 @@ function GraphToolbar({handleFullScreen}) {
 
 				{
 					showComparePopup &&
-					<SearchComparison/>
+					<SearchComparisonModal/>
 				}
 			</div>
 
