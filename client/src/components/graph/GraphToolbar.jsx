@@ -18,7 +18,7 @@ import compareBlack from '/public/icons/compareBlack.svg';
 import fullscreenWhite from '/public/icons/fullscreenWhite.svg'
 
 
-function GraphToolbar({}) {
+function GraphToolbar({handleFullScreen}) {
 	const {handTool, setHandTool, makeFullScreen} = useContext(GraphContext);
 	const [showComparePopup, setShowComparePopup] = useState(false);
 
@@ -56,7 +56,7 @@ function GraphToolbar({}) {
 
 			{/* Full-Screen */}
 			<div className='noActive'>
-				<button onClick={() => makeFullScreen()}>
+				<button onClick={handleFullScreen}>
 					<Image src={fullscreenWhite} alt='Fullscreen Icon'/>
 				</button>
 			</div>

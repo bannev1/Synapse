@@ -12,8 +12,9 @@ import GraphToolbar from './GraphToolbar';
 import GraphOptions from './GraphOptions';
 
 function Graph() {
-	const {nodes, setNodes, links, setLinks, setMakeFullScreen} = useContext(GraphContext);
+	const {nodes, setNodes, links, setLinks} = useContext(GraphContext);
 	const graphRef = useRef(null);
+	const graphContainerRef = useRef(null);
 
 	// Set up Images
 	const [whiteOpenNewImg, setWhiteOpenNewImg] = useState(null);
@@ -24,7 +25,23 @@ function Graph() {
 	const [animatedIconSizes, setAnimatedIconSizes] = useState({});
 	const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 	const animationRef = useRef();
+
+	// Full screen ability
+	const handleFullScreen = () => {
+		if (!graphContainerRef.current) return;
+		
+		const element = graphContainerRef.current;
+		
+		if (element.requestFullscreen) {
+			element.requestFullscreen();
+		} else if (element.webkitRequestFullscreen) {
+			element.webkitRequestFullscreen(); // Safari
+		} else if (element.msRequestFullscreen) {
+			element.msRequestFullscreen(); // IE/Edge
+		}
+	}
 	
+	// Effects
 	useEffect(() => {
 		// Check if nodes are valid
 		if (nodes == null)
@@ -38,7 +55,11 @@ function Graph() {
 		const imgBlack = new Image();
 		imgBlack.src = '/icons/openInNewBlack.svg';
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack);
+	
+		// Initialize as full screen
+		handleFullScreen();
 	}, []);
+
 
 	// For mouse effect check
 	const isMouseOverIcon = (node) => {
@@ -93,15 +114,9 @@ function Graph() {
 	}, [hoveredNodeLink, nodes]);
 
 
-	// Full screen ability
-	setMakeFullScreen(() => {
-		
-	})
-
-
 	// Return
 	return (
-		<div id='graph'>
+		<div id='graph' useRef={graphContainerRef}>
 			<ForceGraph
 				ref={graphRef}
 				graphData={{
@@ -200,7 +215,7 @@ function Graph() {
 				}}
 			/>
 
-			<GraphToolbar/>
+			<GraphToolbar handleFullScreen={handleFullScreen}/>
 			<GraphOptions/>
 		</div>
 	)
