@@ -49,8 +49,6 @@
   flex-direction: row;
   justify-content: space-between;
   gap: 5px;
-}
-#miniTools > div:not(:first-child):not(:last-child) {
   position: relative;
 }
 #miniTools > div:not(:first-child):not(:last-child)::after {
@@ -87,4 +85,10 @@
   height: 100%;
   width: 100vw;
   overflow-y: hidden;
+}
+
+.popup {
+  position: absolute;
+  background-color: #201E1F;
+  padding: 25px;
 }/*# sourceMappingURL=graph.css.map */

@@ -11,6 +11,8 @@ import infoBlack from '/public/icons/infoBlack.svg';
 import infoWhite from '/public/icons/infoWhite.svg';
 import panBlack from '/public/icons/panBlack.svg';
 import panWhite from '/public/icons/panWhite.svg';
+import compareWhite from '/public/icons/compareWhite.svg';
+import compareBlack from '/public/icons/compareBlack.svg';
 
 
 function GraphToolbar({}) {
@@ -40,8 +42,8 @@ function GraphToolbar({}) {
 
 			{/* Comparison button w/ popup */}
 			<div>
-				<button onClick={() => setShowComparePopup(v => !v)}>
-
+				<button className={showComparePopup ? 'active' : ''} onClick={() => setShowComparePopup(v => !v)}>
+					<Image src={showComparePopup ? compareBlack : compareWhite}/>
 				</button>
 
 				{

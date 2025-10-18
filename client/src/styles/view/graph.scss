@@ -60,12 +60,10 @@
 		flex-direction: row;
 		justify-content: space-between;
 		gap: 5px;
+		position: relative;
 
 		// Divider/line
 		&:not(:last-child) {
-			position: relative;
-
-
 			&::after {
 				content: '';
 				position: absolute;
@@ -103,10 +101,19 @@
 	}
 }
 
+
 // GRAPH
 #graph {
 	position: relative;
 	height: 100%;
 	width: 100vw;
 	overflow-y: hidden;
+}
+
+
+// POPUPS
+.popup {
+	position: absolute;
+	background-color: v.$black;
+	padding: 25px;
 }
