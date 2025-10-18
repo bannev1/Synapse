@@ -44,22 +44,29 @@
   -webkit-mask: radial-gradient(var(--sideStyle-height) at right top, transparent var(--sideStyle-width), black var(--sideStyle-height));
           mask: radial-gradient(var(--sideStyle-height) at right top, transparent var(--sideStyle-width), black var(--sideStyle-height));
 }
-#miniTools > div:not(:last-child):not(:first-child) {
+#miniTools > div:not(:first-child) {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+}
+#miniTools > div:not(:first-child):not(:last-child) {
   position: relative;
 }
-#miniTools > div:not(:last-child):not(:first-child)::after {
+#miniTools > div:not(:first-child):not(:last-child)::after {
   content: "";
   position: absolute;
   top: 0;
   bottom: 0;
   right: -5px;
-  width: 1.5px;
+  width: 2px;
   height: 35px;
   border-radius: 100%;
   margin: auto 0;
   background-color: #867F74;
+  opacity: 1;
 }
-#miniTools > div > button {
+#miniTools > div:not(:first-child) > button {
   background-color: #201E1F;
   border: none;
   padding: 5px;
@@ -67,11 +74,11 @@
   opacity: 1;
   transition: opacity 250ms ease-in-out;
 }
-#miniTools > div > button:hover {
+#miniTools > div:not(:first-child) > button:hover {
   opacity: 0.7;
   cursor: pointer;
 }
-#miniTools > div > button.active {
+#miniTools > div:not(:first-child) > button.active {
   background-color: #FEEFDD;
 }
 

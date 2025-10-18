@@ -55,9 +55,14 @@
 
 
 	// INNER COMPONENTS
-	& > div {
+	& > div:not(:first-child) { // Excluding fringes
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 5px;
+
 		// Divider/line
-		&:not(:last-child):not(:first-child) {
+		&:not(:last-child) {
 			position: relative;
 
 
@@ -67,11 +72,12 @@
 				top: 0;
 				bottom: 0;
 				right: -5px;
-				width: 1.5px;
+				width: 2px;
 				height: 35px;
 				border-radius: 100%;
 				margin: auto 0;
 				background-color: v.$grey;
+				opacity: 1;
 			}
 		}
 
