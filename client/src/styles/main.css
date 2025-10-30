@@ -540,60 +540,6 @@ input[type=text] {
   cursor: pointer;
 }
 
-#autocomplete {
-  position: absolute;
-  top: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  background-color: #201E1F;
-  color: #FEEFDD;
-  align-items: center;
-  height: -moz-fit-content;
-  height: fit-content;
-  padding: 0px;
-  gap: 0px;
-}
-#autocomplete.inverted {
-  background-color: #FEEFDD;
-  color: #201E1F;
-}
-#autocomplete.inverted li button:hover, #autocomplete.inverted li button:focus {
-  background-color: #201E1F;
-  color: #FEEFDD;
-}
-#autocomplete li {
-  width: 100%;
-  position: relative;
-  height: 20px;
-  padding: 5px;
-  background-color: transparent;
-}
-#autocomplete li button {
-  border: none;
-  background-color: transparent;
-  transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-}
-#autocomplete li button:hover, #autocomplete li button:focus {
-  background-color: #FEEFDD;
-  color: #201E1F;
-}
-#autocomplete li:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  height: 1px;
-  background-color: #867F74;
-  width: calc(100% - 10px);
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-}
-
 .modalBackdrop {
   z-index: 99999;
   position: absolute;
