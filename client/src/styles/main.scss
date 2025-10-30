@@ -423,6 +423,57 @@ input[type="text"] {
         }
     }
 
+    // Type Dropdown
+    & #graphType {
+        width: fit-content;
+        position: relative;
+        
+        & button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            color: v.$background-color;
+            font-weight: 600;
+            border: none;
+            width: fit-content;
+            height: fit-content;
+            transition: opacity 250ms ease-in-out;
+            font-size: 14px;
+            position: relative;
+
+            & img {
+                height: fit-content;
+                padding: 0;
+                width: fit-content;
+            }
+
+            &:hover,
+            &:focus {
+                opacity: .7;
+                cursor: pointer;
+            }
+        }
+
+        // Dropdown
+        & .dropdown {
+            position: absolute;
+            width: 130px;
+            height: 125px;
+            background-color: v.$white;
+            border-radius: 10px;
+            bottom: -130px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+
     // Inverted
     &.inverted {
         color: v.$black;

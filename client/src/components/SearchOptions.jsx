@@ -45,11 +45,11 @@ function SearchOptions({
 		["https://www.britannica.com/", 'Britannica'],
 	]).current
 
-	const graphTypes = {
-		'Topical': 0,
-		'Medium': 1,
-		'Locational': 2
-	}
+	const graphTypes = [
+		'Topical',
+		'Medium',
+		'Locational'
+	]
 
 	return (
 		<div id="searchOptions" className={inverted ? 'inverted' : ''}>
@@ -111,25 +111,28 @@ function SearchOptions({
 			{/* Graph Type Selector */}
 			<div id='graphType'>
 				<button className={showGraphTypes ? 'active' : ''} onClick={() => {setShowGraphTypes(v => !v)}}>
+					<p>{graphTypes[graphType]}</p>
 
+					<Image src={inverted ? dropdownBlack : dropdownWhite} alt="Dropdown Icon"/>
 				</button>
+
+				{/* Graph Type Dropdown */}
+				{ showGraphTypes &&
+					<div className='dropdown'>
+						{
+							graphTypes.forEach((val, index) => {
+								return <div key={index} className={`type ${graphType == index ? 'active' : ''}`} onClick={() => {
+											setGraphType(index)
+											setShowGraphTypes(false)
+										}}>
+											{val}
+										</div>
+							})
+						}
+					</div>
+				}
 			</div>
 
-			{/* Graph Type Dropdown */}
-			{ showGraphTypes &&
-				<div id='graphTypes'>
-					{
-						Object.keys(graphTypes).forEach((type, index) => {
-							return <div key={index} className={`type ${graphType == index ? 'active' : ''}`} onClick={() => {
-										setGraphType(index)
-										setShowGraphTypes(false)
-									}}>
-										{type}
-									</div>
-						})
-					}
-				</div>
-			}
 		</div>
   )
 }
