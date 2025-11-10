@@ -124,6 +124,16 @@ function Graph() {
 					"links": links
 				}}
 				enableNodeDrag={false}
+				// Set up links
+				linkWidth={4}
+				onEngineTick={() => {
+					if (graphRef.current) {
+						// Set strength of links
+						graphRef.current.d3Force('charge').strength(-100);
+						graphRef.current.d3Force('link').distance(100);
+					}
+				}}
+				// Configure nodes
 				nodeAutoColorBy="group"
 				onNodeHover={(node, event) => {
 					if (event) {

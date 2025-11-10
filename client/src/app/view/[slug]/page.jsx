@@ -72,7 +72,13 @@ function View() {
 					'id': 'id1',
 					'site': 'NY Times',
 					'url': 'https://nytimes.com'
-				}]} allLinks={[]}>
+				},{'id': 'id2',
+					'site': 'BBC',
+					'url': 'https://bbc.com'
+				}]} allLinks={[{
+					'target': 'id1',
+					'source': 'id2'
+				}]}>
 					<div id="home">
 						<div id="toolbar">
 							<button id="refresh">
