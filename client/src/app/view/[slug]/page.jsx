@@ -71,13 +71,15 @@ function View() {
 				<GraphProvider allNodes={[{
 					'id': 'id1',
 					'site': 'NY Times',
-					'url': 'https://nytimes.com'
+					'url': 'https://nytimes.com',
+					'group': 'source'
 				},{'id': 'id2',
 					'site': 'BBC',
-					'url': 'https://bbc.com'
+					'url': 'https://bbc.com',
+					'group': 'source'
 				}]} allLinks={[{
 					'target': 'id1',
-					'source': 'id2'
+					'source': 'id2',
 				}]}>
 					<div id="home">
 						<div id="toolbar">

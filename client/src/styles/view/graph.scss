@@ -117,6 +117,16 @@
 	height: 100%;
 	width: 100vw;
 	overflow-y: hidden;
+	background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+
+	& canvas {
+		display: block
+	}
+
+	& > *:not(canvas) {
+		position: absolute;
+		pointer-events: auto;
+	}
 }
 
 
