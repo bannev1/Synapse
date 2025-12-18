@@ -3,6 +3,8 @@
 import { useContext, useRef, useState, useEffect } from "react"
 import ForceGraph from "react-force-graph-2d"
 
+import '@/styles/view/graph.css'
+
 import { GraphContext } from "@/components/contexts/GraphContext"
 import { generateNodeColor } from "@/scripts/colorSystem"
 
