@@ -6,7 +6,12 @@ import Image from 'next/image';
 
 import '@/styles/view/styles.css'
 
+// Components
+import { GraphProvider } from '@/components/contexts/GraphContext';
 import { TabContext, TabProvider } from '@/components/contexts/TabContext';
+import Graph from '@/components/graph/Graph';
+import GraphOptions from '@/components/graph/GraphOptions';
+import GraphToolbar from '@/components/graph/GraphToolbar';
 import TabBar from '@/components/TabBar';
 import SearchBar from '@/components/SearchBar';
 import SearchOptions from '@/components/SearchOptions';
@@ -22,9 +27,6 @@ import fullscreenWhite from '/public/icons/fullscreenWhite.svg';
 import fullscreenExitWhite from '/public/icons/fullscreenExitWhite.svg';
 import appsWhite from '/public/icons/appsWhite.svg';
 
-// Components
-import { GraphProvider } from '@/components/contexts/GraphContext';
-import Graph from '@/components/graph/Graph';
 
 
 function View() {
@@ -47,6 +49,10 @@ function View() {
 	const [handTool, setHandTool] = useState(0) // 0 is pan, 1 is info
 
 	const [showComparePopup, setShowComparePopup] = useState(false)
+
+	// Function which sets graph to fullscreen
+	const [graphFullscreen, setGraphFullscreen] = useState(0) // Signal which incr whenever want to make graph fullscreen
+	const fullscreen = () => setGraphFullscreen(v => v + 1)
 
 	// Find tab
 	// var tab = undefined;
@@ -116,7 +122,10 @@ function View() {
 											</div> */}
 						</div>
 
-						<Graph/>
+						<Graph fullScreenSignal={graphFullscreen}/>
+
+						<GraphToolbar handleFullScreen={fullscreen} />
+						<GraphOptions />
 					</div>
 				</GraphProvider>
 			</TabProvider>

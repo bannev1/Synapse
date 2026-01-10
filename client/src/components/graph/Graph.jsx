@@ -10,7 +10,7 @@ import { generateNodeColor } from "@/scripts/colorSystem"
 import GraphToolbar from "./GraphToolbar"
 import GraphOptions from "./GraphOptions"
 
-function Graph() {
+function Graph({fullScreenSignal = 0}) {
 	const { nodes, links, graphView } = useContext(GraphContext)
 	const graphRef = useRef(null)
 	const graphContainerRef = useRef(null)
@@ -36,12 +36,12 @@ function Graph() {
 		setColoredNodes(updatedNodes)
 	}, [nodes, graphView])
 
-	// Full screen ability
-	const handleFullScreen = () => {
+	// Fullscreen function
+	function handleFullScreen() {
 		if (!graphContainerRef.current) return
-
+	
 		const element = graphContainerRef.current
-
+	
 		if (element.requestFullscreen) {
 		element.requestFullscreen()
 		} else if (element.webkitRequestFullscreen) {
@@ -50,6 +50,11 @@ function Graph() {
 		element.msRequestFullscreen() // IE/Edge
 		}
 	}
+
+	// Full screen ability whenever signal changes (so incr by 1)
+	useEffect(() => {
+		handleFullScreen()
+	}, [fullScreenSignal])
 
 	// Effects
 	useEffect(() => {
@@ -231,9 +236,6 @@ function Graph() {
 			console.log("Node clicked:", node)
 			}}
 		/>
-
-		<GraphToolbar handleFullScreen={handleFullScreen} />
-		<GraphOptions />
 		</div>
 	)
 }
