@@ -50,10 +50,6 @@ function View() {
 
 	const [showComparePopup, setShowComparePopup] = useState(false)
 
-	// Function which sets graph to fullscreen
-	const [graphFullscreen, setGraphFullscreen] = useState(0) // Signal which incr whenever want to make graph fullscreen
-	const fullscreen = () => setGraphFullscreen(v => v + 1)
-
 	// Find tab
 	// var tab = undefined;
 	// tabs.forEach(tabElem => {
@@ -122,7 +118,7 @@ function View() {
 											</div> */}
 						</div>
 
-						<Graph fullScreenSignal={graphFullscreen}/>
+						<Graph/>
 					</div>
 				</GraphProvider>
 			</TabProvider>

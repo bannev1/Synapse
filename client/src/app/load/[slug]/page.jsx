@@ -37,9 +37,6 @@ function LoadGraph() {
 					'source': 'id2',
 				}]
 	})
-	// Function which sets graph to fullscreen
-	const [graphFullscreen, setGraphFullscreen] = useState(0) // Signal which incr whenever want to make graph fullscreen
-	const fullscreen = () => setGraphFullscreen(v => v + 1)
 
 	// Log
 	console.log(graphID)
@@ -93,7 +90,7 @@ function LoadGraph() {
 							</div>
 						
 							{/* Graph */}
-							<Graph fullScreenSignal={graphFullscreen}/>
+							<Graph/>
 						</div>
 					</GraphProvider>
 				</TabProvider>

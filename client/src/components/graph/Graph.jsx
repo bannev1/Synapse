@@ -10,7 +10,7 @@ import { generateNodeColor } from "@/scripts/colorSystem"
 import GraphToolbar from "./GraphToolbar"
 import GraphOptions from "./GraphOptions"
 
-function Graph({fullScreenSignal = 0}) {
+function Graph() {
 	const { nodes, links, graphView } = useContext(GraphContext)
 	const graphRef = useRef(null)
 	const graphContainerRef = useRef(null)
