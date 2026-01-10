@@ -422,6 +422,8 @@
   border: solid 1px #dbcebe;
   padding: 5px;
   border-radius: 7px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 #graphID input[type=text] {
   border: none;
