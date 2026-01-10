@@ -14,6 +14,9 @@ import Graph from '@/components/graph/Graph'
 import { TabContext, TabProvider } from '@/components/contexts/TabContext'
 import { GraphProvider } from '@/components/contexts/GraphContext'
 
+// Icons
+import saveWhite from '@icons/saveWhite.svg'
+
 
 function LoadGraph() {
 	const params = useParams()
@@ -87,6 +90,8 @@ function LoadGraph() {
 							{/* Graph Toolbar */}
 							<div id="toolbar">
 								<SearchBar editable={false} inverted={true} isPlaceholder={false} placeholder={graph.name}/>
+							
+								{/* URL for copy paste */}
 							</div>
 						
 							{/* Graph */}
