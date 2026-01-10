@@ -1,0 +1,6 @@
+{
+	"liveSassCompile.settings.excludeList": [
+		"src/styles/components/**",
+		"src/styles/variables.scss"
+	]
+}

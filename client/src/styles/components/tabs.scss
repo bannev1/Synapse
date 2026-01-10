@@ -1,0 +1,159 @@
+@use '../variables' as v;
+
+
+// Tabs
+#tabGroup {
+	width: 100%;
+	height: 55px;
+	position: relative;
+	display: flex;
+	flex-direction: row;
+
+	// Logo
+	& #tabLogo {
+		font-size: 30px;
+		margin: auto 10px;
+	
+		&::before {
+			height: 3px !important;
+		}
+	}
+	
+	// Tab collection
+	& #tabs {
+		height: 100%;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		padding: 0 10px;
+		align-items: end;
+		position: relative;
+		overflow-x: scroll;
+	
+		& .tab {
+			background-color: v.$background-color;
+			color: v.$black;
+			height: 40px;
+			width: 150px;
+			border-top-left-radius: 15px;
+			border-top-right-radius: 15px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-evenly;
+			position: relative;
+			opacity: .8;
+
+			&:hover {
+				cursor: pointer;
+			}
+	
+			&.active {
+				opacity: 1;
+				z-index: 5;
+
+				&:hover {
+					cursor: default;
+				}
+			}
+	
+			// Content
+			& p {
+				font-size: 13px;
+				text-align: left;
+				width: calc(100% - 70px);
+			}
+	
+			& button {
+				border: none;
+				border-radius: 100%;
+				padding: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: transparent;
+				transition: opacity 200ms ease-in-out;
+	
+				&:hover,
+				&:focus {
+					opacity: .6;
+					cursor: pointer;
+				}
+	
+				& img {
+					margin: auto;
+					width: 20px;
+					height: 20px;
+				}
+			}
+	
+			// Sides
+			&::before,
+			&::after,
+			& div::before,
+			& div::after {
+				content: '';
+				background-color: v.$background-color;
+				width: 10px;
+				height: 10px;
+				position: absolute;
+				bottom: 0;
+				z-index: 1;
+			}
+	
+			&::before {
+				left: -10px;
+			}
+	
+			&::after {
+				right: -10px;
+			}
+	
+			& div {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+	
+				&::before,
+				&::after {
+					width: 20px;
+					height: 20px;
+					border-radius: 10px;
+					background-color: v.$black;
+					z-index: 2;
+				}
+	
+				&::before {
+					left: -20px;
+				}
+	
+				&::after {
+					right: -20px;
+				}
+			}
+		}
+
+		// Add tab button
+		& #addTab {
+			border: none;
+			background-color: transparent;
+			padding: 0;
+			padding-top: 10px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: auto 10px;
+			height: fit-content;
+			width: fit-content;
+			transition: opacity 200ms ease-in-out;
+
+			&:hover,
+			&:focus {
+				opacity: .7;
+				cursor: pointer;
+			}
+		}
+	}
+}

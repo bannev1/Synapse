@@ -1,33 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-:root {
-  font-family: "Montserrat";
-}
-
-* {
-  font-family: "Montserrat";
-}
-
-html,
-body {
-  margin: 0;
-}
-
-body {
-  background-color: #201E1F;
-  color: #201E1F;
-  height: 100dvh;
-  min-height: 500px;
-  width: 100dvw;
-  position: relative;
-}
-
-input[type=text] {
-  outline: none;
-  background-color: transparent;
-  border: none;
-  width: inherit;
-}
-
 #search {
   padding: calc(var(--search-height) - 15px);
   width: 100%;
@@ -430,34 +401,87 @@ input[type=text] {
   background-color: #FEEFDD;
 }
 
-.underline {
-  width: -moz-fit-content;
-  width: fit-content;
-  position: relative;
-  color: #201E1F;
-  transform: translate3d(0px, 0px, 0px);
-  text-shadow: 2px 2px 0 #FEEFDD, 2px -2px 0 #FEEFDD, -2px 2px 0 #FEEFDD, -2px -2px 0 #FEEFDD, 2px 0px 0 #FEEFDD, 0px 2px 0 #FEEFDD, -2px 0px 0 #FEEFDD, 0px -2px 0 #FEEFDD;
-}
-.underline.inverted {
-  color: #FEEFDD;
-  text-shadow: 2px 2px 0 #201E1F, 2px -2px 0 #201E1F, -2px 2px 0 #201E1F, -2px -2px 0 #201E1F, 2px 0px 0 #201E1F, 0px 2px 0 #201E1F, -2px 0px 0 #201E1F, 0px -2px 0 #201E1F;
-}
-.underline::before {
-  content: "";
+.modalBackdrop {
+  z-index: 99999;
   position: absolute;
-  width: calc(100% - 10px);
-  height: 3px;
-  margin: 0 auto;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #201E1F;
+  opacity: 0.8;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 2px;
-  z-index: -1;
 }
-.underline.blue::before {
-  background-color: #50B2C0;
+
+.modal {
+  position: absolute;
+  z-index: 999999;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #201E1F;
+  color: #FEEFDD;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 20px;
+  width: -moz-fit-content;
+  width: fit-content;
+  min-width: 250px;
+  height: -moz-fit-content;
+  height: fit-content;
+  gap: 10px;
+  border-radius: 20px;
+  box-shadow: 14px 10px 21px -6px rgba(0, 0, 0, 0.18);
 }
-.underline.red::before {
-  background-color: #FF4000;
+.modal.inverted {
+  background-color: #FEEFDD;
+  color: #201E1F;
+}
+.modal h1 {
+  font-size: 25px;
+}
+.modal .divider {
+  height: 1.5px;
+  width: 100%;
+  background-color: #867F74;
+  opacity: 0.7;
+}
+.modal .buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+.modal .buttons button {
+  width: calc(50% - 10px);
+  padding: 5px;
+  height: 35px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: opacity 200ms ease-in-out;
+}
+.modal .buttons button:hover, .modal .buttons button:focus {
+  cursor: pointer;
+  opacity: 0.7;
+}
+.modal .buttons button.no {
+  background-color: #201E1F;
+  color: #FEEFDD;
+}
+.modal .buttons button.yes {
+  background-color: #FEEFDD;
+  color: #201E1F;
 }
 
 #tabGroup {
@@ -587,85 +611,61 @@ input[type=text] {
   cursor: pointer;
 }
 
-.modalBackdrop {
-  z-index: 99999;
-  position: absolute;
-  width: 100dvw;
-  height: 100dvh;
-  overflow: hidden;
-  background-color: #201E1F;
-  opacity: 0.8;
-  margin: 0;
-  padding: 0;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+:root {
+  font-family: "Montserrat";
 }
 
-.modal {
-  position: absolute;
-  z-index: 999999;
-  margin: auto;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+* {
+  font-family: "Montserrat";
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
   background-color: #201E1F;
-  color: #FEEFDD;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  padding: 20px;
+  color: #201E1F;
+  height: 100dvh;
+  min-height: 500px;
+  width: 100dvw;
+  position: relative;
+}
+
+input[type=text] {
+  outline: none;
+  background-color: transparent;
+  border: none;
+  width: inherit;
+}
+
+.underline {
   width: -moz-fit-content;
   width: fit-content;
-  min-width: 250px;
-  height: -moz-fit-content;
-  height: fit-content;
-  gap: 10px;
-  border-radius: 20px;
-  box-shadow: 14px 10px 21px -6px rgba(0, 0, 0, 0.18);
-}
-.modal.inverted {
-  background-color: #FEEFDD;
+  position: relative;
   color: #201E1F;
+  transform: translate3d(0px, 0px, 0px);
+  text-shadow: 2px 2px 0 #FEEFDD, 2px -2px 0 #FEEFDD, -2px 2px 0 #FEEFDD, -2px -2px 0 #FEEFDD, 2px 0px 0 #FEEFDD, 0px 2px 0 #FEEFDD, -2px 0px 0 #FEEFDD, 0px -2px 0 #FEEFDD;
 }
-.modal h1 {
-  font-size: 25px;
-}
-.modal .divider {
-  height: 1.5px;
-  width: 100%;
-  background-color: #867F74;
-  opacity: 0.7;
-}
-.modal .buttons {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-.modal .buttons button {
-  width: calc(50% - 10px);
-  padding: 5px;
-  height: 35px;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: opacity 200ms ease-in-out;
-}
-.modal .buttons button:hover, .modal .buttons button:focus {
-  cursor: pointer;
-  opacity: 0.7;
-}
-.modal .buttons button.no {
-  background-color: #201E1F;
+.underline.inverted {
   color: #FEEFDD;
+  text-shadow: 2px 2px 0 #201E1F, 2px -2px 0 #201E1F, -2px 2px 0 #201E1F, -2px -2px 0 #201E1F, 2px 0px 0 #201E1F, 0px 2px 0 #201E1F, -2px 0px 0 #201E1F, 0px -2px 0 #201E1F;
 }
-.modal .buttons button.yes {
-  background-color: #FEEFDD;
-  color: #201E1F;
+.underline::before {
+  content: "";
+  position: absolute;
+  width: calc(100% - 10px);
+  height: 3px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  z-index: -1;
+}
+.underline.blue::before {
+  background-color: #50B2C0;
+}
+.underline.red::before {
+  background-color: #FF4000;
 }/*# sourceMappingURL=main.css.map */
