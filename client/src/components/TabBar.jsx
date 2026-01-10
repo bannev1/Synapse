@@ -26,7 +26,7 @@ function TabBar({ currTab = '', isNewTab = false }) {
 			<div id="tabs">
 				{ // New 'tab' (false tab)
 					isNewTab && 
-					<Tab tabName='New Tab' isCurrTab={true} graph={undefined}/>
+					<Tab isNewTab={true} isCurrTab={true} graph={undefined}/>
 				}
 
 				{ // Get all tabs

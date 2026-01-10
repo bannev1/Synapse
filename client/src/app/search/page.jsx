@@ -9,10 +9,10 @@ import { TabContext } from '@/components/contexts/TabContext';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import SearchOptions from '@/components/SearchOptions';
 
-function Search() {
+function Search({forceNewTabView = false}) {
   const {tabs, setTabs} = useContext(TabContext)
   
-  const tabsExist = tabs.length > 0 // If tabs, then show tab bar
+  const tabsExist = tabs.length > 0 || forceNewTabView // If tabs, then show tab bar (or if forcing)
   const inverted = tabsExist ? '' : 'inverted'
 
   const [searchOptions, setSearchOptions] = useState({})
@@ -21,7 +21,7 @@ function Search() {
     <>
       { // Tab viewer
         tabsExist && 
-        <TabBar currTab='' isNewTab={true}/>
+        <TabBar isNewTab={true}/>
       }
 
       {/* Main content */}
