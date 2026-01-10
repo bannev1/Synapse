@@ -280,6 +280,113 @@
   margin: 10px;
   margin-top: auto;
   max-width: 270px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+#optionsModal .graphSearch {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  align-items: center;
+  width: 100%;
+  height: 33px;
+  border-radius: 16.5px;
+  background-color: #fffaf4;
+}
+#optionsModal .graphSearch > img {
+  padding-left: 4px;
+}
+#optionsModal .graphSearch > input[type=text]::-moz-placeholder {
+  font-style: italic;
+}
+#optionsModal .graphSearch > input[type=text]::placeholder {
+  font-style: italic;
+}
+#optionsModal .graphSearch > button {
+  border: none;
+  border-radius: 100%;
+  background-color: #201E1F;
+  margin: 3px;
+  margin-right: 5px;
+  margin-left: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 27px;
+  height: 27px;
+  transition: opacity 200ms ease-in-out;
+}
+#optionsModal .graphSearch > button img {
+  width: 23px;
+  height: 23px;
+}
+#optionsModal .graphSearch > button:hover, #optionsModal .graphSearch > button:focus {
+  opacity: 0.7;
+  cursor: pointer;
+}
+#optionsModal .graphOptions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+#optionsModal .graphOptions > button {
+  background-color: #201E1F;
+  border: none;
+  border-radius: 7px;
+  margin: 5px;
+  width: 75px;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  transition: filter 200ms ease-in-out, opacity 200ms ease-in-out;
+}
+#optionsModal .graphOptions > button img {
+  width: 30px;
+  height: 30px;
+}
+#optionsModal .graphOptions > button span {
+  color: #FEEFDD;
+  font-weight: 500;
+}
+#optionsModal .graphOptions > button:hover, #optionsModal .graphOptions > button:focus {
+  opacity: 0.6;
+  filter: invert(100%);
+  cursor: pointer;
+}
+#optionsModal .optionModalButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#optionsModal .optionModalButtons > button {
+  border: none;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background-color: #201E1F;
+  transition: opacity 200ms ease-in-out;
+}
+#optionsModal .optionModalButtons > button img {
+  width: 23px;
+  height: 23px;
+}
+#optionsModal .optionModalButtons > button.active {
+  background-color: #fffaf4;
+}
+#optionsModal .optionModalButtons > button:hover, #optionsModal .optionModalButtons > button:focus {
+  opacity: 0.7;
+  cursor: pointer;
 }
 
 #home {
