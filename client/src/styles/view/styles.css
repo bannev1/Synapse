@@ -4,9 +4,12 @@
   width: 100%;
   background-color: #FEEFDD;
   position: relative;
+  box-sizing: border-box;
+  overflow-y: hidden;
 }
 
 #graph {
+  position: relative;
   width: 100vw;
   height: 100%;
 }
