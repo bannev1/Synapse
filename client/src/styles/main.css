@@ -426,10 +426,6 @@
   position: absolute;
   z-index: 999999;
   margin: auto;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
   background-color: #201E1F;
   color: #FEEFDD;
   display: flex;
@@ -495,6 +491,7 @@
   position: relative;
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
 }
 #tabGroup #tabLogo {
   font-size: 30px;

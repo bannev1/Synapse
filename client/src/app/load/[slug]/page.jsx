@@ -94,6 +94,10 @@ function LoadGraph() {
 						
 							{/* Graph */}
 							<Graph fullScreenSignal={graphFullscreen}/>
+						
+							{/* Graph Toolbars */}
+							<GraphToolbar handleFullScreen={fullscreen} />
+							<GraphOptions />
 						</div>
 					</GraphProvider>
 				</TabProvider>

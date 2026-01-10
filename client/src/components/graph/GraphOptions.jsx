@@ -26,8 +26,8 @@ function GraphOptions() {
 
 
 	return (
-		<div id="options">
-			<button onClick={() => setOpened(true)}>
+		<>
+			<button onClick={() => setOpened(true)} id="options">
 				<Image src={appsWhite} alt='Apps Icon'/>
 			</button>
 
@@ -97,7 +97,7 @@ function GraphOptions() {
 					}
 				</>
 			}
-		</div>
+		</>
 	)
 }
 
