@@ -1,16 +1,16 @@
-@use '../variables';
+@use '../variables' as v;
 
 
 // Main screen
 body {
-	background-color: $black;
+	background-color: v.$black;
 	display: flex;
 	flex-direction: column;
 }
 
 #home {
-	background-color: $background-color;
-	color: $black;
+	background-color: v.$background-color;
+	color: v.$black;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -21,8 +21,8 @@ body {
 	height: calc(100% - 20px*2);
 	
 	&.inverted {
-		background-color: $black;
-		color: $background-color;
+		background-color: v.$black;
+		color: v.$background-color;
 	}
 }
 

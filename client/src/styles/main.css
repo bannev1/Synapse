@@ -611,6 +611,67 @@
   cursor: pointer;
 }
 
+#loader {
+  position: sticky;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100000000000000000000;
+  width: 100vw;
+  height: 100vh;
+  background-color: #FEEFDD;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+#loader svg {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 3.25em;
+  transform-origin: center;
+  animation: spin 2s linear infinite;
+}
+#loader svg circle {
+  fill: none;
+  stroke: #201E1F;
+  stroke-width: 5;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: strokeDash 1.5s ease-in-out infinite;
+}
+#loader.dark {
+  background-color: #201E1F;
+}
+#loader.dark svg circle {
+  stroke: #FEEFDD;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes strokeDash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dashoffset: -125px;
+  }
+}
 :root {
   font-family: "Montserrat";
 }

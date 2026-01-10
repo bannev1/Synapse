@@ -3,5 +3,73 @@
 
 // Loader
 #loader {
-	
+	position: sticky;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 99999999999999999999;
+	width: 100vw;
+	height: 100vh;
+	background-color: v.$background-color;
+	user-select: none;
+
+	// Spinner
+	& svg {
+		position: absolute;
+		margin: auto;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 3.25em;
+		transform-origin: center;
+		animation: spin 2s linear infinite;
+
+		& circle {
+			fill: none;
+			stroke: v.$black;
+			stroke-width: 5;
+			stroke-dasharray: 1, 200;
+			stroke-dashoffset: 0;
+			animation: strokeDash 1.5s ease-in-out infinite;
+		}
+	}
+
+	// Dark theme
+	&.dark {
+		background-color: v.$black;
+
+		& svg circle {
+			stroke: v.$background-color;
+		}
+	}
+}
+
+
+// Animations
+@keyframes spin {
+	0% {
+		transform: rotate(0);
+	}
+
+	100% {
+		transform: rotate(360deg)
+	}
+}
+
+@keyframes strokeDash {
+	0% {
+		stroke-dasharray: 1, 200;
+		stroke-dashoffset: 0;
+	}
+
+	50% {
+		stroke-dasharray: 90, 200;
+		stroke-dashoffset: -35px;
+	}
+
+	100% {
+		stroke-dashoffset: -125px;
+	}
 }
