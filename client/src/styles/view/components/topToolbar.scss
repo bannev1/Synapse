@@ -17,6 +17,7 @@
 	gap: 5px;
 	padding: 5px;
 	align-items: center;
+	z-index: 999999;
 
 	// Refresh Button
 	& #refresh {
@@ -147,6 +148,32 @@
 			box-shadow: v.$basic-shadow;
 			background-color: v.$background-color;
 			overflow-y: scroll;
+		}
+	}
+
+
+	// Save Icon
+	&>button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 35px;
+		height: 35px;
+		border: none;
+		background-color: v.$black;
+		border-radius: 70%;
+		transition: opacity 200ms ease-in-out;
+
+
+		& img {
+			width: 25px;
+			height: 25px;
+		}
+
+		&:hover,
+		&:focus {
+			opacity: .7;
+			cursor: pointer;
 		}
 	}
 }

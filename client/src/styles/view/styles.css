@@ -45,6 +45,7 @@
   gap: 5px;
   padding: 5px;
   align-items: center;
+  z-index: 999999;
 }
 #toolbar #refresh {
   border: none;
@@ -150,6 +151,25 @@
   box-shadow: 14px 10px 21px -6px rgba(0, 0, 0, 0.18);
   background-color: #FEEFDD;
   overflow-y: scroll;
+}
+#toolbar > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  border: none;
+  background-color: #201E1F;
+  border-radius: 70%;
+  transition: opacity 200ms ease-in-out;
+}
+#toolbar > button img {
+  width: 25px;
+  height: 25px;
+}
+#toolbar > button:hover, #toolbar > button:focus {
+  opacity: 0.7;
+  cursor: pointer;
 }
 
 #miniTools {
@@ -388,6 +408,43 @@
   background-color: #fffaf4;
 }
 #optionsModal .optionModalButtons > button:hover, #optionsModal .optionModalButtons > button:focus {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+#graphID {
+  display: flex;
+  align-items: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  flex-direction: row;
+  position: relative;
+  border: solid 1px #dbcebe;
+  padding: 5px;
+  border-radius: 7px;
+}
+#graphID input[type=text] {
+  border: none;
+  width: 250px;
+  height: 30px;
+  overflow-x: scroll;
+}
+#graphID button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  margin: auto;
+  transition: opacity 200ms ease-in-out;
+}
+#graphID button img {
+  width: 25px;
+  height: 25px;
+}
+#graphID button:hover, #graphID button:focus {
   opacity: 0.7;
   cursor: pointer;
 }

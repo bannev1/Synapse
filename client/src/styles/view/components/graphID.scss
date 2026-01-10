@@ -1,0 +1,47 @@
+@use '../../variables' as v;
+
+
+// Graph ID copier block
+#graphID {
+	display: flex;
+	align-items: center;
+	width: fit-content;
+	flex-direction: row;
+	position: relative;
+	border: solid 1px v.$light-grey;
+	padding: 5px;
+	border-radius: 7px;
+	
+
+	// link text part
+	& input[type="text"] {
+		border: none;
+		width: 250px;
+		height: 30px;
+		overflow-x: scroll;
+	}
+
+	// Copy Button
+	& button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: transparent;
+		border: none;
+		width: 32px;
+		height: 32px;
+		margin: auto;
+		transition: opacity 200ms ease-in-out;
+
+		& img {
+			width: 25px;
+			height: 25px;
+		}
+
+		&:hover,
+		&:focus {
+			opacity: .7;
+			cursor: pointer;
+		}
+	}
+}
