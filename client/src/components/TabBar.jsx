@@ -9,7 +9,7 @@ import Image from 'next/image'
 import { redirect } from 'next/navigation'
 
 
-function TabBar({ currTab, isNewTab = false }) {
+function TabBar({ currTab = '', isNewTab = false }) {
 	const {tabs} = useContext(TabContext)
 
 	if (!isNewTab && currTab != '')
@@ -18,22 +18,24 @@ function TabBar({ currTab, isNewTab = false }) {
 	
 	return (
 		<div id="tabGroup">
+			{/* Logo */}
 			<h1 id="tabLogo" className='underline blue inverted'>
 				Synapse
 			</h1>
 
 			<div id="tabs">
-				{
+				{ // New 'tab' (false tab)
 					isNewTab && 
 					<Tab tabName='New Tab' isCurrTab={true} graph={undefined}/>
 				}
 
-				{
+				{ // Get all tabs
 					tabs.forEach(tab => {
-						<div className="tab"></div>
+						<Tab tabName={tab.name} graph={tab.graph}/>
 					})
 				}
 
+				{/* Add tab button */}
 				<button id="addTab" onClick={() => {redirect('/search')}}>
 					<Image src={addWhite} alt='Add Icon'/>
 				</button>

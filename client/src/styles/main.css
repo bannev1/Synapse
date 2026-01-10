@@ -538,6 +538,9 @@
   text-align: left;
   width: calc(100% - 70px);
 }
+#tabGroup #tabs .tab p.newTab {
+  font-style: italic;
+}
 #tabGroup #tabs .tab button {
   border: none;
   border-radius: 100%;

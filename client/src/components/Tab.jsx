@@ -10,7 +10,8 @@ import ConfirmModal from './modals/ConfirmModal';
 function Tab({
 	tabName,
 	graph,
-	isCurrTab = false
+	isCurrTab = false,
+	isNewTab = false,
 }) {
 	if (graph == undefined && !isCurrTab)
 		return
@@ -39,7 +40,7 @@ function Tab({
 			<div className={`tab ${isCurrTab ? 'active' : ''}`} onClick={switchTab}>
 				<div/>
 
-				<p>{tabName}</p>
+				<p className={isNewTab ? 'newTab' : ''}>{isNewTab ? 'New Tab' : tabName}</p>
 
 				<button onClick={() => {setShowConfirmModal(true)}}>
 					<Image src={closeBlack} alt="Close Icon" />

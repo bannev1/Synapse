@@ -2,12 +2,15 @@
 
 import React from 'react'
 
+import '@/styles/view/styles.css'
+
+import TabBar from '@/components/TabBar'
 import Search from '../page'
 
-function View() {
+function ViewNewTab() { // New tab view
 	return (
-		<Search/> // Show search in place of view
+		<TabBar isNewTab={true}/>
 	)
 }
 
-export default View
+export default ViewNewTab
