@@ -57,10 +57,10 @@ function GraphOptions() {
 								<span>Delete Node</span>
 							</button>
 							
-							<button>
+							{/* <button>
 								<Image src={commentAddWhite} alt='Add Comment Icon'/>
 								<span>Add Note</span>
-							</button>
+							</button> */}
 							
 							<button>
 								<Image src={pathWhite} alt='Path Finder Icon'/>
