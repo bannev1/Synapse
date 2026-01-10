@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { TabContext } from './contexts/TabContext'
 import Tab from './Tab'
 
@@ -11,10 +11,6 @@ import { redirect } from 'next/navigation'
 
 function TabBar({ currTab = '', isNewTab = false }) {
 	const {tabs} = useContext(TabContext)
-
-	if (!isNewTab && currTab != '')
-		return
-	
 	
 	return (
 		<div id="tabGroup">
@@ -31,7 +27,7 @@ function TabBar({ currTab = '', isNewTab = false }) {
 
 				{ // Get all tabs
 					tabs.forEach(tab => {
-						<Tab tabName={tab.name} graph={tab.graph}/>
+						<Tab tabName={tab.name} isCurrTab={isNewTab || currTab==tab.name} graph={tab.graph}/>
 					})
 				}
 
