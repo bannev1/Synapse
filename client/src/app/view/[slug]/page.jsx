@@ -123,9 +123,6 @@ function View() {
 						</div>
 
 						<Graph fullScreenSignal={graphFullscreen}/>
-
-						<GraphToolbar handleFullScreen={fullscreen} />
-						<GraphOptions />
 					</div>
 				</GraphProvider>
 			</TabProvider>

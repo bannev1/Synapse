@@ -51,11 +51,6 @@ function Graph({fullScreenSignal = 0}) {
 		}
 	}
 
-	// Full screen ability whenever signal changes (so incr by 1)
-	useEffect(() => {
-		handleFullScreen()
-	}, [fullScreenSignal])
-
 	// Effects
 	useEffect(() => {
 		// Check if nodes are valid
@@ -236,6 +231,9 @@ function Graph({fullScreenSignal = 0}) {
 			console.log("Node clicked:", node)
 			}}
 		/>
+
+		<GraphOptions/>
+		<GraphToolbar handleFullScreen={handleFullScreen}/>
 		</div>
 	)
 }
