@@ -37,7 +37,7 @@ function SearchBar({
 			<Image src={inverted ? searchWhite : searchBlack} alt="Search Icon"/>
 			
 			{/* Input field */}
-			<input type="text" placeholder={placeholder} className={(editable ? '' : 'notEditable') + (isPlaceholder ? 'placeholder' : '')}/>
+			<input type="text" placeholder={placeholder} className={(editable ? '' : 'notEditable') + (isPlaceholder ? 'placeholder' : '')} readOnly={!editable}/>
 			
 			{/* Send button/search (only when editable) */}
 			{
