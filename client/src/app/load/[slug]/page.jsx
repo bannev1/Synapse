@@ -4,12 +4,15 @@ import React, { useContext, useEffect, useState } from 'react'
 import { notFound, useParams } from 'next/navigation'
 
 import '@/styles/view/styles.css'
+import { loadID } from '@/scripts/requests/load'
 
 import TabBar from '@/components/TabBar'
 import SearchBar from '@/components/SearchBar'
 import Loading from '@/components/Loading'
+import Graph from '@/components/graph/Graph'
+
 import { TabContext, TabProvider } from '@/components/contexts/TabContext'
-import { loadID } from '@/scripts/requests/load'
+import { GraphProvider } from '@/components/contexts/GraphContext'
 
 
 function LoadGraph() {
@@ -17,7 +20,23 @@ function LoadGraph() {
 	const graphID = params.slug
 
 	const [graphLoaded, setGraphLoaded] = useState(false) // If graph loaded
-	const [graph, setGraph] = useState({})
+	const [graph, setGraph] = useState({
+		"name": "My Graph",
+		"allNodes": [{
+					'id': 'id1',
+					'site': 'NY Times',
+					'url': 'https://nytimes.com',
+					'group': 'source'
+				},{'id': 'id2',
+					'site': 'BBC',
+					'url': 'https://bbc.com',
+					'group': 'source'
+				}],
+		"allLinks": [{
+					'target': 'id1',
+					'source': 'id2',
+				}]
+	})
 
 	console.log(graphID)
 
@@ -33,7 +52,7 @@ function LoadGraph() {
 		}
 
 		// Save loaded graph
-		setGraph(loadGraph)
+		// setGraph(loadGraph)
 		setGraphLoaded(true)
 	}, [])
 
@@ -48,21 +67,33 @@ function LoadGraph() {
 				<Loading/>
 			}
 
+
 			{/* Main page */}
-			<TabProvider>
-				{/* Tab bar */}
-				<TabBar/>
+			{
+				graphLoaded &&
 
-				{/* Main Page */}
-				<div id="home">
-					<div id="toolbar">
-						<SearchBar editable={false} inverted={true} isPlaceholder={false}/>
-					</div>
+				<TabProvider>
+					{/* Tab bar */}
+					<TabBar/>
 
-				</div>
 
-				{/*  */}
-			</TabProvider>
+					{/* Main Page */}
+					<GraphProvider
+						allNodes={graph.allNodes}
+						allLinks={graph.allLinks}
+					>
+						<div id="home">
+							{/* Graph Toolbar */}
+							<div id="toolbar">
+								<SearchBar editable={false} inverted={true} isPlaceholder={false} placeholder={graph.name}/>
+							</div>
+						
+							{/* Graph */}
+							<Graph/>
+						</div>
+					</GraphProvider>
+				</TabProvider>
+			}
 		</>
 	)
 }

@@ -1,5 +1,10 @@
 @use '../variables' as v;
 
+// Importing components scss files
+@use './components/graph';
+@use './components/toolbar';
+@use './components/moreOptions';
+
 // Main
 #home {
 	height: 100%;
