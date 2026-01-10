@@ -36,13 +36,18 @@
   color: #201E1F;
   width: calc(100% - (var(--search-height) + 37px));
 }
-#search input[type=text]::-moz-placeholder {
+#search input[type=text].placeholder::-moz-placeholder {
   color: #867F74;
   font-style: italic;
 }
-#search input[type=text]::placeholder {
+#search input[type=text].placeholder::placeholder {
   color: #867F74;
   font-style: italic;
+}
+#search input[type=text].notEditable {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 #search img {
   padding: 0;

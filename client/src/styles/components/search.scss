@@ -45,9 +45,14 @@
 		color: v.$black;
 		width: calc(100% - (var(--search-height) + 37px));
 
-		&::placeholder {
+		&.placeholder::placeholder {
 			color: v.$grey;
 			font-style: italic;
+		}
+
+		// For non-editable
+		&.notEditable {
+			user-select: none;
 		}
 	}
 
