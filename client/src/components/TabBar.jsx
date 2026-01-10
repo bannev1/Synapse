@@ -35,10 +35,13 @@ function TabBar({ currTab = '', isNewTab = false }) {
 					})
 				}
 
-				{/* Add tab button */}
-				<button id="addTab" onClick={() => {redirect('/search')}}>
-					<Image src={addWhite} alt='Add Icon'/>
-				</button>
+				{/* Add tab button (when not already new tab) */}
+				{
+					!isNewTab &&
+					<button id="addTab" onClick={() => {redirect('/view')}}>
+						<Image src={addWhite} alt='Add Icon'/>
+					</button>
+				}
 			</div>
 		</div>
 	)
