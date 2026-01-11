@@ -10,6 +10,7 @@ import { generateNodeColor } from "@/scripts/colorSystem"
 import GraphToolbar from "./GraphToolbar"
 import GraphOptions from "./GraphOptions"
 import GraphFade from "./GraphFade"
+import NodeInfo from "./NodeInfo"
 
 function Graph() {
 	const { handTool, nodes, links, graphView } = useContext(GraphContext)
@@ -35,6 +36,9 @@ function Graph() {
 
 	// Graph Fade
 	const [graphFade, setGraphFade] = useState(false)
+	
+	// Node Info
+	const [nodeInfo, setNodeInfo] = useState(<></>)
 
 	useEffect(() => {
 		// Apply colors based on current graph view
@@ -157,19 +161,25 @@ function Graph() {
 						}
 
 						// Prevent movement if handtool not pan
-						if (freezeGraph) {
-							graphRef.current.centerAt({
-								x: graphCoords.x,
-								y: graphCoords.y
-							})
-							graphRef.current.zoom(graphZoom)
-						}
+						// if (freezeGraph) {
+						// 	graphRef.current.centerAt({
+						// 		x: graphCoords.x,
+						// 		y: graphCoords.y
+						// 	})
+						// 	graphRef.current.zoom(graphZoom)
+						// }
 					}}
 
 					onNodeHover={(node, event) => {
 						if (event) {
 							const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY)
 							setMousePos(graphCoords)
+						}
+
+						// If on info tool
+						if (handTool == 1) {
+							setGraphFade(true)
+							setNodeInfo(<NodeInfo x={0} y={0} name={node.name} url={node.url}/>)
 						}
 
 						// Only set as hovered node if mouse is over the icon area
@@ -246,6 +256,7 @@ function Graph() {
 							return
 						}
 
+						// Check if clicked on icon
 						const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY)
 						if (node.__iconArea) {
 							const ia = node.__iconArea
@@ -269,6 +280,8 @@ function Graph() {
 					graphFade &&
 					<GraphFade/>
 				}
+
+				{nodeInfo}
 
 				<GraphOptions/>
 				<GraphToolbar handleFullScreen={handleFullScreen}/>

@@ -3,10 +3,10 @@
 
 // Graph Fade
 #graphFade {
+	z-index: 1;
 	position: absolute;
-	z-index: 99998;
 	width: 100vw;
 	height: 100%;
 	background-color: v.$background-color;
-	opacity: .6;
+	opacity: .3;
 }

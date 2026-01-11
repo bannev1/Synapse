@@ -2,6 +2,7 @@
 
 // Graph Options (small button on bottom left of graph)
 #options {
+	z-index: 9;
 	box-sizing: border-box;
 	position: sticky;
 	padding: 0;
@@ -36,6 +37,7 @@
 
 // MENU/POPUP
 #optionsModal {
+	z-index: 99;
 	position: absolute;
 	left: 0;
 	top: 0;

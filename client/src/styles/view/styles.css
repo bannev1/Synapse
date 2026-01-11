@@ -182,6 +182,7 @@
 }
 
 #miniTools {
+  z-index: 9;
   box-sizing: default;
   width: -moz-fit-content;
   width: fit-content;
@@ -273,6 +274,7 @@
 }
 
 #options {
+  z-index: 9;
   box-sizing: border-box;
   position: sticky;
   padding: 0;
@@ -302,6 +304,7 @@
 }
 
 #optionsModal {
+  z-index: 99;
   position: absolute;
   left: 0;
   top: 0;
@@ -460,12 +463,12 @@
 }
 
 #graphFade {
+  z-index: 1;
   position: absolute;
-  z-index: 99998;
   width: 100vw;
   height: 100%;
   background-color: #FEEFDD;
-  opacity: 0.6;
+  opacity: 0.3;
 }
 
 #home {
