@@ -1,4 +1,5 @@
 from flask import Blueprint, Flask
+from flask_cors import CORS
 
 
 class Routes:
@@ -19,12 +20,23 @@ class Routes:
 		if not hasattr(self, "index"):
 			self.index = Flask(__name__)
 
+			# Set up CORS
+			CORS(self.index, resources={r"/*": {"origins": [
+				"http://localhost:3000", # local frontend
+				"http://127.0.0.1:3000"  # local frontend
+			]
+			}}, supports_credentials=True)
+
+			# Load configuration
+			self.index.config.from_object('config.Config')
+
+			# Set up blueprints
 			self.search = Blueprint('search', __name__, url_prefix='/search') # Search Route
 			self.share = Blueprint('share', __name__, url_prefix='/share') # Share Route
 
-			self.index.register_blueprint(self.search)
-			self.index.register_blueprint(self.share)
 
+	def registerBlueprints(self) -> None:
+		"""Register blueprints once defined"""
+		self.index.register_blueprint(self.search)
+		self.index.register_blueprint(self.share)
 
-# Initialize Routes
-Routes()
