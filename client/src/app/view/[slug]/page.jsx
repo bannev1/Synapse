@@ -83,6 +83,10 @@ function View() {
 					'id': 'id3',
 					'group': 'topic',
 					'name': 'Cryptography'
+				}, {
+					'id': 'id4',
+					'group': 'title',
+					'name': 'Title'
 				}]} allLinks={[{
 					'target': 'id1',
 					'source': 'id2',

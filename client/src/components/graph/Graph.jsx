@@ -173,11 +173,11 @@ function Graph() {
 					}}
 
 					onNodeHover={(node, event) => {
-						
 						if (event) {
 							const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY)
 							setMousePos(graphCoords)
 						}
+						
 						// If on info tool
 						if (handTool == 1 && node != null) {
 							if (node.group == 'source') {
@@ -187,17 +187,22 @@ function Graph() {
 							}
 							
 						}
-						// Only set as hovered node if mouse is over the icon area
-						if (node != null)
-							if (node.group == 'source')
-								setHoveredNodeLink(node && isMouseOverIcon(node) ? node : null)
+						if (node != null) {
+							switch (node.group) {
+								case 'source':
+									// Only set as hovered node if mouse is over the icon area
+									setHoveredNodeLink(node && isMouseOverIcon(node) ? node : null)
+									break;
+							}
+						}
 					}}
 
 					nodeCanvasObject={(node, ctx) => {
-							const borderRadius = 4
+							var borderRadius = 4
 							var fontSize;
 							var label;
 							var padding;
+							var paddingWidth;
 							var textWidth;
 							var bckgWidth;
 							var bckgHeight;
@@ -268,7 +273,7 @@ function Graph() {
 									label = node.name
 									fontSize = 13
 									padding = fontSize * .8
-									const paddingWidth = fontSize * 1.25
+									paddingWidth = fontSize * 1.25
 
 									ctx.font = `800 ${fontSize}px Montserrat, Sans-Serif`
 									textWidth = ctx.measureText(label).width
@@ -303,6 +308,52 @@ function Graph() {
 									ctx.textAlign = "center"
 									ctx.textBaseline = "middle"
 									ctx.fillStyle = "rgb(0, 0, 0)"
+									ctx.fillText(label, node.x - (fontSize - paddingWidth)/2, node.y)
+								
+									break;
+
+
+								// Draw Title Nodes
+								case 'title':
+									label = node.name
+									fontSize = 25
+									borderRadius = 7
+									padding = fontSize * .5
+									paddingWidth = fontSize * 1.1
+
+									ctx.font = `800 ${fontSize}px Montserrat, Sans-Serif`
+									textWidth = ctx.measureText(label).width
+		
+									bckgWidth = textWidth + paddingWidth * 2
+									bckgHeight = fontSize + padding * 2
+									bckgDimensions = [bckgWidth, bckgHeight]
+									node.__bckgDimensions = bckgDimensions
+
+									// Draw backdrop shadow
+									ctx.save()
+									ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
+									ctx.shadowBlur = 15
+									ctx.shadowOffsetX = 0
+									ctx.shadowOffsetY = 4
+
+									// Draw background with shadow
+									ctx.fillStyle = "#201e1f"
+									ctx.beginPath()
+									ctx.roundRect(
+										node.x - bckgDimensions[0] / 2,
+										node.y - bckgDimensions[1] / 2,
+										bckgDimensions[0],
+										bckgDimensions[1],
+										borderRadius,
+									)
+									ctx.fill()
+		
+									ctx.restore() // Reset shadow for other elements
+		
+									// Draw text
+									ctx.textAlign = "center"
+									ctx.textBaseline = "middle"
+									ctx.fillStyle = "#feefdd"
 									ctx.fillText(label, node.x - (fontSize - paddingWidth)/2, node.y)
 								
 									break;
