@@ -1,4 +1,4 @@
-from api.app.models.nodes import Node
+from app.models.nodes import Node
 
 class GraphNode(Node):
 	def __init__(self, 
