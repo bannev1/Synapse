@@ -11,14 +11,14 @@
 	- [Introduction](#introduction)
 	- [Contribution](#contribution)
 	- [License](#license)
-	- [Credits](#credits)
-	- [Contact](#contact)
 
 ## Introduction
 
 Research made easy. Visualize graphically all your resources sorted into topics.
 
 Created for the IBDP Computer Science HL Internal Assessment.
+
+Backend is written in Python Flask and stored in the `api` folder. Frontend is built with React Next.JS and SCSS and stored in `client`.
 
 ## Contribution
 
