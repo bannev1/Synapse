@@ -190,59 +190,117 @@ function Graph() {
 					}}
 
 					nodeCanvasObject={(node, ctx) => {
-							// Set up node
-							const label = node.site
-							const fontSize = 8
-							const baseIconSize = 12
-							const iconSize = animatedIconSizes[node.id] || baseIconSize
-							const iconSpacing = 4
-							const padding = fontSize * 0.8
-
-							ctx.font = `700 ${fontSize}px Montserrat, Sans-Serif`
-							const textWidth = ctx.measureText(label).width
-
-							const bckgWidth = textWidth + baseIconSize + padding * 2 + iconSpacing
-							const bckgHeight = fontSize + padding * 2
-							const bckgDimensions = [bckgWidth, bckgHeight]
-							node.__bckgDimensions = bckgDimensions
-
-							// Draw backdrop shadow
-							ctx.save()
-							ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
-							ctx.shadowBlur = 15
-							ctx.shadowOffsetX = 0
-							ctx.shadowOffsetY = 4
-
-							// Draw background with shadow
-							ctx.fillStyle = node.color
 							const borderRadius = 4
-							ctx.beginPath()
-							ctx.roundRect(
-								node.x - bckgDimensions[0] / 2,
-								node.y - bckgDimensions[1] / 2,
-								bckgDimensions[0],
-								bckgDimensions[1],
-								borderRadius,
-							)
-							ctx.fill()
+							var fontSize;
+							var label;
+							var padding;
+							var textWidth;
+							var bckgWidth;
+							var bckgHeight;
+							var bckgDimensions; 
 
-							ctx.restore() // Reset shadow for other elements
+							switch (node.group) {
+								// Draw source nodes
+								case 'source':
+									// Set up node
+									label = node.site
+									fontSize = 8
+									const baseIconSize = 12
+									const iconSize = animatedIconSizes[node.id] || baseIconSize
+									const iconSpacing = 4
+									padding = fontSize * 0.8
+		
+									ctx.font = `700 ${fontSize}px Montserrat, Sans-Serif`
+									textWidth = ctx.measureText(label).width
+		
+									bckgWidth = textWidth + baseIconSize + padding * 2 + iconSpacing
+									bckgHeight = fontSize + padding * 2
+									bckgDimensions = [bckgWidth, bckgHeight]
+									node.__bckgDimensions = bckgDimensions
+		
+									// Draw backdrop shadow
+									ctx.save()
+									ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
+									ctx.shadowBlur = 15
+									ctx.shadowOffsetX = 0
+									ctx.shadowOffsetY = 4
+		
+									// Draw background with shadow
+									ctx.fillStyle = node.color
+									ctx.beginPath()
+									ctx.roundRect(
+										node.x - bckgDimensions[0] / 2,
+										node.y - bckgDimensions[1] / 2,
+										bckgDimensions[0],
+										bckgDimensions[1],
+										borderRadius,
+									)
+									ctx.fill()
+		
+									ctx.restore() // Reset shadow for other elements
+		
+									// Draw text
+									ctx.textAlign = "center"
+									ctx.textBaseline = "middle"
+									ctx.fillStyle = "rgb(0, 0, 0)"
+									ctx.fillText(label, node.x - (fontSize + iconSpacing + baseIconSize / 2) / 2, node.y)
+		
+									// Draw img once loaded
+									if (blackOpenNewImg) {
+										// Center the icon properly regardless of current animated size
+										const iconX = node.x + bckgWidth / 2 - (iconSize - (iconSize - baseIconSize) / 2) - padding / 2
+										const iconY = node.y - iconSize / 2
+		
+										ctx.drawImage(blackOpenNewImg, iconX, iconY, iconSize, iconSize)
+		
+										node.__iconArea = { x: iconX, y: iconY, width: iconSize, height: iconSize }
+									}
+								
+									break;
 
-							// Draw text
-							ctx.textAlign = "center"
-							ctx.textBaseline = "middle"
-							ctx.fillStyle = "rgb(0, 0, 0)"
-							ctx.fillText(label, node.x - (fontSize + iconSpacing + baseIconSize / 2) / 2, node.y)
 
-							// Draw img once loaded
-							if (blackOpenNewImg) {
-								// Center the icon properly regardless of current animated size
-								const iconX = node.x + bckgWidth / 2 - (iconSize - (iconSize - baseIconSize) / 2) - padding / 2
-								const iconY = node.y - iconSize / 2
+								// Draw Topic Nodes
+								case 'topic':
+									label = node.topic
+									fontSize = 10
+									padding = fontSize * 0.8
 
-								ctx.drawImage(blackOpenNewImg, iconX, iconY, iconSize, iconSize)
+									ctx.font = `700 ${fontSize}px Montserrat, Sans-Serif`
+									textWidth = ctx.measureText(label).width
+		
+									bckgWidth = textWidth + baseIconSize + padding * 2 + iconSpacing
+									bckgHeight = fontSize + padding * 2
+									bckgDimensions = [bckgWidth, bckgHeight]
+									node.__bckgDimensions = bckgDimensions
 
-								node.__iconArea = { x: iconX, y: iconY, width: iconSize, height: iconSize }
+									// Draw backdrop shadow
+									ctx.save()
+									ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
+									ctx.shadowBlur = 15
+									ctx.shadowOffsetX = 0
+									ctx.shadowOffsetY = 4
+
+									// Draw background with shadow
+									ctx.fillStyle = node.color
+									ctx.beginPath()
+									ctx.roundRect(
+										node.x - bckgDimensions[0] / 2,
+										node.y - bckgDimensions[1] / 2,
+										bckgDimensions[0],
+										bckgDimensions[1],
+										borderRadius,
+									)
+									ctx.fill()
+		
+									ctx.restore() // Reset shadow for other elements
+		
+									// Draw text
+									ctx.textAlign = "center"
+									ctx.textBaseline = "middle"
+									ctx.fillStyle = "rgb(0, 0, 0)"
+									ctx.fillText(label, node.x - fontSize / 2, node.y)
+								
+									break;
 							}
 						}
 					}
