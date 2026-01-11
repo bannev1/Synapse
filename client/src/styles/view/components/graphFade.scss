@@ -7,6 +7,12 @@
 	position: absolute;
 	width: 100vw;
 	height: 100%;
-	background-color: v.$background-color;
-	opacity: .3;
+
+	& .fader {
+		position: absolute;
+		width: 100vw;
+		height: 100%;
+		background-color: v.$background-color;
+		opacity: .3;
+	}
 }

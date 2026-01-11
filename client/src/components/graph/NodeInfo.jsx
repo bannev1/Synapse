@@ -7,7 +7,7 @@ function NodeInfo({x, y, name, url}) {
 		<>
 			<GraphFade>
 				<div className="nodeInfo">
-					<p>{name}</p>
+					<p className='title'>{name}</p>
 				</div>
 			</GraphFade>
 		</>

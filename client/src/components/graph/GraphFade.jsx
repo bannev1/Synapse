@@ -5,6 +5,8 @@ import React from 'react'
 function GraphFade({children = <></>}) {
 	return (
 		<div id="graphFade">
+			<div className='fader'/>
+
 			{children}
 		</div>
 	)

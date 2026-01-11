@@ -74,7 +74,7 @@
 				right: -8px;
 				width: 2px;
 				height: 35px;
-				border-radius: 100%;
+				border-radius: 1px;
 				margin: auto 0;
 				background-color: v.$grey;
 				opacity: 1;
@@ -86,13 +86,15 @@
 		& > button {
 			background-color: v.$black;
 			border: none;
-			width: fit-content;
-			height: fit-content;
-			aspect-ratio: 1/1;
+			width: 37px;
+			height: 37px;
 			margin: auto;
 			padding: 5px;
 			border-radius: 50%;
 			opacity: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			transition: opacity 250ms ease-in-out, background-color 250ms ease-in-out;
 	
 			&:hover {
@@ -102,6 +104,11 @@
 	
 			&.active {
 				background-color: v.$background-color;
+			}
+
+			& img {
+				width: 27px;
+				height: 27px;
 			}
 		}
 

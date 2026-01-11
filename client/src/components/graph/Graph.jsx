@@ -33,9 +33,6 @@ function Graph() {
 	const [graphCoords, setGraphCoords] = useState({x: 0, y: 0})
 	const [graphZoom, setGraphZoom] = useState(100)
 	const [freezeGraph, setFreezeGraph] = useState(false)
-
-	// Graph Fade
-	const [graphFade, setGraphFade] = useState(false)
 	
 	// Node Info
 	const [nodeInfo, setNodeInfo] = useState(<></>)
@@ -177,9 +174,10 @@ function Graph() {
 						}
 
 						// If on info tool
-						if (handTool == 1) {
-							setGraphFade(true)
-							setNodeInfo(<NodeInfo x={0} y={0} name={node.name} url={node.url}/>)
+						if (handTool == 1 && node != null) {
+							console.log(node.x, node.y)
+							const nodeCoords = graphRef.current.graph2ScreenCoords(node.x, node.y)
+							setNodeInfo(<NodeInfo x={nodeCoords.x} y={nodeCoords.y} name={node.name} url={node.url}/>)
 						}
 
 						// Only set as hovered node if mouse is over the icon area
@@ -275,11 +273,6 @@ function Graph() {
 						console.log("Node clicked:", node)
 					}}
 				/>
-
-				{
-					graphFade &&
-					<GraphFade/>
-				}
 
 				{nodeInfo}
 
