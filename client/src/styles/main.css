@@ -368,16 +368,39 @@
 #searchOptions #graphType .dropdown {
   position: absolute;
   width: 130px;
-  height: 125px;
-  background-color: #fffaf4;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 10px;
+  background-color: #FEEFDD;
+  color: #201E1F;
   border-radius: 10px;
   bottom: -130px;
   left: 0;
   right: 0;
+  top: 0;
+  margin-top: 35px;
   margin-inline: auto;
+  margin-bottom: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-evenly;
+  gap: 5px;
+}
+#searchOptions #graphType .dropdown div {
+  width: 100%;
+  height: 25px;
+  border-radius: 7px;
+  background-color: #FEEFDD;
+  border: none;
+  padding: 5px;
+  font-weight: 500;
+  transition: opacity 200ms ease-in-out, filter 200ms ease-in-out;
+}
+#searchOptions #graphType .dropdown div:hover, #searchOptions #graphType .dropdown div:focus {
+  opacity: 0.7;
+  filter: invert(70%);
+  cursor: pointer;
 }
 #searchOptions.inverted {
   color: #201E1F;
@@ -409,9 +432,16 @@
 #searchOptions.inverted #depthSelect label {
   background-color: #FEEFDD;
 }
+#searchOptions.inverted #graphType button {
+  color: #201E1F;
+}
 #searchOptions.inverted #graphType .dropdown {
   background-color: #201E1F;
+  color: #fffaf4;
   box-shadow: 14px 10px 21px -6px rgba(0, 0, 0, 0.18);
+}
+#searchOptions.inverted #graphType .dropdown div {
+  background-color: #201E1F;
 }
 
 .modalBackdrop {

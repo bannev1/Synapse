@@ -336,17 +336,43 @@
 		& .dropdown {
 			position: absolute;
 			width: 130px;
-			height: 125px;
-			background-color: v.$white;
+			height: fit-content;
+			padding: 10px;
+			background-color: v.$background-color;
+			color: v.$black;
 			border-radius: 10px;
 			bottom: -130px;
 			left: 0;
 			right: 0;
+			top: 0;
 			// margin: 0 auto;
+			margin-top: 35px;
 			margin-inline: auto;
+			margin-bottom: auto;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			justify-content: space-evenly;
+			gap: 5px;
+
+			& div {
+				width: 100%;
+				height: 25px;
+				border-radius: 7px;
+				background-color: v.$background-color;
+				border: none;
+				padding: 5px;
+				font-weight: 500;
+				transition: opacity 200ms ease-in-out,
+							filter 200ms ease-in-out;
+
+				&:hover,
+				&:focus {
+					opacity: .7;
+					filter: invert(70%);
+					cursor: pointer;
+				}
+			}
 		}
 	}
 
@@ -398,9 +424,18 @@
 
 		// Graph Type
 		& #graphType {
+			& button {
+				color: v.$black;
+			}
+			
 			& .dropdown {
 				background-color: v.$black;
+				color: v.$white;
 				box-shadow: v.$basic-shadow;
+
+				& div {
+					background-color: v.$black;
+				}
 			}
 		}
 	}
