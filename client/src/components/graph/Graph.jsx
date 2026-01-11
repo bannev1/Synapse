@@ -180,9 +180,11 @@ function Graph() {
 
 						// If on info tool
 						if (handTool == 1 && node != null) {
-							console.log(node.x, node.y)
-							const nodeCoords = graphRef.current.graph2ScreenCoords(node.x, node.y) // Remember to rmv height of toolbar and search bar
-							setNodeInfo(<NodeInfo x={nodeCoords.x} y={nodeCoords.y - 55 - 70} name={node.site} url={node.url}/>)
+							if (node.group == 'source') {
+								console.log(node.x, node.y)
+								const nodeCoords = graphRef.current.graph2ScreenCoords(node.x, node.y) // Remember to rmv height of toolbar and search bar
+								setNodeInfo(<NodeInfo x={nodeCoords.x} y={nodeCoords.y - 55 - 70} name={node.site} url={node.url}/>)
+							}
 						}
 
 						// Only set as hovered node if mouse is over the icon area
@@ -313,27 +315,29 @@ function Graph() {
 					}}
 
 					onNodeClick={(node, event) => {
-						if (!blackOpenNewImg || !whiteOpenNewImg) {
-							return
-						}
-
-						// Check if clicked on icon
-						const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY)
-						if (node.__iconArea) {
-							const ia = node.__iconArea
-							if (
-								graphCoords.x >= ia.x &&
-								graphCoords.x <= ia.x + ia.width &&
-								graphCoords.y >= ia.y &&
-								graphCoords.y <= ia.y + ia.height
-							) {
-								event.preventDefault()
-								window.open(node.link, "_blank")
+						if (node.group == 'source') {
+							if (!blackOpenNewImg || !whiteOpenNewImg) {
 								return
 							}
+	
+							// Check if clicked on icon
+							const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY)
+							if (node.__iconArea) {
+								const ia = node.__iconArea
+								if (
+									graphCoords.x >= ia.x &&
+									graphCoords.x <= ia.x + ia.width &&
+									graphCoords.y >= ia.y &&
+									graphCoords.y <= ia.y + ia.height
+								) {
+									event.preventDefault()
+									window.open(node.link, "_blank")
+									return
+								}
+							}
+	
+							console.log("Node clicked:", node)
 						}
-
-						console.log("Node clicked:", node)
 					}}
 				/>
 
