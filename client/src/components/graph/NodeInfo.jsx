@@ -10,7 +10,7 @@ function NodeInfo({x, y, name, url}) {
 	return (
 		<>
 			<GraphFade>
-				<div className="nodeInfo">
+				<div className="nodeInfo" style={{'top': y, 'left': x}}>
 					<p className='title'>{name}</p>
 
 					<button className='openLink' onClick={() => {

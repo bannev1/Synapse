@@ -150,6 +150,8 @@ function Graph() {
 					linkWidth={4}
 					linkColor={() => "rgba(200, 200, 200, 0.3)"}
 
+					className={freezeGraph ? 'nopan' : ''}
+
 					onEngineTick={() => {
 						if (graphRef.current) {
 							// Set strength of links
@@ -176,8 +178,8 @@ function Graph() {
 						// If on info tool
 						if (handTool == 1 && node != null) {
 							console.log(node.x, node.y)
-							const nodeCoords = graphRef.current.graph2ScreenCoords(node.x, node.y)
-							setNodeInfo(<NodeInfo x={nodeCoords.x} y={nodeCoords.y} name={node.site} url={node.url}/>)
+							const nodeCoords = graphRef.current.graph2ScreenCoords(node.x, node.y) // Remember to rmv height of toolbar and search bar
+							setNodeInfo(<NodeInfo x={nodeCoords.x} y={nodeCoords.y - 55 - 70} name={node.site} url={node.url}/>)
 						}
 
 						// Only set as hovered node if mouse is over the icon area
@@ -274,7 +276,10 @@ function Graph() {
 					}}
 				/>
 
-				{nodeInfo}
+				{
+					handTool == 1 && // ensure that on info mode
+					nodeInfo
+				}
 
 				<GraphOptions/>
 				<GraphToolbar handleFullScreen={handleFullScreen}/>
