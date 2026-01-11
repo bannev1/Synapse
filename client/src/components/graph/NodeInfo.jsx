@@ -1,13 +1,15 @@
 import React from 'react'
 
-function NodeInfo() {
+import GraphFade from './GraphFade'
+
+function NodeInfo({x, y, name, url}) {
 	return (
 		<>
-			<div className=""/>
-		
-			<div className="nodeInfo">
-				NodeInfo
-			</div>
+			<GraphFade>
+				<div className="nodeInfo">
+					<p>{name}</p>
+				</div>
+			</GraphFade>
 		</>
 	)
 }
