@@ -23,36 +23,63 @@ CREATE TABLE saved (
 	graphType VARCHAR(20) CHECK (graphType IN ('source', 'topic', 'title')) NOT NULL
 );
 
-
+-----------------------
 -- GRAPH STORAGE TABLES
+-----------------------
 
 -- Colors Storage Table (for easier use)
 CREATE TABLE colors (
 	colorValue VARCHAR(100) PRIMARY KEY
 );
 
--- Primary nodes table for cache (for all nodes)
-CREATE TABLE cacheNodes (
+-- CACHE GRAPH TABLES
+
+-- Source nodes table for cache
+CREATE TABLE cacheSourceNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES cache(id) ON DELETE CASCADE,
 	name VARCHAR(5000) NOT NULL,
 	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL
 );
 
--- Primary nodes table for saved graphs (for all nodes)
-CREATE TABLE savedNodes (
+-- Topic nodes table for cache
+CREATE TABLE cacheTopicNodes (
+	id SERIAL PRIMARY KEY,
+	graph INT REFERENCES cache(id) ON DELETE CASCADE,
+	name VARCHAR(5000) NOT NULL,
+	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL
+);
+
+-- Join Table for cache source/topic nodes
+CREATE TABLE cacheTopicSourceJoinTable (
+	id SERIAL PRIMARY KEY,
+	graph INT REFERENCES cache(id) ON DELETE CASCADE,
+	topicNode INT REFERENCES cacheTopicNodes(id) ON DELETE CASCADE,
+	sourceNode INT REFERENCES cacheSourceNodes(id) ON DELETE CASCADE
+);
+
+-- SAVED GRAPH TABLES
+
+-- Source nodes table for saved graphs
+CREATE TABLE savedSourceNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES saved(id) ON DELETE CASCADE,
 	name VARCHAR(5000) NOT NULL,
 	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL
 );
 
--- Source Nodes
-CREATE TABLE sourceNodes (
-
+-- Topic nodes table for saved graphs
+CREATE TABLE savedTopicNodes (
+	id SERIAL PRIMARY KEY,
+	graph INT REFERENCES saved(id) ON DELETE CASCADE,
+	name VARCHAR(5000) NOT NULL,
+	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL
 );
 
--- Topic Nodes
-CREATE TABLE sourceNodes (
-
+-- Join Table for saved graph source/topic nodes
+CREATE TABLE savedTopicSourceJoinTable (
+	id SERIAL PRIMARY KEY,
+	graph INT REFERENCES cache(id) ON DELETE CASCADE,
+	topicNode INT REFERENCES savedTopicNodes(id) ON DELETE CASCADE,
+	sourceNode INT REFERENCES savedSourceNodes(id) ON DELETE CASCADE
 );
