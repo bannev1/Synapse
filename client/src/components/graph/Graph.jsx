@@ -177,7 +177,7 @@ function Graph() {
 						if (handTool == 1 && node != null) {
 							console.log(node.x, node.y)
 							const nodeCoords = graphRef.current.graph2ScreenCoords(node.x, node.y)
-							setNodeInfo(<NodeInfo x={nodeCoords.x} y={nodeCoords.y} name={node.name} url={node.url}/>)
+							setNodeInfo(<NodeInfo x={nodeCoords.x} y={nodeCoords.y} name={node.site} url={node.url}/>)
 						}
 
 						// Only set as hovered node if mouse is over the icon area

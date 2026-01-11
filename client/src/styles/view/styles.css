@@ -490,7 +490,7 @@
   overflow-y: scroll;
   border-radius: 12px;
   background-color: #FEEFDD;
-  padding: 5px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -498,7 +498,7 @@
 }
 .nodeInfo .title {
   font-weight: 700;
-  font-size: 12em;
+  font-size: 1.25em;
   color: #201E1F;
   width: 100%;
   height: -moz-fit-content;
@@ -508,6 +508,8 @@
      -moz-user-select: none;
           user-select: none;
   position: relative;
+  margin: 0;
+  padding: 0;
 }
 .nodeInfo .title::after {
   content: "";
@@ -518,8 +520,36 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 2.5px;
+  bottom: -2.5px;
   margin: 0;
+}
+.nodeInfo button.openLink {
+  padding: 7px 10px;
+  width: 100%;
+  height: -moz-fit-content;
+  height: fit-content;
+  margin: 0;
+  background-color: #201E1F;
+  color: #fffaf4;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: space-between;
+  align-items: center;
+  transition: opacity 200ms ease-in-out;
+}
+.nodeInfo button.openLink img {
+  width: 20px;
+  height: 20px;
+}
+.nodeInfo button.openLink:hover, .nodeInfo button.openLink:focus {
+  opacity: 0.7;
+  cursor: pointer;
 }
 
 #home {
