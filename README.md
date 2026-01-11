@@ -20,6 +20,16 @@ Created for the IBDP Computer Science HL Internal Assessment.
 
 Backend is written in Python Flask (with PostGreSQL) and stored in the `api` folder. Frontend is built with React Next.JS and SCSS and stored in `client`.
 
+Make sure to create a `.env` file in the `app` folder with the following contents (filled out):
+
+```shell
+DATABASE_URL = '' # Connection String to Database
+
+GOOGLE_API_KEY = '' # https://developers.google.com/custom-search/v1/introduction
+IP2_API_KEY = '' # https://www.ip2location.io/
+IPINFO_API_KEY = '' # https://ipinfo.io/
+```
+
 ## Contribution
 
 If you want to contribute to this project, please follow the guidelines below:
