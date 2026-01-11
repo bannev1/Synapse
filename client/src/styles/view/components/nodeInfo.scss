@@ -1,0 +1,13 @@
+@use '../../variables' as v;
+
+
+// Node Info Popup
+.nodeInfo {
+	position: absolute;
+	width: 175px;
+	height: fit-content;
+	max-height: 250px;
+	overflow-y: scroll;
+	border-radius: 15px;
+	background-color: v.$background-color;
+}

@@ -9,6 +9,7 @@ import { generateNodeColor } from "@/scripts/colorSystem"
 // Components
 import GraphToolbar from "./GraphToolbar"
 import GraphOptions from "./GraphOptions"
+import GraphFade from "./GraphFade"
 
 function Graph() {
 	const { handTool, nodes, links, graphView } = useContext(GraphContext)
@@ -31,6 +32,9 @@ function Graph() {
 	const [graphCoords, setGraphCoords] = useState({x: 0, y: 0})
 	const [graphZoom, setGraphZoom] = useState(100)
 	const [freezeGraph, setFreezeGraph] = useState(false)
+
+	// Graph Fade
+	const [graphFade, setGraphFade] = useState(false)
 
 	useEffect(() => {
 		// Apply colors based on current graph view
@@ -260,6 +264,11 @@ function Graph() {
 						console.log("Node clicked:", node)
 					}}
 				/>
+
+				{
+					graphFade &&
+					<GraphFade/>
+				}
 
 				<GraphOptions/>
 				<GraphToolbar handleFullScreen={handleFullScreen}/>

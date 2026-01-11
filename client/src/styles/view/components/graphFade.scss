@@ -1,0 +1,12 @@
+@use '../../variables' as v;
+
+
+// Graph Fade
+#graphFade {
+	position: absolute;
+	z-index: 99998;
+	width: 100vw;
+	height: 100%;
+	background-color: v.$background-color;
+	opacity: .6;
+}

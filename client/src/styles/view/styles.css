@@ -459,6 +459,15 @@
   cursor: pointer;
 }
 
+#graphFade {
+  position: absolute;
+  z-index: 99998;
+  width: 100vw;
+  height: 100%;
+  background-color: #FEEFDD;
+  opacity: 0.6;
+}
+
 #home {
   height: calc(100vh - 55px);
   width: 100%;
