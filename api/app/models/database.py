@@ -20,7 +20,7 @@ class Database:
 		"""Initialize the database connection pool if it doesn't already exist."""
 		
 		if not hasattr(self, "_pool"):
-			database_url = current_app.config["CODEHERS_DB"]
+			database_url = current_app.config["DATABASE_URL"]
 			parsed_url = urlparse(database_url)
 
 			self._pool = psycopg2.pool.SimpleConnectionPool(
