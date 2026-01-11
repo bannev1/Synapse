@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, Flask
 
 
 class Routes:
@@ -16,9 +16,14 @@ class Routes:
 	def __init__(self) -> None:
 		"""Initialize the Routes class if it doesn't already exist."""
 		
-		if not hasattr(self, "search"):
-			self.search = Blueprint('search', __name__) # Search Route
-			self.share = Blueprint('share', __name__) # Share Route
+		if not hasattr(self, "index"):
+			self.index = Flask(__name__)
+
+			self.search = Blueprint('search', __name__, url_prefix='/search') # Search Route
+			self.share = Blueprint('share', __name__, url_prefix='/share') # Share Route
+
+			self.index.register_blueprint(self.search)
+			self.index.register_blueprint(self.share)
 
 
 # Initialize Routes
