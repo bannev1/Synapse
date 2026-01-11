@@ -152,6 +152,7 @@ function Graph() {
 					// Set up links
 					linkWidth={4}
 					linkColor={() => "rgba(200, 200, 200, 0.3)"}
+					backgroundColor="#feefdd"
 
 					className={freezeGraph ? 'nopan' : ''}
 
