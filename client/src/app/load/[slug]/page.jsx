@@ -91,6 +91,7 @@ function LoadGraph() {
 					>
 						<div id="home">
 							{/* Graph Toolbar */}
+							<div id="toolbarPlaceholder"/>
 							<div id="toolbar">
 								<SearchBar editable={false} inverted={true} isPlaceholder={false} placeholder={graph.name}/>
 							

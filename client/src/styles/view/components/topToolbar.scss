@@ -19,6 +19,7 @@
 	align-items: center;
 	z-index: 999999;
 
+
 	// Refresh Button
 	& #refresh {
 		border: none;
@@ -178,3 +179,13 @@
 	}
 }
 
+
+// Toolbar Placeholder for size
+#toolbarPlaceholder {
+	position: relative;
+	z-index: 0;
+	width: 100%;
+	height: 70px;
+	background-color: transparent;
+	opacity: 0;
+}

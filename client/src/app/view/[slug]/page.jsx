@@ -84,6 +84,7 @@ function View() {
 					'source': 'id2',
 				}]}>
 					<div id="home">
+						<div id="toolbarPlaceholder"/>
 						<div id="toolbar">
 							<button id="refresh">
 								<Image src={refresh} alt='Refresh Icon'/>
