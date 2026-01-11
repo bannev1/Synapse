@@ -173,11 +173,11 @@ function Graph() {
 					}}
 
 					onNodeHover={(node, event) => {
+						
 						if (event) {
 							const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY)
 							setMousePos(graphCoords)
 						}
-
 						// If on info tool
 						if (handTool == 1 && node != null) {
 							if (node.group == 'source') {
@@ -185,10 +185,12 @@ function Graph() {
 								const nodeCoords = graphRef.current.graph2ScreenCoords(node.x, node.y) // Remember to rmv height of toolbar and search bar
 								setNodeInfo(<NodeInfo x={nodeCoords.x} y={nodeCoords.y - 55 - 70} name={node.site} url={node.url}/>)
 							}
+							
 						}
-
 						// Only set as hovered node if mouse is over the icon area
-						setHoveredNodeLink(node && isMouseOverIcon(node) ? node : null)
+						if (node != null)
+							if (node.group == 'source')
+								setHoveredNodeLink(node && isMouseOverIcon(node) ? node : null)
 					}}
 
 					nodeCanvasObject={(node, ctx) => {
@@ -263,14 +265,15 @@ function Graph() {
 
 								// Draw Topic Nodes
 								case 'topic':
-									label = node.topic
-									fontSize = 10
-									padding = fontSize * 0.8
+									label = node.name
+									fontSize = 13
+									padding = fontSize * .8
+									const paddingWidth = fontSize * 1.25
 
-									ctx.font = `700 ${fontSize}px Montserrat, Sans-Serif`
+									ctx.font = `800 ${fontSize}px Montserrat, Sans-Serif`
 									textWidth = ctx.measureText(label).width
 		
-									bckgWidth = textWidth + baseIconSize + padding * 2 + iconSpacing
+									bckgWidth = textWidth + paddingWidth * 2
 									bckgHeight = fontSize + padding * 2
 									bckgDimensions = [bckgWidth, bckgHeight]
 									node.__bckgDimensions = bckgDimensions
@@ -300,7 +303,7 @@ function Graph() {
 									ctx.textAlign = "center"
 									ctx.textBaseline = "middle"
 									ctx.fillStyle = "rgb(0, 0, 0)"
-									ctx.fillText(label, node.x - fontSize / 2, node.y)
+									ctx.fillText(label, node.x - (fontSize - paddingWidth)/2, node.y)
 								
 									break;
 							}

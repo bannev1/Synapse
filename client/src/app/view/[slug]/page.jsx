@@ -79,9 +79,16 @@ function View() {
 					'site': 'BBC',
 					'url': 'https://bbc.com',
 					'group': 'source'
+				}, {
+					'id': 'id3',
+					'group': 'topic',
+					'name': 'Cryptography'
 				}]} allLinks={[{
 					'target': 'id1',
 					'source': 'id2',
+				}, {
+					'target': 'id3',
+					'source': 'id2'
 				}]}>
 					<div id="home">
 						<div id="toolbarPlaceholder"/>
