@@ -86,10 +86,10 @@ function GraphOptions() {
 						<AddNodeModal closeModal={() => {setCurrentModal(0)}}/>
 					}
 
-					{
+					{/* {
 						currentModal == 2 &&
 						<AddCommentModal closeModal={() => {setCurrentModal(0)}}/>
-					}
+					} */}
 					
 					{
 						currentModal == 3 &&
