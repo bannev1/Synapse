@@ -1,6 +1,58 @@
 -- File to configure tables in database
 
+-- Enable UUID extension (required for generating UUIDs for saved graphs)
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 
--- CACHE TABLES
+-- CACHE TABLE (equiv to a GraphNode/TitleNode)
+CREATE TABLE cache (
+	id SERIAL PRIMARY KEY,
+	query VARCHAR(8000) NOT NULL,
+	graphType VARCHAR(20) CHECK (graphType IN ('source', 'topic', 'title')) NOT NULL,
+	sources VARCHAR(8000) NOT NULL, -- CSV list of sources
+	timestamp TIMESTAMP NOT NULL DEFAULT NOW()
+);
 
+
+-- SAVED GRAPH TABLE (equiv to a GraphNode/TitleNode)
+CREATE TABLE saved (
+	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+	name VARCHAR(8000) NOT NULL,
+	depth INT NOT NULL,
+	sources VARCHAR(8000) NOT NULL, -- CSV list of sources
+	graphType VARCHAR(20) CHECK (graphType IN ('source', 'topic', 'title')) NOT NULL
+);
+
+
+-- GRAPH STORAGE TABLES
+
+-- Colors Storage Table (for easier use)
+CREATE TABLE colors (
+	colorValue VARCHAR(100) PRIMARY KEY
+);
+
+-- Primary nodes table for cache (for all nodes)
+CREATE TABLE cacheNodes (
+	id SERIAL PRIMARY KEY,
+	graph INT REFERENCES cache(id) ON DELETE CASCADE,
+	name VARCHAR(5000) NOT NULL,
+	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL
+);
+
+-- Primary nodes table for saved graphs (for all nodes)
+CREATE TABLE savedNodes (
+	id SERIAL PRIMARY KEY,
+	graph INT REFERENCES saved(id) ON DELETE CASCADE,
+	name VARCHAR(5000) NOT NULL,
+	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL
+);
+
+-- Source Nodes
+CREATE TABLE sourceNodes (
+
+);
+
+-- Topic Nodes
+CREATE TABLE sourceNodes (
+
+);
