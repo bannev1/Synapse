@@ -9,7 +9,7 @@
 
 // Main
 #home {
-	height: 100%;
+	height: calc(100vh - 55px);
 	width: 100%;
 	background-color: v.$background-color;
 	position: relative;
