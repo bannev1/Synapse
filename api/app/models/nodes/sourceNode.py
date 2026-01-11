@@ -5,7 +5,6 @@ class SourceNode(Node):
 	def __init__(self, 
 			  	name: str, 
 				color: list[int], 
-				neighbors: list[Node], 
 				query: str, 
 				topics: list[str],
 				mediums: list[str],
@@ -13,7 +12,7 @@ class SourceNode(Node):
 			) -> None:
 		
 		# Save attributes of inherited function
-		super(Node, self).__init__(name, color, neighbors)
+		super(Node, self).__init__(name, color)
 
 		# Define attributes for SourceNode
 		self.query: str = query

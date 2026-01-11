@@ -78,7 +78,7 @@ CREATE TABLE cacheSourceSourceJoinTable (
 CREATE TABLE savedSourceNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES saved(id) ON DELETE CASCADE,
-	name VARCHAR(5000) NOT NULL,
+	name VARCHAR(500) NOT NULL,
 	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL,
 	source VARCHAR(5000) NOT NULL,
 	location VARCHAR(3000) NOT NULL,
