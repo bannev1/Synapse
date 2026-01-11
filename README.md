@@ -18,6 +18,8 @@
 
 Research made easy. Visualize graphically all your resources sorted into topics.
 
+Created for the IBDP Computer Science HL Internal Assessment.
+
 ## Contribution
 
 If you want to contribute to this project, please follow the guidelines below:
@@ -31,11 +33,3 @@ If you want to contribute to this project, please follow the guidelines below:
 ## License
 
 This project is licensed under the MIT license. See our [LICENSE](LICENSE) for more information.
-
-## Credits
-
-- [Valentina Banner](https://valentinabanner.com/) - *Creator*
-  
-## Contact
-
-- **GitHub:** [@bannev1](https://github.com/bannev1)
