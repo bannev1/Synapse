@@ -1,1 +1,22 @@
-from app.models
+from app.models.nodes.node import Node
+
+
+class SourceNode(Node):
+	def __init__(self, 
+			  	name: str, 
+				color: list[int], 
+				neighbors: list[Node], 
+				query: str, 
+				topics: list[str],
+				mediums: list[str],
+				location: str
+			) -> None:
+		
+		# Save attributes of inherited function
+		super(Node, self).__init__(name, color, neighbors)
+
+		# Define attributes for SourceNode
+		self.query: str = query
+		self.topics: list[str] = topics
+		self.mediums: list[str] = mediums
+		self.location: str = location

@@ -1,4 +1,5 @@
-from app.models.nodes import Node
+from app.models.nodes.node import Node
+
 
 class GraphNode(Node):
 	def __init__(self, 
@@ -14,6 +15,6 @@ class GraphNode(Node):
 		super(Node, self).__init__(name, color, neighbors)
 
 		# Define attributes for GraphNode
-		self.titleNode = titleNode
-		self.depth = depth
-		self.sources = sources
+		self.titleNode: 'TitleNode' = titleNode
+		self.depth: int = depth
+		self.sources: list[str] = sources
