@@ -84,6 +84,9 @@ function Graph() {
 		setGraphZoom(graphRef.current.zoom())
 
 		setFreezeGraph(handTool != 0)
+
+		if (handTool == 0) // Reset node info popup if switched tools
+			setNodeInfo(<></>)
 	}, [handTool])
 
 	// For mouse effect check
