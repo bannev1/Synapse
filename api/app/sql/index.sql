@@ -4,6 +4,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 
+
 -- CACHE TABLE (equiv to a GraphNode/TitleNode)
 CREATE TABLE cache (
 	id SERIAL PRIMARY KEY,
@@ -32,6 +33,7 @@ CREATE TABLE colors (
 	colorValue VARCHAR(100) PRIMARY KEY
 );
 
+
 -- CACHE GRAPH TABLES
 
 -- Source nodes table for cache
@@ -39,7 +41,10 @@ CREATE TABLE cacheSourceNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES cache(id) ON DELETE CASCADE,
 	name VARCHAR(5000) NOT NULL,
-	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL
+	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL,
+	source VARCHAR(5000) NOT NULL,
+	location VARCHAR(3000) NOT NULL,
+	mediums VARCHAR(8000) NOT NULL -- CSV list of mediums
 );
 
 -- Topic nodes table for cache
@@ -58,6 +63,15 @@ CREATE TABLE cacheTopicSourceJoinTable (
 	sourceNode INT REFERENCES cacheSourceNodes(id) ON DELETE CASCADE
 );
 
+-- Join Table for cache source/source nodes
+CREATE TABLE cacheSourceSourceJoinTable (
+	id SERIAL PRIMARY KEY,
+	graph INT REFERENCES cache(id) ON DELETE CASCADE,
+	sourceNode1 INT REFERENCES cacheSourceNodes(id) ON DELETE CASCADE,
+	sourceNode2 INT REFERENCES cacheSourceNodes(id) ON DELETE CASCADE
+);
+
+
 -- SAVED GRAPH TABLES
 
 -- Source nodes table for saved graphs
@@ -65,7 +79,10 @@ CREATE TABLE savedSourceNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES saved(id) ON DELETE CASCADE,
 	name VARCHAR(5000) NOT NULL,
-	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL
+	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL,
+	source VARCHAR(5000) NOT NULL,
+	location VARCHAR(3000) NOT NULL,
+	mediums VARCHAR(8000) NOT NULL -- CSV list of mediums
 );
 
 -- Topic nodes table for saved graphs
@@ -82,4 +99,12 @@ CREATE TABLE savedTopicSourceJoinTable (
 	graph INT REFERENCES cache(id) ON DELETE CASCADE,
 	topicNode INT REFERENCES savedTopicNodes(id) ON DELETE CASCADE,
 	sourceNode INT REFERENCES savedSourceNodes(id) ON DELETE CASCADE
+);
+
+-- Join Table for saved source/source nodes
+CREATE TABLE savedSourceSourceJoinTable (
+	id SERIAL PRIMARY KEY,
+	graph INT REFERENCES cache(id) ON DELETE CASCADE,
+	sourceNode1 INT REFERENCES savedSourceNodes(id) ON DELETE CASCADE,
+	sourceNode2 INT REFERENCES savedSourceNodes(id) ON DELETE CASCADE
 );
