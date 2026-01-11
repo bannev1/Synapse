@@ -19,3 +19,7 @@ class Routes:
 		if not hasattr(self, "search"):
 			self.search = Blueprint('search', __name__) # Search Route
 			self.share = Blueprint('share', __name__) # Share Route
+
+
+# Initialize Routes
+Routes()
