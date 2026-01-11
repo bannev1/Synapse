@@ -356,6 +356,10 @@
   padding: 0;
   width: -moz-fit-content;
   width: fit-content;
+  transition: transform 300ms ease-in-out;
+}
+#searchOptions #graphType button img.rotate {
+  transform: rotate(180deg);
 }
 #searchOptions #graphType button:hover, #searchOptions #graphType button:focus {
   opacity: 0.7;
@@ -404,6 +408,10 @@
 }
 #searchOptions.inverted #depthSelect label {
   background-color: #FEEFDD;
+}
+#searchOptions.inverted #graphType .dropdown {
+  background-color: #201E1F;
+  box-shadow: 14px 10px 21px -6px rgba(0, 0, 0, 0.18);
 }
 
 .modalBackdrop {
@@ -483,6 +491,27 @@
 .modal .buttons button.yes {
   background-color: #FEEFDD;
   color: #201E1F;
+}
+.modal button.close {
+  position: relative;
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border-radius: 100%;
+  border: none;
+  transition: opacity 200ms ease-in-out;
+}
+.modal button.close img {
+  width: 27px;
+  height: 27px;
+}
+.modal button.close:hover, .modal button.close:focus {
+  opacity: 0.7;
+  cursor: pointer;
 }
 
 #tabGroup {

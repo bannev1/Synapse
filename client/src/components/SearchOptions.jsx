@@ -45,11 +45,11 @@ function SearchOptions({
 		["https://www.britannica.com/", 'Britannica'],
 	]).current
 
-	const graphTypes = [
+	const graphTypes = useRef([
 		'Topical',
 		'Medium',
 		'Locational'
-	]
+	]).current
 
 	return (
 		<div id="searchOptions" className={inverted ? 'inverted' : ''}>
@@ -113,7 +113,7 @@ function SearchOptions({
 				<button className={showGraphTypes ? 'active' : ''} onClick={() => {setShowGraphTypes(v => !v)}}>
 					<p>{graphTypes[graphType]}</p>
 
-					<Image src={inverted ? dropdownBlack : dropdownWhite} alt="Dropdown Icon"/>
+					<Image src={inverted ? dropdownBlack : dropdownWhite} alt="Dropdown Icon" className={showGraphTypes ? 'rotate' : ''}/>
 				</button>
 
 				{/* Graph Type Dropdown */}
@@ -125,8 +125,8 @@ function SearchOptions({
 											setGraphType(index)
 											setShowGraphTypes(false)
 										}}>
-											{val}
-										</div>
+										{val}
+									</div>
 							})
 						}
 					</div>

@@ -86,4 +86,29 @@
 			}
 		}
 	}
+
+	& button.close {
+		position: relative;
+		margin-left: auto;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 30px;
+		height: 30px;
+		background-color: transparent;
+		border-radius: 100%;
+		border: none;
+		transition: opacity 200ms ease-in-out;
+
+		& img {
+			width: 27px;
+			height: 27px;
+		}
+
+		&:hover,
+		&:focus {
+			opacity: .7;
+			cursor: pointer;
+		}
+	}
 }
