@@ -1,6 +1,6 @@
 from flask import request, jsonify
 
-from app.exceptions import RequestBodyException, GraphConstructionException, GraphParseException
+from app.exceptions import RequestBodyException, GraphConstructionException, GraphParseException, FailedSearchException
 from app.routes.routes import Routes
 from app.util.routes import checkStructure
 from app.models import Graph
@@ -78,8 +78,15 @@ def construct() -> Graph:
 	# If caught an error while parsing graph
 	except GraphParseException as e:
 		return jsonify({
-			'status': 'error',
-			'message': f'Failed to parse graph: {e}'
-		}), 500
+				'status': 'error',
+				'message': f'Failed to parse graph: {e}'
+			}), 500
+	
+	# If error from making request
+	except FailedSearchException as e:
+		return jsonify({
+				'status': 'error',
+				'message': f'Failed to make request for site: {e}'
+			}), 500
 
 	

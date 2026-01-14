@@ -31,7 +31,7 @@ class TopicalGraph(Graph):
 		topics = getTopics(self.query)
 
 		for topic in topics:
-
+			
 
 
 	def parse(self): # Inherit parse method
