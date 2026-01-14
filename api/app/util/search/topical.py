@@ -2,15 +2,32 @@
 
 import requests
 
+from app.exceptions import FailedWikipediaException
 
 
 # Get topics
-def getTopics(query: str, amt: int = -1)-> list[str]:
+def getTopics(query: str)-> list[str]:
 	"""
 	Get a list of topics given the topic/query
 	
 	:param query: Topic/query to get topics of
-	:param amt: Amount of topics of query (max) to give, -1 for all
 	:return: List of topics (string format)
 	:rtype: list[str]
 	"""
+
+	url = f'https://en.wikipedia.org/w/api.php?action=parse&page={query}&format=json&prop=tocdata'
+
+	req = requests.get(url)
+
+	# Check if request worked
+	if not (200 <= req.status_code < 300):
+		raise FailedWikipediaException(f"Failed Wikipedia API request for topics with status code {req.status_code} at {url}, and given response \n{req.json()}")
+
+	# Parse data
+	response = req.json()
+	topics = []
+
+	for section in response['parse']['tocdata']['sections']:
+		topics.append(section['line'])
+
+	return topics

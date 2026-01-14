@@ -11,3 +11,6 @@ class FailedSiteCategoryException(Exception):
 
 class FailedSiteCategorySessionKeyException(Exception):
 	"""Failed SiteCategory Session Key Generation Exception"""
+
+class FailedWikipediaException(Exception):
+	"""Failed Wikipedia API Exception"""
