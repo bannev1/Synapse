@@ -3,6 +3,7 @@ from app.models.nodes import SourceNode, TopicNode
 from app.util.search.google import googleLocation
 from app.util.search.siteMetadata import siteMedium, siteLocation, siteTitle
 from app.util import convertCodeToCountry
+from config import Config
 
 
 class LocationalGraph(Graph):
@@ -21,11 +22,11 @@ class LocationalGraph(Graph):
 		Create topic nodes given list of locational country codes
 		"""
 
-		topicNodes = []
+		topicNodes = {}
 
 		for location in locations:
 			countryName = convertCodeToCountry(location)
-			topicNodes.append(TopicNode(countryName, []))
+			topicNodes[location] = [TopicNode(countryName, [])]
 
 		return topicNodes
 
@@ -33,33 +34,26 @@ class LocationalGraph(Graph):
 
 	def construct(self) -> None:
 		"""
-		Construct a medium-type graph
+		Construct a locational-type graph
 		"""
 		
 		# Get base SourceNodes (only sites)
-		sourceSites = [source for value in googleSites(self.query, self.sites).values() for source in value]
+		searchedSites = googleLocation(self.query, self.locations.keys(), amtResults=Config.AMT_RESULTS_LOCATIONAL)
 
 		# Create SourceNodes
-		for site in sourceSites:
-			# Get metadata
-			medium = siteMedium(site['Source'])
-			location = siteLocation(site['Source'])
+		for code, location in self.locations.items():
+			for site in searchedSites[code]:
+				# Get metadata
+				medium = siteMedium(site['Source'])
 
-			# Create new SourceNode
-			node = SourceNode(site['Title'], site['Source'], self.query, medium, location)
-			
-			# Check if topicnode for medium exists
-			if medium in self.mediums.keys():
-				self.mediums[medium].sourceNodes.append(node)
+				# Create new SourceNode
+				node = SourceNode(site['Title'], site['Source'], self.query, medium, location)
 
-			# Otherwise create TopicNode
-			else:
-				self.mediums[medium] = TopicNode(medium, [])
+				self.locations[code].sourceNodes.append(node)
+				self.sources[node.source] = node
 
-			self.sources[node.source] = node
-
-			# Get neighboring SourceNodes recursively
-			node.neighbors = self.findNeighboringNodes(node)
+				# Get neighboring SourceNodes recursively
+				node.neighbors = self.findNeighboringNodes(node)
 
 
 	def findNeighboringNodes(self, node: SourceNode, currDepth: int = 1) -> list[SourceNode] | None:
