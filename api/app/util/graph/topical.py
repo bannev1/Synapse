@@ -75,11 +75,17 @@ class TopicalGraph(Graph):
 		return self.topicNodes
 	
 
-	def findNeighboringNodes(self, node: SourceNode) -> list[SourceNode]:
+	def findNeighboringNodes(self, node: SourceNode, depth: int = 1) -> list[SourceNode]:
 		"""
 		Get neighboring SourceNodes
 		"""
 
+		# Base case
+		if depth == self.depth:
+			return node
+		
+
+		# Get neighboring sites
 		neighboringSites = subsites(node.source)
 		neighboringNodes = []
 
@@ -90,6 +96,12 @@ class TopicalGraph(Graph):
 				
 				# If neighbor node doesn't already have the node's topics then add
 				self.sources[site].neighbors = self.sources[site].neighbors + [topic for topic in node.topics if topic not in self.sources[site].neighbors]
+
+			# Create new SourceNode
+			else:
+				# Get metadata (location/medium)
+
+
 
 
 	def parse(self): # Inherit parse method
