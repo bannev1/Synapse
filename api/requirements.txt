@@ -3,3 +3,4 @@ psycopg2
 requests
 flask-cors
 bs4
+country_converter

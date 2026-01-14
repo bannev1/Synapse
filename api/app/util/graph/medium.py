@@ -3,7 +3,6 @@ from app.models.nodes import SourceNode, TopicNode
 from app.util.search.google import googleSites
 from app.util.search.siteMetadata import siteMedium, siteLocation, siteTitle
 from app.util.search import subsites
-from config import Config
 
 
 class MediumGraph(Graph):
