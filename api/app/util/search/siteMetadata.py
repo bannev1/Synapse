@@ -41,6 +41,8 @@ def siteMedium(url: str) -> str:
 	# Remove https and / from URL (only get base)
 	url = url.replace('https', '').replace('http', '').replace('://', '')
 	url = url[:url.find('/') if url.find('/') > 0 else len(url)] # Get rid of anything past the first /
+	while '/' in url: # Remove all / in URL until no more
+		url = url.replace('/', '')
 
 	# Get IP of domain
 	url = socket.gethostbyname(url)
