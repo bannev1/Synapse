@@ -14,3 +14,6 @@ class FailedSiteCategorySessionKeyException(Exception):
 
 class FailedWikipediaException(Exception):
 	"""Failed Wikipedia API Exception"""
+
+class RequestBodyException(Exception):
+	"""Failed to parse body of request Exception"""
