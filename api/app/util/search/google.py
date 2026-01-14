@@ -56,7 +56,7 @@ def google(query, amtResults = 10, engineID = Config.GOOGLE_ANY_ENGINE_ID, param
 
 
 # Google Search by Specific Sites
-def googleSites(query, sites) -> dict[list[dict[str]]]:
+def googleSites(query, sites) -> dict[dict[str]]:
 	"""
 	Google search for only specific sites
 	
@@ -76,7 +76,7 @@ def googleSites(query, sites) -> dict[list[dict[str]]]:
 	}
 	```
 
-	:rtype: dict[list[dict[str]]]
+	:rtype: dict[dict[str]]
 	"""
 
 	# To store queried results
