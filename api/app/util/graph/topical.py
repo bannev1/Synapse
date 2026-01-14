@@ -1,6 +1,6 @@
 from app.models import Graph
 from app.models.nodes import SourceNode, TopicNode
-from app.util.search.topical import getTopics
+from app.util.search import getTopics, subsites
 from app.util.search.google import google, googleSites
 from app.util.search.siteMetadata import siteLocation, siteMedium
 from config import Config
