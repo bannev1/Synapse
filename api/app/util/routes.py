@@ -42,9 +42,17 @@ def checkStructure(structure: dict[str], content: dict[str]) -> dict[str]:
 				if type(value) == type(content[key]): # Check to make sure same data type
 					checkStructure(value, content[key])
 				else:
-					raise RequestBodyException(f'Wrong data type at {key} for value of data. Expected {type(value)}')
+					raise RequestBodyException(f'Wrong data type for {key} for value of data. Expected {type(value)}')
 
 	# If given list
 	elif type(content) == list:
 		check = value[0] # Only compare first value
-		
+
+		# Check every item in content
+		for item in content:
+			if type(item) != type(check):
+				raise RequestBodyException(f'Wrong data type for {key} for value of data. Expected {type(check)}')
+			
+			# Check to see if list or dict
+			if type(check) == dict or type(check) == list:
+				checkStructure(check, item) # Recursively check
