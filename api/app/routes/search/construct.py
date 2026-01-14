@@ -1,3 +1,6 @@
+from flask import request, jsonify
+import json
+
 from app.routes.routes import Routes
 
 search = Routes().search
@@ -18,6 +21,12 @@ Route Request Structure:
 """
 
 
-@search.route('/construct')
+@search.get('/construct')
 def construct() -> None:
-	return
+	try:
+		body = json.loads(request.data)
+	except Exception as e: # If error with parsing data then return error
+		return jsonify({
+				'status': 'error',
+				'message': f'Failed to construct graph – body of request contains an error. Received exception {e}.'
+			}), 422 # Unprocessable entity status code
