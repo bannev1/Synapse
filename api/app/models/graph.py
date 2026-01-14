@@ -5,7 +5,7 @@ from app.models.nodes import Node, SourceNode, TopicNode
 
 
 class Graph:
-	def __init__(self, query: str, type: Literal['topical', 'medium', 'locational'], depth: int) -> None:
+	def __init__(self, query: str, type: Literal['topical', 'medium', 'locational'], depth: int, sites: list[str]) -> None:
 		"""
 		Graph Base Class
 		"""
@@ -14,6 +14,7 @@ class Graph:
 		self.query: str = query
 		self.type: Literal['topical', 'medium', 'locational'] = type
 		self.depth: int = depth
+		self.sites: list[str] = sites
 
 		# Define attributes which will be set later
 		self.topicNodes: list[TopicNode] = [] # List of all topicnodes (linked to sourceNodes)
@@ -36,3 +37,9 @@ class Graph:
 		"""
 		raise NotImplementedError("construct() method not implemented") # Raise error if not implemented
 	
+
+
+	def parse(self) -> dict:
+		"""
+		Universal method to parse the graph into a dictionary format to send as a request
+		"""
