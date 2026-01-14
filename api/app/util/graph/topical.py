@@ -83,7 +83,7 @@ class TopicalGraph(Graph):
 
 		# Base case
 		if depth == self.depth:
-			return node
+			return [node]
 		
 
 		# Get neighboring sites
@@ -105,14 +105,20 @@ class TopicalGraph(Graph):
 					title = siteTitle(site)
 				except FailedSearchException:
 					continue
-				
+
 				# Get metadata (location/medium)
 				location = siteLocation(site)
 				medium = siteMedium(site)
 
-
 				# Create node
-				neighbor = SourceNode()
+				neighbor = SourceNode(title, site, self.query, node.topics, medium, location)
+				self.sources[site] = neighbor
+				neighboringNodes.append(neighbor)
+				
+				# Recursively get node's neighbors
+				neighbor.neighbors = self.findNeighboringNodes(neighbor, depth+1)
+		
+		return neighboringNodes
 
 
 
