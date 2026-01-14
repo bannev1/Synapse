@@ -28,7 +28,7 @@ def google(query, amtResults = 10, engineID = Config.GOOGLE_ANY_ENGINE_ID, param
 	:rtype: list[dict[str]]
 	"""
 	
-	url = f"https://www.googleapis.com/customsearch/v1?key={Config.GOOGLE_API_KEY}&cx={engineID}&q={query}&amt={amtResults}" + f"&{params}" if len(params) > 0 else ''
+	url = f"https://www.googleapis.com/customsearch/v1?key={Config.GOOGLE_API_KEY}&cx={engineID}&q={query}&num={amtResults}" + f"&{params}" if len(params) > 0 else ''
 
 	# Make request
 	req = requests.get(url)
@@ -66,4 +66,6 @@ def googleSites(query, sites, amtResults = 10) -> list[dict[str]]:
 	:rtype: list[dict[str]]
 	"""
 
-
+	# Google Search each given site
+	for site in sites:
+		siteParam = f''
