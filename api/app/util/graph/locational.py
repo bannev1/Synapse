@@ -88,8 +88,8 @@ class LocationalGraph(Graph):
 				self.sources[site] = newNode
 
 				# Determine if can link to TopicNode
-				if location in self.mediums.keys():
-					self.mediums[medium].sourceNodes.append(newNode)
+				if location in self.locations.keys():
+					self.locations[location].sourceNodes.append(newNode)
 
 				# Get neighboring nodes
 				newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
