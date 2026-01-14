@@ -1,7 +1,6 @@
 class Node:
 	def __init__(self, 
-			  	name: str, 
-				color: tuple[int]
+			  	name: str
 			) -> None:
+		
 		self.name: str = name
-		self.color: tuple[int] = color

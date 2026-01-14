@@ -13,3 +13,16 @@ class Config:
 
 	# Google Search Engine IDs
 	GOOGLE_ANY_ENGINE_ID = getenv('GOOGLE_ANY_ENGINE_ID', '')
+
+
+
+	# General Config
+	COLORS = [ # HEX code
+		'#ff8a10',
+		'#50b2c0',
+		'#93c47d',
+		'#9542f5',
+		'#f54542',
+		'#f542e3',
+		"#abad23"
+	]
