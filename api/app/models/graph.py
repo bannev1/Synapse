@@ -26,14 +26,6 @@ class Graph:
 
 
 	@abstractmethod
-	def createTopicNodes(self) -> list[TopicNode]:
-		"""
-		Create the topic nodes for this class
-		"""
-		raise NotImplementedError("createTopicNodes() method not implemented") # Raise error if not implemented
-
-
-	@abstractmethod
 	def construct(self) -> Node:
 		"""
 		Construct a graph of this class

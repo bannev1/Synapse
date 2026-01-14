@@ -17,7 +17,7 @@ class MediumGraph(Graph):
 		Construct a medium-type graph
 		"""
 
-		mediums = [] # Store all main mediums
+		mediums = {} # Store all main mediums with corresponding topic node
 		
 		# Get base SourceNodes (only sites)
 		sourceSites = [source for value in googleSites(self.query, self.sites).values() for source in value]
@@ -28,12 +28,19 @@ class MediumGraph(Graph):
 			medium = siteMedium(site['Source'])
 			location = siteLocation(site['Source'])
 
-			mediums.append(medium)
-
 			# Create new SourceNode
 			node = SourceNode(site['Title'], site['Source'], self.query, medium, location)
+			
+			# Check if topicnode for medium exists
+			if medium in mediums.keys():
+				mediums[medium].sourceNodes.append(node)
+
+			# Otherwise create TopicNode
+			else:
+				mediums[medium] = TopicNode(medium, [])
 
 			# Get neighboring SourceNodes recursively
+			node.neighbors = self.findNeighboringNodes()
 
 
 	def findNeighboringNodes(self, node, currDepth = 1):
