@@ -2,6 +2,7 @@ from app.models import Graph
 from app.models.nodes import SourceNode, TopicNode
 from app.util.search.google import googleLocation
 from app.util.search.siteMetadata import siteMedium, siteLocation, siteTitle
+from app.util.search import subsites
 from app.util import convertCodeToCountry
 from config import Config
 
@@ -87,7 +88,7 @@ class LocationalGraph(Graph):
 				self.sources[site] = newNode
 
 				# Determine if can link to TopicNode
-				if medium in self.mediums.keys():
+				if location in self.mediums.keys():
 					self.mediums[medium].sourceNodes.append(newNode)
 
 				# Get neighboring nodes

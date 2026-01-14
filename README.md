@@ -27,7 +27,6 @@ DATABASE_URL = '' # Connection String to Database
 
 GOOGLE_API_KEY = '' # https://developers.google.com/custom-search/v1/introduction
 IP2_API_KEY = '' # https://www.ip2location.io/
-IPINFO_API_KEY = '' # https://ipinfo.io/
 ```
 
 ## Contribution
