@@ -56,15 +56,32 @@ def google(query, amtResults = 10, engineID = Config.GOOGLE_ANY_ENGINE_ID, param
 
 
 # Google Search by Specific Sites
-def googleSites(query, sites, amtResults = 10) -> list[dict[str]]:
+def googleSites(query, sites, amtResults = 1) -> dict[list[dict[str]]]:
 	"""
 	Google search for only specific sites
 	
 	:param query: Search query
-	:param amtResults: Amount of returned results
-	:return: Parsed search results + websites
-	:rtype: list[dict[str]]
+	:param amtResults: Amount of returned results per website
+	:return: Parsed search results + websites, example format below:
+	```
+	{
+		'https://www.website1.com': [
+			{
+				'Source': 'https://www.website1.com/',
+				'Title': 'Website Title'
+			},
+			...
+		],
+
+		'https://www.website2.com': ...
+	}
+	```
+
+	:rtype: dict[list[dict[str]]]
 	"""
+
+	# To store queried results
+	sitesResults = {}
 
 	# Google Search each given site
 	for site in sites:
