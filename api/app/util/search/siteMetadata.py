@@ -19,11 +19,14 @@ def siteLocation(url: str) -> str:
 	requestURL = f"https://api.ip2whois.io/v2?key={Config.IP2_API_KEY}&domain={url}"
 
 	# Make request
-	req = requests.get(requestURL)
+	try:
+		req = requests.get(requestURL)
+	except:
+		raise FailedSearchException(f"Request to IP2Geolocation for {url} failed")
 
 	# Check to ensure went well (check via status code)
 	if not (200 <= req.status_code < 300):
-		raise FailedSearchException(f"IP2Geolocation for {url} failed, request returned {req.status_code} status code and {req.json()}")
+		raise FailedSearchException(f"IP2Geolocation for {url} failed, request returned {req.status_code} status code")
 	
 	# Otherwise parse the JSON response
 	jsonData = req.json()
@@ -61,7 +64,10 @@ def siteMedium(url: str) -> str:
 	}
 
 	# Make request
-	req = requests.post(requestURL, headers=headers, json=formData)
+	try:
+		req = requests.post(requestURL, headers=headers, json=formData)
+	except:
+		raise FailedSearchException(f"Request to SiteCategory for {url} failed")
 
 	# Check to ensure went well (check via status code)
 	if not (200 <= req.status_code < 300):
@@ -79,9 +85,19 @@ def siteMedium(url: str) -> str:
 			else:
 				raise Exception() # Trigger except block
 		except:
-			raise FailedSearchException(f"SiteCategory.com for {url} failed, request returned {req.status_code} status code and {req.json()}")
+			raise FailedSearchException(f"SiteCategory.com for {url} failed, request returned {req.status_code} status code")
 	
 	# Otherwise parse the JSON response
 	jsonData = req.json()
 
 	return jsonData['category']
+
+
+
+
+def siteTitle(url: str) -> str:
+	"""
+	Get title given a url
+	"""
+
+

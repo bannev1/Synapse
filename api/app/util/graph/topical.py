@@ -100,7 +100,11 @@ class TopicalGraph(Graph):
 			# Create new SourceNode
 			else:
 				# Get metadata (location/medium)
+				location = siteLocation(site)
+				medium = siteMedium(site)
 
+				# Create node
+				neighbor = SourceNode()
 
 
 
