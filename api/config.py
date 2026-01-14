@@ -29,5 +29,6 @@ class Config:
 		"#abad23"
 	]
 
-	# Default Amount of SourceNodes per topic
-	AMT_RESULTS_TOPICAL = 10
+	# Default Amount of SourceNodes per topic for diff graphs
+	AMT_RESULTS_TOPICAL = 6
+	AMT_RESULTS_LOCATIONAL = 6
