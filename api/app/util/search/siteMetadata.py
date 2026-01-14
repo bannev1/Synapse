@@ -76,6 +76,8 @@ def siteMedium(url: str) -> str:
 				# See if valid
 				if not (200 <= req.status_code < 300):
 					raise Exception() # Trigger the except block
+			else:
+				raise Exception() # Trigger except block
 		except:
 			raise FailedSiteCategoryException(f"SiteCategory.com for {url} failed, request returned {req.status_code} status code and {req.json()}")
 	
