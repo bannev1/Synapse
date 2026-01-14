@@ -6,8 +6,28 @@ from app.exceptions import FailedGoogleSearchException
 
 
 # Parse Google Search
-def google(query, amtResults = 10) -> list[str]:
-	ENGINE_ID = "4454355756a844f0e" # From Google Search API docs
+def google(query, amtResults = 10, sites: list[str] = Config.SEARCH_SITES) -> list[dict[str]]:
+	"""
+	Google Search a query with a given amt of returned results (no locational restriction)
+	
+	:param query: Search query
+	:param amtResults: Amount of returned results
+	:param sites: Sites to search for (empty list for all/any sites)
+	:return: Parsed results, example format below:
+	```
+	[
+		{
+			'Source': 'https://www.website.com/',
+			'Title': 'Website Title'
+		},
+		...
+	]
+	```
+
+	:rtype: list[dict[str]]
+	"""
+
+	ENGINE_ID = Config.GOOGLE_ANY_ENGINE_ID # From Google Search API docs
 	
 	url = f"https://www.googleapis.com/customsearch/v1?key={Config.GOOGLE_API_KEY}&cx={ENGINE_ID}&q={query}&amt={amtResults}"
 
@@ -22,4 +42,4 @@ def google(query, amtResults = 10) -> list[str]:
 	jsonData = req.json()
 
 	# Get query data
-	data = jsonData['queries']
+	data = jsonData['items']
