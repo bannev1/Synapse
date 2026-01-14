@@ -1,3 +1,8 @@
-class TopicalGraph:
-	def __init__(self) -> None:
-		pass
+from app.models import Graph
+from app.models.nodes import SourceNode, TopicNode
+
+
+class TopicalGraph(Graph):
+	def __init__(self, query: str, depth: int) -> None:
+		# Save attributes of inherited function
+		super(Graph, self).__init__(query, 'topical', depth)
