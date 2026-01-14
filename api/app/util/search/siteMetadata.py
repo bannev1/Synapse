@@ -47,14 +47,18 @@ def siteMedium(url: str) -> str:
 	# Get IP of domain
 	url = socket.gethostbyname(url)
 
-	requestURL = f"https://api.ip2whois.io/v2?key={Config.IP2_API_KEY}&domain={url}"
+	requestURL = f"https://ipinfo.io/{url}"
+
+	headers = {
+		"Authorization": f"Bearer {Config.IPINFO_API_KEY}"
+	}
 
 	# Make request
-	req = requests.get(requestURL)
+	req = requests.get(requestURL, headers=headers)
 
 	# Check to ensure went well (check via status code)
 	if not (200 <= req.status_code < 300):
-		raise FailedIPInfoException(f"IP2Geolocation for {url} failed, request returned {req.status_code} status code")
+		raise FailedIPInfoException(f"IPInfo for {url} failed, request returned {req.status_code} status code")
 	
 	# Otherwise parse the JSON response
 	jsonData = req.json()
