@@ -7,7 +7,7 @@ from app.exceptions import FailedGoogleSearchException
 
 
 # Parse Google Search
-def google(query, amtResults = 10, engineID = Config.GOOGLE_ANY_ENGINE_ID, params: str = '') -> list[dict[str]]:
+def google(query: str, amtResults: int = 10, engineID: str = Config.GOOGLE_ANY_ENGINE_ID, params: str = '') -> list[dict[str]]:
 	"""
 	Google Search a query with a given amt of returned results
 	
@@ -56,7 +56,7 @@ def google(query, amtResults = 10, engineID = Config.GOOGLE_ANY_ENGINE_ID, param
 
 
 # Google Search by Specific Sites
-def googleSites(query, sites) -> dict[dict[str]]:
+def googleSites(query: str, sites: list[str]) -> dict[dict[str]]:
 	"""
 	Google search for only specific sites
 	
