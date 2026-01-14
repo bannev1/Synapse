@@ -124,3 +124,16 @@ def googleLocation(query: str, locations: list[str], amtResults: int = 5) -> lis
 
 	:rtype: dict[dict[str]]
 	"""
+
+	# To store parsed data
+	locationSearch = {}
+
+	# Search each location
+	for location in locations:
+		locationParam = f'gl={location}'
+		locationResults = google(query, amtResults, params=locationParam)
+
+		# Save data/results
+		locationSearch[location] = locationResults
+
+	return locationSearch
