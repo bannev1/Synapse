@@ -9,7 +9,7 @@ class SourceNode(Node):
 				medium: str,
 				location: str,
 				topics: list[str] | None = None,
-				neighbors: list['SourceNode'] = []
+				neighbors: list['SourceNode'] | None = None
 			) -> None:
 		
 		# Save attributes of inherited function
@@ -23,4 +23,4 @@ class SourceNode(Node):
 		self.location: str = location
 
 		# Define attributes for links
-		self.neighbors: list['SourceNode'] = neighbors
+		self.neighbors: list['SourceNode'] | None = neighbors

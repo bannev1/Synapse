@@ -44,7 +44,14 @@ class MediumGraph(Graph):
 
 
 	def findNeighboringNodes(self, node, currDepth = 1):
-		return super().findNeighboringNodes(node, currDepth)
+		"""
+		Get nodes neighbor for medium graph
+		"""
+
+		# Base case
+		if currDepth == self.depth:
+			return None
+		
 
 
 	def parse(self):

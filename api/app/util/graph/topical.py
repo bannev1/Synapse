@@ -83,7 +83,7 @@ class TopicalGraph(Graph):
 
 		# Base case
 		if currDepth == self.depth:
-			return [node]
+			return None
 		
 
 		# Get neighboring sites
