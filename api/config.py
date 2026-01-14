@@ -16,7 +16,9 @@ class Config:
 
 
 
-	# General Config
+	# GENERAL CONFIG
+
+	# Colors
 	COLORS = [ # HEX code
 		'#ff8a10',
 		'#50b2c0',
@@ -26,3 +28,6 @@ class Config:
 		'#f542e3',
 		"#abad23"
 	]
+
+	# Default Amount of SourceNodes per topic
+	AMT_RESULTS_TOPICAL = 10

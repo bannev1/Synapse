@@ -18,7 +18,7 @@ class Graph:
 
 		# Define attributes which will be set later
 		self.topicNodes: list[TopicNode] = [] # List of all topicnodes (linked to sourceNodes)
-		self.sources: list[str] = [] # List of all sources (str URLs)
+		self.sources: dict[str, SourceNode] = {} # List of all sources (str URLs) and their corresponding SourceNode
 
 		# Construct graph
 		self.construct()
@@ -40,6 +40,14 @@ class Graph:
 		"""
 		raise NotImplementedError("construct() method not implemented") # Raise error if not implemented
 	
+
+	@abstractmethod
+	def findNeighboringNodes(self, node: SourceNode, currDepth: int = 1) -> list[SourceNode]:
+		"""
+		Find neighboring nodes given a SourceNode
+		"""
+		raise NotImplementedError("findNeighboringNodes() method not implemented") # Raise error if not implemented
+
 
 
 	def parse(self) -> dict:
