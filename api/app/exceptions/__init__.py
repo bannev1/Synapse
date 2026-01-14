@@ -6,5 +6,8 @@ class FailedGoogleSearchException(Exception):
 class FailedIP2GeolocationException(Exception):
 	"""Failed IP2Geolocation Exception"""
 
-class FailedIPInfoException(Exception):
-	"""Failed IPInfo Exception"""
+class FailedSiteCategoryException(Exception):
+	"""Failed SiteCategory Exception"""
+
+class FailedSiteCategorySessionKeyException(Exception):
+	"""Failed SiteCategory Session Key Generation Exception"""

@@ -3,7 +3,7 @@
 import requests
 import socket
 from config import Config
-from app.exceptions import FailedIP2GeolocationException, FailedIPInfoException
+from app.exceptions import FailedIP2GeolocationException, FailedSiteCategoryException
 
 
 
@@ -58,7 +58,7 @@ def siteMedium(url: str) -> str:
 
 	# Check to ensure went well (check via status code)
 	if not (200 <= req.status_code < 300):
-		raise FailedIPInfoException(f"IPInfo for {url} failed, request returned {req.status_code} status code")
+		raise FailedSiteCategoryException(f"IPInfo for {url} failed, request returned {req.status_code} status code")
 	
 	# Otherwise parse the JSON response
 	jsonData = req.json()
