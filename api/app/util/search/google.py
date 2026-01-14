@@ -85,4 +85,11 @@ def googleSites(query, sites, amtResults = 1) -> dict[list[dict[str]]]:
 
 	# Google Search each given site
 	for site in sites:
-		siteParam = f''
+		siteParam = f'SiteSearch={site}'
+		parsedData = google(query, amtResults, params=siteParam)
+
+		# Save result
+		sitesResults[site] = parsedData
+
+	# Return results
+	return sitesResults
