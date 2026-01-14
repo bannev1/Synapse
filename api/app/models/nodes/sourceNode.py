@@ -6,9 +6,9 @@ class SourceNode(Node):
 			  	name: str,
 				source: str,
 				query: str, 
-				topics: list[str],
 				medium: str,
 				location: str,
+				topics: list[str] | None = None,
 				neighbors: list['SourceNode'] = []
 			) -> None:
 		
@@ -18,7 +18,7 @@ class SourceNode(Node):
 		# Define attributes for SourceNode
 		self.source: str = source
 		self.query: str = query
-		self.topics: list[str] = topics
+		self.topics: list[str] | None = topics
 		self.medium: str = medium
 		self.location: str = location
 

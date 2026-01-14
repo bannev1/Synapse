@@ -41,19 +41,19 @@ class TopicalGraph(Graph):
 				# Check to see if site already exists
 				if site in self.sources.keys():
 					# Add this topic to the SourceNode
-					self.sources[site].topics.append(topicNode.name)
-					sourceNodes.append(self.sources[site])
+					self.sources[site['Source']].topics.append(topicNode.name)
+					sourceNodes.append(self.sources[site['Source']])
 				
 				# Otherwise create new SourceNode
 				else:
 					# Get metadata for node (location & medium)
-					location = siteLocation(site)
-					medium = siteMedium(site)
+					location = siteLocation(site['Source'])
+					medium = siteMedium(site['Source'])
 
 					# Create node
-					node = SourceNode(site['Title'], site['Source'], self.query, [topicNode.name], medium, location)
+					node = SourceNode(site['Title'], site['Source'], self.query, medium, location, [topicNode.name])
 					sourceNodes.append(node)
-					self.sources[site] = node # Add site to sources
+					self.sources[site['Source']] = node # Add site to sources
 
 					# Find neighbors
 					node.neighbors = self.findNeighboringNodes(node)
@@ -76,13 +76,13 @@ class TopicalGraph(Graph):
 		return self.topicNodes
 	
 
-	def findNeighboringNodes(self, node: SourceNode, depth: int = 1) -> list[SourceNode]:
+	def findNeighboringNodes(self, node: SourceNode, currDepth: int = 1) -> list[SourceNode]:
 		"""
 		Get neighboring SourceNodes
 		"""
 
 		# Base case
-		if depth == self.depth:
+		if currDepth == self.depth:
 			return [node]
 		
 
@@ -111,12 +111,12 @@ class TopicalGraph(Graph):
 				medium = siteMedium(site)
 
 				# Create node
-				neighbor = SourceNode(title, site, self.query, node.topics, medium, location)
+				neighbor = SourceNode(title, site, self.query, medium, location, node.topics)
 				self.sources[site] = neighbor
 				neighboringNodes.append(neighbor)
 				
 				# Recursively get node's neighbors
-				neighbor.neighbors = self.findNeighboringNodes(neighbor, depth+1)
+				neighbor.neighbors = self.findNeighboringNodes(neighbor, currDepth+1)
 		
 		return neighboringNodes
 

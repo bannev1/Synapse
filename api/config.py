@@ -32,3 +32,4 @@ class Config:
 	# Default Amount of SourceNodes per topic for diff graphs
 	AMT_RESULTS_TOPICAL = 6
 	AMT_RESULTS_LOCATIONAL = 6
+	AMT_RESULTS_MEDIUM = 12 # This is total amt to generate initially
