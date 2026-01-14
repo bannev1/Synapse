@@ -17,7 +17,7 @@ def siteLocation(url: str) -> str:
 	requestURL = f"https://api.ip2whois.io/v2?key={Config.IP2_API_KEY}&domain={url}"
 
 	# Make request
-	req = requests.get(url)
+	req = requests.get(requestURL)
 
 	# Check to ensure went well (check via status code)
 	if not (200 <= req.status_code < 300):
