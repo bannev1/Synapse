@@ -15,9 +15,6 @@ def siteLocation(url: str) -> str:
 	:param url: Website URL to get location of
 	"""
 
-	# Get IP of domain
-	url = socket.gethostbyname(url)
-
 	requestURL = f"https://api.ip2whois.io/v2?key={Config.IP2_API_KEY}&domain={url}"
 
 	# Make request
@@ -40,6 +37,10 @@ def siteMedium(url: str) -> str:
 
 	:param url: Website URL to get location of
 	"""
+
+	# Remove https and / from URL (only get base)
+	url = url.replace('https', '').replace('http', '').replace('://', '')
+	url = url[:url.find('/') if url.find('/') > 0 else len(url)] # Get rid of anything past the first /
 
 	# Get IP of domain
 	url = socket.gethostbyname(url)
