@@ -80,6 +80,17 @@ class TopicalGraph(Graph):
 		Get neighboring SourceNodes
 		"""
 
+		neighboringSites = subsites(node.source)
+		neighboringNodes = []
+
+		for site in neighboringSites:
+			# Check if site already is a SourceNode
+			if site in self.sources.values():
+				neighboringNodes.append(self.sources[site])
+				
+				# If neighbor node doesn't already have the node's topics then add
+				self.sources[site].neighbors = self.sources[site].neighbors + [topic for topic in node.topics if topic not in self.sources[site].neighbors]
+
 
 	def parse(self): # Inherit parse method
 		return super().parse()
