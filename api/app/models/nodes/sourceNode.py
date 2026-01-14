@@ -8,7 +8,8 @@ class SourceNode(Node):
 				query: str, 
 				topics: list[str],
 				mediums: list[str],
-				location: str
+				location: str,
+				neighbors: list['SourceNode']
 			) -> None:
 		
 		# Save attributes of inherited function
@@ -19,3 +20,6 @@ class SourceNode(Node):
 		self.topics: list[str] = topics
 		self.mediums: list[str] = mediums
 		self.location: str = location
+
+		# Define attributes for links
+		self.neighbors: list['SourceNode'] = neighbors

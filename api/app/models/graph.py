@@ -1,4 +1,8 @@
 from typing_extensions import Literal
+from abc import abstractmethod
+
+from app.models.nodes import Node, SourceNode, TopicNode
+
 
 class Graph:
 	def __init__(self, query: str, type: Literal['topical', 'medium', 'locational'], depth: int) -> None:
@@ -10,3 +14,25 @@ class Graph:
 		self.query: str = query
 		self.type: Literal['topical', 'medium', 'locational'] = type
 		self.depth: int = depth
+
+		# Define attributes which will be set later
+		self.topicNodes: list[TopicNode] = [] # List of all topicnodes (linked to sourceNodes)
+		self.sources: list[str] = [] # List of all sources (str URLs)
+
+
+
+	@abstractmethod
+	def createTopicNodes(self) -> list[TopicNode]:
+		"""
+		Create the topic nodes for this class
+		"""
+		raise NotImplementedError("createTopicNodes() method not implemented") # Raise error if not implemented
+
+
+	@abstractmethod
+	def construct(self) -> Node:
+		"""
+		Construct a graph of this class
+		"""
+		raise NotImplementedError("construct() method not implemented") # Raise error if not implemented
+	
