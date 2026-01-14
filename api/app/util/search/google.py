@@ -95,3 +95,32 @@ def googleSites(query, sites) -> dict[dict[str]]:
 
 	# Return results
 	return sitesResults
+
+
+
+
+# Google Search by Locations
+def googleLocation(query: str, locations: list[str], amtResults: int = 5) -> list[str]:
+	"""
+	Google search with grouping by specific locations
+	
+	:param query: Search query
+	:param locations: List of country codes to search for (see https://developers.google.com/custom-search/docs/json_api_reference#country-codes for list of country codes)
+	:param amtResults: Amount of returned results per location
+	:return: Parsed search results + websites, example format below:
+	```
+	{
+		'fr': [ # France
+			{
+				'Source': 'https://www.website1.com/',
+				'Title': 'Website Title'
+			},
+			...
+		],
+
+		'us': ... # United States
+	}
+	```
+
+	:rtype: dict[dict[str]]
+	"""
