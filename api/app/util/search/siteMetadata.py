@@ -33,7 +33,7 @@ def siteLocation(url: str) -> str:
 
 def siteMedium(url: str) -> str:
 	"""
-	Return a website's medium given a url using the IPInfo.io API
+	Return a website's medium given a url using the SiteCategory.com API
 
 	:param url: Website URL to get location of
 	"""
