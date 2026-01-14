@@ -2,7 +2,7 @@
 
 import requests
 
-from app.exceptions import FailedWikipediaException
+from app.exceptions import FailedSearchException
 
 
 # Get topics
@@ -21,7 +21,7 @@ def getTopics(query: str)-> list[str]:
 
 	# Check if request worked
 	if not (200 <= req.status_code < 300):
-		raise FailedWikipediaException(f"Failed Wikipedia API request for topics with status code {req.status_code} at {url}, and given response \n{req.json()}")
+		raise FailedSearchException(f"Failed Wikipedia API request for topics with status code {req.status_code} at {url}, and given response \n{req.json()}")
 
 	# Parse data
 	response = req.json()

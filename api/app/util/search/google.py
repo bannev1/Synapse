@@ -2,7 +2,7 @@
 import requests
 
 from config import Config
-from app.exceptions import FailedGoogleSearchException
+from app.exceptions import FailedSearchException
 
 
 
@@ -35,7 +35,7 @@ def google(query: str, amtResults: int = 10, engineID: str = Config.GOOGLE_ANY_E
 
 	# Check to ensure went well (check via status code)
 	if not (200 <= req.status_code < 300):
-		raise FailedGoogleSearchException(f"Google Search Query of {query} failed, request returned {req.status_code} status code")
+		raise FailedSearchException(f"Google Search Query of {query} failed, request returned {req.status_code} status code")
 	
 	# Otherwise parse the JSON response
 	jsonData = req.json()

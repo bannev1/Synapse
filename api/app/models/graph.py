@@ -20,6 +20,9 @@ class Graph:
 		self.topicNodes: list[TopicNode] = [] # List of all topicnodes (linked to sourceNodes)
 		self.sources: list[str] = [] # List of all sources (str URLs)
 
+		# Construct graph
+		self.construct()
+
 
 
 	@abstractmethod

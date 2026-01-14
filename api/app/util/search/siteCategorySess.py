@@ -1,6 +1,6 @@
 import requests
 
-from app.exceptions import FailedSiteCategorySessionKeyException
+from app.exceptions import FailedSearchException
 
 
 class SiteCategorySess:
@@ -30,7 +30,7 @@ class SiteCategorySess:
 		req = requests.post(url)
 
 		if not (200 <= req.status_code < 300): # Check to make sure didn't fail
-			raise FailedSiteCategorySessionKeyException(f"Failed to generate SiteCategory.com session key with status code {req.status_code}. Instead received: {req.json()}")
+			raise FailedSearchException(f"Failed to generate SiteCategory.com session key with status code {req.status_code}. Instead received: {req.json()}")
 
 		# Get key
 		key = req.json()['token']

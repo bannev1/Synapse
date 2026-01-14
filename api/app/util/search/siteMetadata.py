@@ -4,7 +4,7 @@ import requests
 
 from app.util.search.siteCategorySess import SiteCategorySess
 from config import Config
-from app.exceptions import FailedIP2GeolocationException, FailedSiteCategoryException
+from app.exceptions import FailedSearchException
 
 
 
@@ -23,7 +23,7 @@ def siteLocation(url: str) -> str:
 
 	# Check to ensure went well (check via status code)
 	if not (200 <= req.status_code < 300):
-		raise FailedIP2GeolocationException(f"IP2Geolocation for {url} failed, request returned {req.status_code} status code and {req.json()}")
+		raise FailedSearchException(f"IP2Geolocation for {url} failed, request returned {req.status_code} status code and {req.json()}")
 	
 	# Otherwise parse the JSON response
 	jsonData = req.json()
@@ -79,7 +79,7 @@ def siteMedium(url: str) -> str:
 			else:
 				raise Exception() # Trigger except block
 		except:
-			raise FailedSiteCategoryException(f"SiteCategory.com for {url} failed, request returned {req.status_code} status code and {req.json()}")
+			raise FailedSearchException(f"SiteCategory.com for {url} failed, request returned {req.status_code} status code and {req.json()}")
 	
 	# Otherwise parse the JSON response
 	jsonData = req.json()
