@@ -1,7 +1,6 @@
 # Code using 3rd party to get a site's location or other relevant data
 
 import requests
-import socket
 
 from app.util.search.siteCategorySess import SiteCategorySess
 from config import Config
