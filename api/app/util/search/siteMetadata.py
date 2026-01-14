@@ -2,6 +2,7 @@
 
 import requests
 from bs4 import BeautifulSoup
+import ip2locationio
 
 from config import Config
 from app.util.search.siteCategorySess import SiteCategorySess
@@ -17,22 +18,23 @@ def siteLocation(url: str) -> str:
 	:param url: Website URL to get location of
 	"""
 
-	requestURL = f"https://api.ip2whois.io/v2?key={Config.IP2_API_KEY}&domain={url}"
+	# Remove https and / from URL (only get base)
+	url = url.replace('https', '').replace('http', '').replace('://', '')
+	url = url[:url.find('/') if url.find('/') > 0 else len(url)] # Get rid of anything past the first /
+	while '/' in url: # Remove all / in URL until no more
+		url = url.replace('/', '')
+
+	# Configure API
+	apiConfig = ip2locationio.Configuration(Config.IP2_API_KEY)
+	ipGeo = ip2locationio.DomainWHOIS(apiConfig)
 
 	# Make request
 	try:
-		req = requests.get(requestURL)
+		location = ipGeo.lookup(url, 'en')
 	except:
 		raise FailedSearchException(f"Request to IP2Geolocation for {url} failed")
 
-	# Check to ensure went well (check via status code)
-	if not (200 <= req.status_code < 300):
-		raise FailedSearchException(f"IP2Geolocation for {url} failed, request returned {req.status_code} status code")
-	
-	# Otherwise parse the JSON response
-	jsonData = req.json()
-
-	return jsonData['admin']['country']
+	return location
 
 
 
