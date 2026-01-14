@@ -2,7 +2,8 @@ from app.models import Graph
 from app.models.nodes import SourceNode, TopicNode
 from app.util.search import getTopics, subsites
 from app.util.search.google import google, googleSites
-from app.util.search.siteMetadata import siteLocation, siteMedium
+from app.util.search.siteMetadata import siteLocation, siteMedium, siteTitle
+from app.exceptions import FailedSearchException
 from config import Config
 
 
@@ -99,9 +100,16 @@ class TopicalGraph(Graph):
 
 			# Create new SourceNode
 			else:
+				# Get site title (if site inaccessible then go to next site)
+				try:
+					title = siteTitle(site)
+				except FailedSearchException:
+					continue
+				
 				# Get metadata (location/medium)
 				location = siteLocation(site)
 				medium = siteMedium(site)
+
 
 				# Create node
 				neighbor = SourceNode()

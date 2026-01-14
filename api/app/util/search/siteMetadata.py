@@ -1,9 +1,10 @@
 # Code using 3rd party to get a site's location or other relevant data
 
 import requests
+from bs4 import BeautifulSoup
 
-from app.util.search.siteCategorySess import SiteCategorySess
 from config import Config
+from app.util.search.siteCategorySess import SiteCategorySess
 from app.exceptions import FailedSearchException
 
 
@@ -100,4 +101,10 @@ def siteTitle(url: str) -> str:
 	Get title given a url
 	"""
 
+	try:
+		page = requests.get(url).raw
+		soup = BeautifulSoup(page, 'html.parser') # Parse response
 
+		return soup.find('title').string # Return title
+	except:
+		raise FailedSearchException(f'Failed to reach {url}')

@@ -17,7 +17,7 @@ def getTopics(query: str)-> list[str]:
 
 	url = f'https://en.wikipedia.org/w/api.php?action=parse&page={query}&format=json&prop=tocdata'
 
-	req = requests.get(url)
+	req = requests.get(url).raw
 
 	# Check if request worked
 	if not (200 <= req.status_code < 300):
