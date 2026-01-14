@@ -17,3 +17,9 @@ class FailedWikipediaException(Exception):
 
 class RequestBodyException(Exception):
 	"""Failed to parse body of request Exception"""
+
+class GraphConstructionException(Exception):
+	"""Failed to construct graph Exception"""
+
+class GraphParseException(Exception):
+	"""Failed to parse graph Exception"""

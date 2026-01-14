@@ -1,6 +1,6 @@
 from flask import request, jsonify
 
-from app.exceptions import RequestBodyException
+from app.exceptions import RequestBodyException, GraphConstructionException, GraphParseException
 from app.routes.routes import Routes
 from app.util.routes import checkStructure
 from app.models import Graph
@@ -43,22 +43,43 @@ def construct() -> Graph:
 
 	graph: Graph = None # Graph to save graph in
 
-	# Check type of graph
-	match graphType:
-		case 'topical':
-			graph = TopicalGraph(query, depth, sites)
+	try:
+		# Check type of graph
+		match graphType:
+			case 'topical':
+				graph = TopicalGraph(query, depth, sites)
+				
+			case 'medium':
+				graph = MediumGraph(query, depth, sites)
+
+			case 'locational':
+				graph = LocationalGraph(query, depth, sites)
+
+			# If none of those, then return error
+			case _:
+				return jsonify({
+						'status': 'error',
+						'message': f'"{graphType}" is an invalid graph type.'
+					}), 400
 			
-		case 'medium':
-			graph = MediumGraph(query, depth, sites)
-
-		case 'locational':
-			graph = LocationalGraph(query, depth, sites)
-
-		# If none of those, then return error
-		case _:
-			return jsonify({
-					'status': 'error',
-					'message': f'"{graphType}" is an invalid graph type.'
-				}), 422
+		# Return graph (parsed)
+		return jsonify({
+				'status': 'success',
+				"graph": graph.parse()
+			}), 200
 	
+	# If caught an error during construction
+	except GraphConstructionException as e:
+		return jsonify({
+				'status': 'error',
+				'message': f'Failed to construct graph: {e}'
+			}), 500
+	
+	# If caught an error while parsing graph
+	except GraphParseException as e:
+		return jsonify({
+			'status': 'error',
+			'message': f'Failed to parse graph: {e}'
+		}), 500
+
 	
