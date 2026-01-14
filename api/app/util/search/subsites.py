@@ -21,3 +21,5 @@ def subsites(url: str) -> list[str]:
 	for link in BeautifulSoup(page, 'html.parser', parse_only = SoupStrainer('a')):
 		if link.has_attr('href'):
 			links.append(link)
+
+	return links
