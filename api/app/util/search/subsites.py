@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 
-from exceptions import FailedSearchException
+from app.exceptions import FailedSearchException
 
 
 def subsites(url: str) -> list[str]:

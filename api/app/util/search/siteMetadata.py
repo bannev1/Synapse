@@ -1,6 +1,7 @@
 # Code using 3rd party to get a site's location or other relevant data
 
 import requests
+import socket
 from bs4 import BeautifulSoup
 import ip2locationio
 
@@ -23,16 +24,19 @@ def siteLocation(url: str) -> str:
 	url = url[:url.find('/') if url.find('/') > 0 else len(url)] # Get rid of anything past the first /
 	while '/' in url: # Remove all / in URL until no more
 		url = url.replace('/', '')
+	
+	# Get domain IP
+	ip = socket.gethostbyname(url)
 
 	# Configure API
 	apiConfig = ip2locationio.Configuration(Config.IP2_API_KEY)
-	ipGeo = ip2locationio.DomainWHOIS(apiConfig)
+	ipGeo = ip2locationio.IPGeolocation(apiConfig)
 
 	# Make request
 	try:
-		location = ipGeo.lookup(url, 'en')
+		location = ipGeo.lookup(ip)
 	except:
-		raise FailedSearchException(f"Request to IP2Geolocation for {url} failed")
+		raise FailedSearchException(f"Request to IP2Geolocation for {url} at {ip} failed")
 
 	return location
 
