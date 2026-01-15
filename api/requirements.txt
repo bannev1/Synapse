@@ -3,4 +3,4 @@ psycopg2
 requests
 flask-cors
 bs4
-ip2location-io
+dotenv
