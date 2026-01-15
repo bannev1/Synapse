@@ -104,10 +104,13 @@ class CacheGraph(Graph):
 
 
 	@staticmethod
-	def saveCache(graph: Graph):
+	def saveCache(graph: Graph) -> None:
 		"""
 		Save graph to the Cache database
 		"""
+
+		# Parse graph
+		parsed = graph.parse()
 
 
 	@staticmethod
@@ -115,3 +118,6 @@ class CacheGraph(Graph):
 		"""
 		Clear expired cache
 		"""
+
+		# Remove 30 day old records from cache (as cascade set so others will delete subsequently)
+		Database().modify("DELETE FROM cache WHERE STR_TO_DATE(timestamp,%Y-%m-%d %H:%M:%S) < (NOW() - INTERVAL 30 DAY)")
