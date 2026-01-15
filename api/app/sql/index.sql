@@ -34,11 +34,11 @@ CREATE TABLE saved (
 CREATE TABLE cacheSourceNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES cache(id) ON DELETE CASCADE,
-	name VARCHAR(5000) NOT NULL,
-	source VARCHAR(5000) NOT NULL,
-	location VARCHAR(3000) NOT NULL,
-	mediums VARCHAR(8000) NOT NULL, -- CSV list of mediums
-	topics VARCHAR(6000) NOT NULL -- CSV list of topics
+	name VARCHAR(150) NOT NULL,
+	source VARCHAR(100) NOT NULL,
+	location VARCHAR(50) NOT NULL,
+	medium VARCHAR(15) NOT NULL, 
+	topics VARCHAR(1500) NOT NULL -- CSV list of topics
 );
 
 -- Topic nodes table for cache
@@ -71,11 +71,11 @@ CREATE TABLE cacheSourceSourceJoinTable (
 CREATE TABLE savedSourceNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES saved(id) ON DELETE CASCADE,
-	name VARCHAR(500) NOT NULL,
-	source VARCHAR(5000) NOT NULL,
-	location VARCHAR(3000) NOT NULL,
-	mediums VARCHAR(8000) NOT NULL, -- CSV list of mediums
-	topics VARCHAR(6000) NOT NULL -- CSV list of topics
+	name VARCHAR(150) NOT NULL,
+	source VARCHAR(100) NOT NULL,
+	location VARCHAR(50) NOT NULL,
+	medium VARCHAR(15) NOT NULL,
+	topics VARCHAR(1500) NOT NULL -- CSV list of topics
 );
 
 -- Topic nodes table for saved graphs
