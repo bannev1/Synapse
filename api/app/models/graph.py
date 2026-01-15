@@ -72,6 +72,10 @@ class Graph:
 				# Traverse sourceNode
 				self.parseSourceNodes(source)
 
+		self.graph['sourceLinks'] = self.traversed
+
+		return self.graph
+
 
 
 	def parseSourceNodes(self, node: SourceNode) -> None:
