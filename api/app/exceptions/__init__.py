@@ -11,3 +11,6 @@ class GraphConstructionException(Exception):
 
 class GraphParseException(Exception):
 	"""Failed to parse graph Exception"""
+
+class GraphNotFound(Exception):
+	"""Failed to find graph in database"""

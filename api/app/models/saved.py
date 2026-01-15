@@ -1,26 +1,30 @@
 from app.models.graph import Graph
 from app.models.database import Database
+from app.exceptions import GraphNotFound
 
 
 class SavedGraph(Graph):
-	def __init__(self, query: str, type: str, depth: int, sites: list[str], id: str) -> None:
+	def __init__(self, query: str, type: str, id: str) -> None:
 		"""
 		Model for saved ID graphs
 		"""
 		
 		# Save attributes of inherited function
-		super(Graph, self).__init__(query, type, depth, sites)
+		super(Graph, self).__init__(query, type, -1, [])
+
+		# Save own attributes
+		self.id = id
 
 
 
-	def save() -> str:
+	def save() -> None:
 		"""
-		Save this graph to the Saved database and return its ID
+		Save this graph to the Saved database
 		"""
 
 
 
-	def update() -> str:
+	def update() -> None:
 		"""
 		Update the database at this graph's ID with its new/updated attributes
 		"""
@@ -31,6 +35,12 @@ class SavedGraph(Graph):
 		"""
 		Retrieve SavedGraph
 		"""
+
+		# Find graph
+		graph = Database().fetch(f"SELECT name, graphType, sources WHERE id={id};")
+
+		if len(graph) != 1:
+			raise GraphNotFound(f"SavedGraph database does not contain a record for a graph with ID {id}")
 
 	
 	@staticmethod
