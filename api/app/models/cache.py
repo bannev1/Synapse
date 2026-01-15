@@ -96,7 +96,12 @@ class CacheGraph(Graph):
 			# Add as neighbor
 			node1['neighbors'].append(node2['source'])
 
-			
+		# Add to main graph
+		self.graph['sources'] = list(sources.values())
+
+		return self.graph
+
+
 
 	@staticmethod
 	def saveCache(graph: Graph):
