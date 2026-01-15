@@ -50,7 +50,7 @@ class CacheGraph(Graph):
 			'name': self.query,
 			'type': self.type,
 			'depth': self.depth,
-			'topics': [], # Get each topic by name as string
+			'topics': [],
 			'sources': [],
 			'topicLinks': [],
 			'sourceLinks': []
@@ -73,12 +73,30 @@ class CacheGraph(Graph):
 				'topics': source['topics'].split(','), # Convert CSV to list object
 				'medium': source['medium'],
 				'location': source['location'],
+				'neighbors': []
 			}
 
 		# Make topic to source links
 		for topicLink in self.topicSourceLinks:
+			self.graph['topicLinks'].append({
+				'target': topics[topicLink['topicNode']],
+				'source': sources[topicLink['sourceNode']]['source']
+			})
+		
+		# Make source links
+		for sourceLink in self.sourceLinks:
+			node1 = sources[sourceLink['sourceNode1']]
+			node2 = sources[sourceLink['sourceNode2']]
 
+			self.graph['sourceLinks'].append({
+				'target': node1['source'],
+				'source': node2['source']
+			})
 
+			# Add as neighbor
+			node1['neighbors'].append(node2['source'])
+
+			
 
 	@staticmethod
 	def saveCache(graph: Graph):
