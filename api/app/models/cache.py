@@ -39,6 +39,9 @@ class CacheGraph(Graph):
 		self.topicSourceLinks = Database().fetch(f'SELECT topicNode, sourceNode FROM cacheTopicSourceJoinTable WHERE graph={self.id};')
 		self.sourceLinks = Database().fetch(f'SELECT sourceNode1, sourceNode2 FROM cacheSourceSourceJoinTable WHERE graph={self.id};')
 
+		# Clear old cache
+		self.clearOldCache()
+
 
 	def parse(self) -> dict:
 		"""
