@@ -26,7 +26,10 @@ Make sure to create a `.env` file in the `app` folder with the following content
 DATABASE_URL = '' # Connection String to Database
 
 GOOGLE_API_KEY = '' # https://developers.google.com/custom-search/v1/introduction
-IP2_API_KEY = '' # https://www.ip2location.io/
+IP_WHO_API_KEY = '' # https://ipwho.org/
+
+# Google Engine ID
+GOOGLE_ANY_ENGINE_ID = ''
 ```
 
 ## Contribution

@@ -3,7 +3,6 @@
 import requests
 import socket
 from bs4 import BeautifulSoup
-import ip2locationio
 
 from config import Config
 from app.util.search.siteCategorySess import SiteCategorySess
@@ -29,16 +28,15 @@ def siteLocation(url: str) -> str:
 	ip = socket.gethostbyname(url)
 
 	# Configure API
-	apiConfig = ip2locationio.Configuration(Config.IP2_API_KEY)
-	ipGeo = ip2locationio.IPGeolocation(apiConfig)
+	requestURL = f'https://api.ipwho.org/ip/{ip}/?get=country&apiKey={Config.IP_WHO_API_KEY}'
 
 	# Make request
 	try:
-		location = ipGeo.lookup(ip)
+		location = requests.get(requestURL)
 	except:
-		raise FailedSearchException(f"Request to IP2Geolocation for {url} at {ip} failed")
+		raise FailedSearchException(f"Request to IPwho.org for {url} at {ip} failed")
 
-	return location
+	return location['data']['country']
 
 
 

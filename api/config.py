@@ -7,7 +7,7 @@ class Config:
 
 	# 3rd Party API Keys
 	GOOGLE_API_KEY = getenv('GOOGLE_API_KEY', '')
-	IP2_API_KEY = getenv('IP2_API_KEY', '')
+	IP_WHO_API_KEY = getenv('IP_WHO_API_KEY', '')
 
 
 	# Google Search Engine IDs
@@ -32,3 +32,4 @@ class Config:
 	AMT_RESULTS_TOPICAL = 6
 	AMT_RESULTS_LOCATIONAL = 6
 	AMT_RESULTS_MEDIUM = 12 # This is total amt to generate initially
+ 
