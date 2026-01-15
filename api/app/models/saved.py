@@ -43,14 +43,13 @@ class SavedGraph(Graph):
 
 	def parse(self) -> dict:
 		"""
-		Convert cached retrieved graph into dictionary format
+		Convert saved retrieved graph into dictionary format
 		"""
 
 		# Create base graph
 		self.graph = {
 			'name': self.query,
-			'type': self.type,
-			'depth': self.depth,
+			'id': self.id,
 			'topics': [],
 			'sources': [],
 			'topicLinks': [],
