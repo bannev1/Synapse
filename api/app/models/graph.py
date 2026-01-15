@@ -46,3 +46,12 @@ class Graph:
 		"""
 		Universal method to parse the graph into a dictionary format to send as a request
 		"""
+
+		# Create base graph
+		graph = {
+			'name': self.query,
+			'type': self.type,
+			'depth': self.depth,
+			'sources': self.sources.keys(),
+			'topics': [topic.name for topic in self.topicNodes] # Get each topic by name as string
+		}

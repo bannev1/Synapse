@@ -28,11 +28,18 @@ def siteLocation(url: str) -> str:
 	ip = socket.gethostbyname(url)
 
 	# Configure API
-	requestURL = f'https://api.ipwho.org/ip/{ip}/?get=country&apiKey={Config.IP_WHO_API_KEY}'
+	requestURL = f'https://api.ipwho.org/ip/{ip}?get=country&apiKey={Config.IP_WHO_API_KEY}'
 
 	# Make request
 	try:
-		location = requests.get(requestURL)
+		req = requests.get(requestURL)
+		location = req.json()
+
+		# Check if went well
+		if not (200 <= req.status_code < 300):
+			raise Exception() # Trigger exception block
+		if location['success'] != True:
+			raise Exception()
 	except:
 		raise FailedSearchException(f"Request to IPwho.org for {url} at {ip} failed")
 

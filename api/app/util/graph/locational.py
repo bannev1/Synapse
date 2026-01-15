@@ -9,12 +9,11 @@ from config import Config
 
 class LocationalGraph(Graph):
 	def __init__(self, query: str, depth: int, sites: list[str], locations: list[str] = ['us', '']) -> None:
-		# Save attributes of inherited function
-		super(Graph, self).__init__(query, 'locational', depth, sites)
-
-		
 		# Custom attribute for this class
 		self.locations = self.createTopicNodes(locations)
+		
+		# Save attributes of inherited function
+		super(Graph, self).__init__(query, 'locational', depth, sites)
 
 
 
