@@ -155,6 +155,15 @@ class CacheGraph(Graph):
 							INSERT INTO cacheTopicSourceJoinTable (graph, topicNode, sourceNode)
 					 		VALUES ({graphID}, {topicID}, {sourceID});""")
 
+		# Save source-source links
+		for link in parsed['sourceLinks']:
+			node1 = sourceNodes[link['target']]
+			node2 = sourceNodes[link['source']]
+
+			Database().modify(f"""
+							INSERT INTO cachesourceSourceJoinTable (graph, sourceNode1, sourceNode2)
+					 		VALUES ({graphID}, {node1}, {node2});""")
+
 
 	@staticmethod
 	def clearOldCache() -> None:
