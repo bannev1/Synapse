@@ -27,11 +27,6 @@ CREATE TABLE saved (
 -- GRAPH STORAGE TABLES
 -----------------------
 
--- Colors Storage Table (for easier use)
-CREATE TABLE colors (
-	colorValue VARCHAR(100) PRIMARY KEY
-);
-
 
 -- CACHE GRAPH TABLES
 
@@ -40,7 +35,6 @@ CREATE TABLE cacheSourceNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES cache(id) ON DELETE CASCADE,
 	name VARCHAR(5000) NOT NULL,
-	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL,
 	source VARCHAR(5000) NOT NULL,
 	location VARCHAR(3000) NOT NULL,
 	mediums VARCHAR(8000) NOT NULL -- CSV list of mediums
@@ -51,7 +45,6 @@ CREATE TABLE cacheTopicNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES cache(id) ON DELETE CASCADE,
 	name VARCHAR(5000) NOT NULL,
-	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL
 );
 
 -- Join Table for cache source/topic nodes
@@ -78,7 +71,6 @@ CREATE TABLE savedSourceNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES saved(id) ON DELETE CASCADE,
 	name VARCHAR(500) NOT NULL,
-	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL,
 	source VARCHAR(5000) NOT NULL,
 	location VARCHAR(3000) NOT NULL,
 	mediums VARCHAR(8000) NOT NULL -- CSV list of mediums
@@ -89,7 +81,6 @@ CREATE TABLE savedTopicNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES saved(id) ON DELETE CASCADE,
 	name VARCHAR(5000) NOT NULL,
-	color VARCHAR(100) REFERENCES colors(colorValue) NOT NULL
 );
 
 -- Join Table for saved graph source/topic nodes

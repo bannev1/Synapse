@@ -44,6 +44,11 @@ class SavedGraph(Graph):
 
 		if len(graph) != 1:
 			raise GraphNotFound(f"SavedGraph database does not contain a record for a graph with ID {id}")
+		
+		graph = graph[0]
+
+		# Construct SavedGraph
+		
 
 	
 	@staticmethod
