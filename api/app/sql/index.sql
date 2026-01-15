@@ -20,7 +20,6 @@ CREATE TABLE saved (
 	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 	name VARCHAR(8000) NOT NULL,
 	depth INT NOT NULL,
-	sources VARCHAR(8000) NOT NULL, -- CSV list of sources
 	graphType VARCHAR(20) CHECK (graphType IN ('source', 'topic', 'title')) NOT NULL
 );
 

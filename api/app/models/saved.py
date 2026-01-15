@@ -37,7 +37,7 @@ class SavedGraph(Graph):
 		"""
 
 		# Find graph
-		graph = Database().fetch(f"SELECT name, graphType, sources WHERE id={id};")
+		graph = Database().fetch(f"SELECT name, graphType, sources FROM saved WHERE id={id};")
 
 		if len(graph) != 1:
 			raise GraphNotFound(f"SavedGraph database does not contain a record for a graph with ID {id}")
