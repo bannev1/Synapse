@@ -117,22 +117,20 @@ class CacheGraph(Graph):
 
 		# Save base graph
 		sources = ','.join(sorted(graph.sources)) # Convert to CSV
-		
-		conn = Database().get_connection()
-		cursor = conn.cursor()
-		
-		query = f"INSERT INTO cache (query, graphType, depth, sources) VALUES ({graph.query}, {graph.type}, {graph.depth}, {sources}) RETURNING id;"
-		cursor.execute(query)
-		conn.commit()
+		graphID = Database().modifyAndReturn(f"""
+			INSERT INTO cache (query, graphType, depth, sources) 
+			VALUES ({graph.query}, {graph.type}, {graph.depth}, {sources}) 
+			RETURNING id;""")['id']
 
-		graphID = cursor.fetchone()['id'] # Get ID
-		cursor.close()
-		Database().release_connection(conn)
-
+		sourceNodes = {} # Dict of (source, id)
 
 		# Save sourceNodes
 		for node in parsed['sources']:
-
+			nodeTopics = ','.join(node['topics']) 
+			nodeID = Database().modifyAndReturn(f"""
+				INSERT INTO cacheSourceNodes (graph, name, source, location, medium, topics)
+				VALUES ({graphID}, {node['name']}, {node['source']}, {node['location']}, {node['medium']}, {nodeTopics})
+				RETURNING id;""")['id']
 
 
 	@staticmethod
