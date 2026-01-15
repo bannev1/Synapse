@@ -10,6 +10,7 @@ CREATE TABLE cache (
 	id SERIAL PRIMARY KEY,
 	query VARCHAR(100) NOT NULL,
 	graphType VARCHAR(20) CHECK (graphType IN ('topical', 'medium', 'locational')) NOT NULL,
+	depth int NOT NULL,
 	sources VARCHAR(8000) NOT NULL, -- CSV list of sources
 	timestamp TIMESTAMP NOT NULL DEFAULT NOW()
 );

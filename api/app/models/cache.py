@@ -115,6 +115,25 @@ class CacheGraph(Graph):
 		# Parse graph
 		parsed = graph.parse()
 
+		# Save base graph
+		sources = ','.join(sorted(graph.sources)) # Convert to CSV
+		
+		conn = Database().get_connection()
+		cursor = conn.cursor()
+		
+		query = f"INSERT INTO cache (query, graphType, depth, sources) VALUES ({graph.query}, {graph.type}, {graph.depth}, {sources}) RETURNING id;"
+		cursor.execute(query)
+		conn.commit()
+
+		graphID = cursor.fetchone()['id'] # Get ID
+		cursor.close()
+		Database().release_connection(conn)
+
+
+		# Save sourceNodes
+		for node in parsed['sources']:
+
+
 
 	@staticmethod
 	def clearOldCache() -> None:
