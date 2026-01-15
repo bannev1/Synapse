@@ -13,6 +13,8 @@ class CacheGraph(Graph):
 		super(Graph, self).__init__(query, type, depth, sites)
 
 
+	def construct(self): return None # Make function do nothing
+
 
 	def saveCache() -> None:
 		"""
@@ -35,6 +37,9 @@ class CacheGraph(Graph):
 		# Check if any
 		if len(graphID) == 0:
 			raise GraphNotFound(f"No cached graph for {query=}, {graphType=}, {depth=}")
+		
+		# Create CacheGraph
+
 		
 
 

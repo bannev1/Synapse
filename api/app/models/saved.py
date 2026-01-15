@@ -16,6 +16,9 @@ class SavedGraph(Graph):
 		self.id = id
 
 
+	def construct(self): return None # Make function do nothing
+
+
 
 	def save() -> None:
 		"""
