@@ -29,12 +29,12 @@ class SavedGraph(Graph):
 		"""
 		
 		# Retrieve topic nodes and source nodes
-		self.topicNodes = Database().fetch(f'SELECT id, name FROM cacheTopicNodes WHERE graph={self.id};')
-		self.sourceNodes = Database().fetch(f'SELECT id, name, source, location, medium, topics FROM cacheSourceNodes WHERE graph={self.id};')
+		self.topicNodes = Database().fetch(f'SELECT id, name FROM savedTopicNodes WHERE graph={self.id};')
+		self.sourceNodes = Database().fetch(f'SELECT id, name, source, location, medium, topics FROM savedSourceNodes WHERE graph={self.id};')
 		
 		# Retrieve links
-		self.topicSourceLinks = Database().fetch(f'SELECT topicNode, sourceNode FROM cacheTopicSourceJoinTable WHERE graph={self.id};')
-		self.sourceLinks = Database().fetch(f'SELECT sourceNode1, sourceNode2 FROM cacheSourceSourceJoinTable WHERE graph={self.id};')
+		self.topicSourceLinks = Database().fetch(f'SELECT topicNode, sourceNode FROM savedTopicSourceJoinTable WHERE graph={self.id};')
+		self.sourceLinks = Database().fetch(f'SELECT sourceNode1, sourceNode2 FROM savedSourceSourceJoinTable WHERE graph={self.id};')
 
 
 
@@ -107,13 +107,14 @@ class SavedGraph(Graph):
 
 
 	@staticmethod
-	def saveGraph(graph: Graph) -> str:
+	def saveGraph(graph: Graph, parsed: dict = None) -> str:
 		"""
 		Save graph to the Saved database and return its ID
 		"""
 
 		# Parse graph
-		parsed = graph.parse()
+		if parsed == None:
+			parsed = graph.parse()
 
 		# Save base graph
 		sources = ','.join(sorted(graph.sources)) # Convert to CSV
