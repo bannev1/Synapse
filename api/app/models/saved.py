@@ -9,6 +9,9 @@ class SavedGraph(Graph):
 		Model for saved graph
 		"""
 
+		# Set own attribute
+		self.id = id
+
 		# Find graph by ID
 		graph = Database().fetch(f"SELECT name, graphType FROM saved WHERE id={id};")
 
@@ -100,28 +103,41 @@ class SavedGraph(Graph):
 		return self.graph
 
 
-	def update(self) -> None:
+	@staticmethod
+	def updateByID(id: str, graph: Graph) -> None:
 		"""
-		Update graph in database after changes made 
+		Update graph in database after changes made (given the parsed graph)
 		"""
+
+		# Delete original graph
+		SavedGraph.deleteByID(id)
+
+		# Save graph at ID
+		SavedGraph.saveGraph(graph, graphID=id)
 
 
 	@staticmethod
-	def saveGraph(graph: Graph, parsed: dict = None) -> str:
+	def saveGraph(graph: Graph,  graphID: str = None) -> str:
 		"""
 		Save graph to the Saved database and return its ID
 		"""
 
 		# Parse graph
-		if parsed == None:
-			parsed = graph.parse()
+		parsed = graph.parse()
 
 		# Save base graph
 		sources = ','.join(sorted(graph.sources)) # Convert to CSV
-		graphID = Database().modifyAndReturn(f"""
-			INSERT INTO saved (query, graphType, depth, sources) 
-			VALUES ({graph.query}, {graph.type}, {graph.depth}, {sources}) 
-			RETURNING id;""")['id']
+
+		# Check if given ID otherwise let SQL generate
+		if graphID == None:
+			graphID = Database().modifyAndReturn(f"""
+				INSERT INTO saved (query, graphType, depth, sources) 
+				VALUES ({graph.query}, {graph.type}, {graph.depth}, {sources}) 
+				RETURNING id;""")['id']
+		else:
+			Database().modify(f"""
+				INSERT INTO saved (query, graphType, depth, sources) 
+				VALUES ({graph.query}, {graph.type}, {graph.depth}, {sources})""")
 
 		# Save all sourceNodes
 		sourceNodes = {} # Dict of (source, id)
