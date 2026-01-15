@@ -32,7 +32,8 @@ class CacheGraph(Graph):
 		"""
 		
 		# Retrieve topic nodes and source nodes
-		topicNodes = Database().fetch(f'SELECT id, name FROM cacheTopicNodes WHERE graph={self.id}')
+		topicNodes = Database().fetch(f'SELECT id, name FROM cacheTopicNodes WHERE graph={self.id};')
+		sourceNodes = Database().fetch(f'SELECT id, name')
 
 
 	@staticmethod
