@@ -8,7 +8,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- CACHE TABLE (equiv to a GraphNode/TitleNode)
 CREATE TABLE cache (
 	id SERIAL PRIMARY KEY,
-	query VARCHAR(8000) NOT NULL,
+	query VARCHAR(100) NOT NULL,
 	graphType VARCHAR(20) CHECK (graphType IN ('topical', 'medium', 'locational')) NOT NULL,
 	sources VARCHAR(8000) NOT NULL, -- CSV list of sources
 	timestamp TIMESTAMP NOT NULL DEFAULT NOW()
@@ -18,7 +18,7 @@ CREATE TABLE cache (
 -- SAVED GRAPH TABLE (equiv to a GraphNode/TitleNode)
 CREATE TABLE saved (
 	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-	name VARCHAR(8000) NOT NULL,
+	name VARCHAR(100) NOT NULL,
 	depth INT NOT NULL,
 	graphType VARCHAR(25) NOT NULL
 );
