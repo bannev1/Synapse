@@ -76,3 +76,20 @@ class Database:
 
 		cursor.close()
 		self.release_connection(conn)
+
+
+	def modifyAndReturn(self, query: str) -> list:
+		"""For insert and allows for return"""
+
+		conn = self.get_connection()
+		cursor = conn.cursor()
+
+		cursor.execute(query)
+		conn.commit()
+
+		result = cursor.fetchone()
+		
+		cursor.close()
+		self.release_connection(conn)
+
+		return result
