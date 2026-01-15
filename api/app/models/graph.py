@@ -48,10 +48,29 @@ class Graph:
 		"""
 
 		# Create base graph
-		graph = {
+		self.graph = {
 			'name': self.query,
 			'type': self.type,
 			'depth': self.depth,
 			'sources': self.sources.keys(),
-			'topics': [topic.name for topic in self.topicNodes] # Get each topic by name as string
+			'topics': [topic.name for topic in self.topicNodes], # Get each topic by name as string
+			'sources': [],
+			'topicLinks': [],
+			'sourceLinks': []
 		}
+
+		# Go through each topic node and recursively get sources + sourceNode Links
+		traversed = [] # list of sources traversed (str to keep less memory)
+
+		for topic in self.topicNodes:
+			for source in topic.sourceNodes:
+				self.parseSourceNodes(source, traversed)
+
+
+
+	def parseSourceNodes(self, node: SourceNode, traversed: list[str]) -> None:
+		"""
+		Parse source nodes recursively to get links and sources
+		"""
+
+		traversed.append(node.source)
