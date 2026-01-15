@@ -16,7 +16,7 @@ class CacheGraph(Graph):
 		graphID = Database().fetch(f"SELECT id FROM cache WHERE query={query} AND graphType={graphType} AND depth={depth} AND sources={sources};")
 
 		# Check if any
-		if len(graphID) != 1:
+		if len(graphID) <= 0:
 			raise GraphNotFound(f"No cached graph for {query=}, {graphType=}, {depth=}")
 		
 		self.id = graphID[0]
@@ -161,7 +161,7 @@ class CacheGraph(Graph):
 			node2 = sourceNodes[link['source']]
 
 			Database().modify(f"""
-							INSERT INTO cachesourceSourceJoinTable (graph, sourceNode1, sourceNode2)
+							INSERT INTO cacheSourceSourceJoinTable (graph, sourceNode1, sourceNode2)
 					 		VALUES ({graphID}, {node1}, {node2});""")
 
 

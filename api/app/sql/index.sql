@@ -20,7 +20,6 @@ CREATE TABLE cache (
 CREATE TABLE saved (
 	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 	name VARCHAR(100) NOT NULL,
-	depth INT NOT NULL,
 	graphType VARCHAR(25) NOT NULL
 );
 
