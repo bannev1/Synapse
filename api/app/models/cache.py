@@ -32,8 +32,52 @@ class CacheGraph(Graph):
 		"""
 		
 		# Retrieve topic nodes and source nodes
-		topicNodes = Database().fetch(f'SELECT id, name FROM cacheTopicNodes WHERE graph={self.id};')
-		sourceNodes = Database().fetch(f'SELECT id, name')
+		self.topicNodes = Database().fetch(f'SELECT id, name FROM cacheTopicNodes WHERE graph={self.id};')
+		self.sourceNodes = Database().fetch(f'SELECT id, name, source, location, medium, topics FROM cacheSourceNodes WHERE graph={self.id};')
+		
+		# Retrieve links
+		self.topicSourceLinks = Database().fetch(f'SELECT topicNode, sourceNode FROM cacheTopicSourceJoinTable WHERE graph={self.id};')
+		self.sourceLinks = Database().fetch(f'SELECT sourceNode1, sourceNode2 FROM cacheSourceSourceJoinTable WHERE graph={self.id};')
+
+
+	def parse(self) -> dict:
+		"""
+		Convert cached retrieved graph into dictionary format
+		"""
+
+		# Create base graph
+		self.graph = {
+			'name': self.query,
+			'type': self.type,
+			'depth': self.depth,
+			'topics': [], # Get each topic by name as string
+			'sources': [],
+			'topicLinks': [],
+			'sourceLinks': []
+		}
+
+		# Retrieve topicNodes
+		topics = {}
+		for topic in self.topicNodes:
+			topics[topic['id']] = topic['name']
+			
+		self.graph['topics'] = list(topics.values())
+
+		# Retrieve sourceNodes
+		sources = {}
+		for source in self.sourceNodes:
+			# Add node as dictionary
+			sources[source['id']] = {
+				'source': source['source'],
+				'name': source['name'],
+				'topics': source['topics'].split(','), # Convert CSV to list object
+				'medium': source['medium'],
+				'location': source['location'],
+			}
+
+		# Make topic to source links
+		for topicLink in self.topicSourceLinks:
+
 
 
 	@staticmethod
