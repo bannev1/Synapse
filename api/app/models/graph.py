@@ -73,4 +73,17 @@ class Graph:
 		Parse source nodes recursively to get links and sources
 		"""
 
+		# Add current node
 		traversed.append(node.source)
+
+		nodeDict = {
+			'name': node.name,
+			'source': node.source,
+			
+		}
+
+		# Find links
+		links = []
+
+		for neighbor in node.neighbors:
+
