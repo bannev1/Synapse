@@ -122,15 +122,29 @@ class CacheGraph(Graph):
 			VALUES ({graph.query}, {graph.type}, {graph.depth}, {sources}) 
 			RETURNING id;""")['id']
 
+		# Save all sourceNodes
 		sourceNodes = {} # Dict of (source, id)
 
-		# Save sourceNodes
 		for node in parsed['sources']:
 			nodeTopics = ','.join(node['topics']) 
 			nodeID = Database().modifyAndReturn(f"""
 				INSERT INTO cacheSourceNodes (graph, name, source, location, medium, topics)
 				VALUES ({graphID}, {node['name']}, {node['source']}, {node['location']}, {node['medium']}, {nodeTopics})
 				RETURNING id;""")['id']
+			
+			sourceNodes[node['source']] = nodeID
+		
+		
+		# Save all topic nodes
+		topicNodes = {} # Dict of (topic, id)
+		
+		for topic in parsed['topics']:
+			topicID = Database().modifyAndReturn(f"""
+				INSERT INTO cacheTopicNodes (graph, name)
+				VALUES ({graphID}, {topic})
+				RETURNING id;""")['id']
+			
+			topicNodes[topic] = topicID
 
 
 	@staticmethod
