@@ -52,7 +52,6 @@ class Graph:
 			'name': self.query,
 			'type': self.type,
 			'depth': self.depth,
-			'sources': self.sources.keys(),
 			'topics': [topic.name for topic in self.topicNodes], # Get each topic by name as string
 			'sources': [],
 			'topicLinks': [],
@@ -60,30 +59,46 @@ class Graph:
 		}
 
 		# Go through each topic node and recursively get sources + sourceNode Links
-		traversed = [] # list of sources traversed (str to keep less memory)
+		self.traversed = [] # list of sources traversed (str to keep less memory)
 
 		for topic in self.topicNodes:
 			for source in topic.sourceNodes:
-				self.parseSourceNodes(source, traversed)
+				# Create link between source and topic nodes
+				self.graph['topicLinks'].append({
+						'target': topic.name,
+						'source': source.source
+					})
+
+				# Traverse sourceNode
+				self.parseSourceNodes(source)
 
 
 
-	def parseSourceNodes(self, node: SourceNode, traversed: list[str]) -> None:
+	def parseSourceNodes(self, node: SourceNode) -> None:
 		"""
 		Parse source nodes recursively to get links and sources
 		"""
 
 		# Add current node
-		traversed.append(node.source)
+		self.traversed.append(node.source)
 
-		nodeDict = {
-			'name': node.name,
-			'source': node.source,
-			
-		}
+		nodeDict = dict(node)
+		nodeDict['id'] = node.source # Set ID
+		self.graph['sources'].append(nodeDict)
 
 		# Find links
 		links = []
 
 		for neighbor in node.neighbors:
+			links.append({
+					'target': node.source,
+					'source': neighbor.source
+				})
 
+			# Recursively traverse neighbor if not yet added
+			if neighbor.source not in self.traversed:
+				self.parseSourceNodes(neighbor)
+
+
+		# Add links
+		self.graph['sourceLinks'].extend(links)
