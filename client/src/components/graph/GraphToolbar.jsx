@@ -60,7 +60,7 @@ function GraphToolbar({handleFullScreen}) {
 			<div className='noActive'>
 				<button onClick={() => {
 					setFullscreen(v => !v)
-					handleFullScreen()
+					handleFullScreen(fullscreen)
 				}}>
 					{
 						!fullscreen ?

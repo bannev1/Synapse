@@ -47,17 +47,21 @@ function Graph() {
 	}, [nodes, graphView])
 
 	// Fullscreen function
-	function handleFullScreen() {
+	function handleFullScreen(state) {
 		if (!graphContainerRef.current) return
 	
 		const element = graphContainerRef.current
 	
-		if (element.requestFullscreen) {
-			element.requestFullscreen()
-		} else if (element.webkitRequestFullscreen) {
-			element.webkitRequestFullscreen() // Safari
-		} else if (element.msRequestFullscreen) {
-			element.msRequestFullscreen() // IE/Edge
+		if (!state) { // Boolean to say if activate fullscreen or not
+			if (element.requestFullscreen) {
+				element.requestFullscreen()
+			} else if (element.webkitRequestFullscreen) {
+				element.webkitRequestFullscreen() // Safari
+			} else if (element.msRequestFullscreen) {
+				element.msRequestFullscreen() // IE/Edge
+			}
+		} else {
+			document.exitFullscreen()
 		}
 	}
 
