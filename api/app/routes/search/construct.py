@@ -1,9 +1,9 @@
 from flask import request, jsonify
 
-from app.exceptions import RequestBodyException, GraphConstructionException, GraphParseException, FailedSearchException
+from app.exceptions import RequestBodyException, GraphConstructionException, GraphParseException, FailedSearchException, GraphNotFound
 from app.routes.routes import Routes
 from app.util.routes import checkStructure
-from app.models import Graph
+from app.models import Graph, CacheGraph
 from app.util.graph import LocationalGraph, MediumGraph, TopicalGraph
 
 
@@ -43,50 +43,78 @@ def construct() -> Graph:
 
 	graph: Graph = None # Graph to save graph in
 
+	# Check if exists in Cache
 	try:
-		# Check type of graph
-		match graphType:
-			case 'topical':
-				graph = TopicalGraph(query, depth, sites)
+		graph = CacheGraph(query, graphType, depth, sites)
+		
+	except GraphNotFound:
+		# Construct Graph
+		try:
+			# Check type of graph
+			match graphType:
+				case 'topical':
+					graph = TopicalGraph(query, depth, sites)
+					
+				case 'medium':
+					graph = MediumGraph(query, depth, sites)
+
+				case 'locational':
+					graph = LocationalGraph(query, depth, sites)
+
+				# If none of those, then return error
+				case _:
+					return jsonify({
+							'status': 'error',
+							'message': f'"{graphType}" is an invalid graph type.'
+						}), 400
 				
-			case 'medium':
-				graph = MediumGraph(query, depth, sites)
-
-			case 'locational':
-				graph = LocationalGraph(query, depth, sites)
-
-			# If none of those, then return error
-			case _:
-				return jsonify({
-						'status': 'error',
-						'message': f'"{graphType}" is an invalid graph type.'
-					}), 400
-			
-		# Return graph (parsed)
-		return jsonify({
-				'status': 'success',
-				"graph": graph.parse()
-			}), 200
-	
-	# If caught an error during construction
-	except GraphConstructionException as e:
-		return jsonify({
+			# Return graph (parsed)
+			return jsonify({
+					'status': 'success',
+					"graph": graph.parse()
+				}), 200
+		
+		# If caught an error during construction
+		except GraphConstructionException as e:
+			return jsonify({
+					'status': 'error',
+					'message': f'Failed to construct graph: {e}'
+				}), 500
+		
+		# If caught an error while parsing graph
+		except GraphParseException as e:
+			return jsonify({
+					'status': 'error',
+					'message': f'Failed to parse graph: {e}'
+				}), 500
+		
+		# If error from making request
+		except FailedSearchException as e:
+			return jsonify({
+					'status': 'error',
+					'message': f'Failed to make request for site: {e}'
+				}), 500
+		
+		# Otherwise
+		except Exception as e:
+			return jsonify({
 				'status': 'error',
-				'message': f'Failed to construct graph: {e}'
-			}), 500
-	
-	# If caught an error while parsing graph
-	except GraphParseException as e:
+				'message': 'Caught unknown exception upon constructon of graph.'
+			})
+
+
+	# Check to make sure graph exists
+	if graph == None:
 		return jsonify({
-				'status': 'error',
-				'message': f'Failed to parse graph: {e}'
-			}), 500
-	
-	# If error from making request
-	except FailedSearchException as e:
-		return jsonify({
-				'status': 'error',
-				'message': f'Failed to make request for site: {e}'
-			}), 500
+			'status': 'error',
+			'message': 'Failed to produce graph for unknown reason.'
+		}), 500
 
 	
+	# Return graph
+	parsedGraph = graph.parse()
+
+	return jsonify({
+		'status': 'success',
+		'graph': parsedGraph
+	}), 200
