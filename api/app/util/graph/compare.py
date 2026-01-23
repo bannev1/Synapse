@@ -40,3 +40,32 @@ class CompareGraph(Graph):
 				topics[topic.name] = topicNode
 
 				self.topicNodes.append(topicNode)
+
+
+		# Merge duplicate sourceNodes
+		for source, node in (self.graph1.sources.items() + self.graph2.sources.items()):
+			# If found duplicate
+			if source in self.sources.keys():
+				dupliNode = self.sources[source]
+
+				# Add topics
+				dupliNode.topics.extend(node.topics)
+				dupliNode.topics = list(set(dupliNode.topics))
+
+				# Add neighboring nodes as a new attribute
+				dupliNode.neighborSources.extend([neighbor.source for neighbor in node.neighbors])
+				dupliNode.neighborSources = list(set(dupliNode.neighborSources))
+
+			# Otherwise
+			else:
+				# Add neighboring nodes list
+				node.neighborSources = [neighbor.source for neighbor in node.neighbors]
+				self.sources[source] = node
+
+
+		# Create neighbor links
+		for source, node in self.sources.items():
+			node.neighbors = []
+
+			for neighbor in node.neighborSources:
+				node.neighbors.append(self.sources[neighbor])
