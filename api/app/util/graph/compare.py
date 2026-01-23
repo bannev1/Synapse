@@ -1,4 +1,5 @@
 from app.models import Graph
+from app.models.nodes import TopicNode
 
 
 class CompareGraph(Graph):
@@ -13,6 +14,9 @@ class CompareGraph(Graph):
 		depth = max(graph1.depth, graph2.depth) # Max depth of both graphs
 		sites = list(set(graph1.sites + graph2.sites)) # Non-duplicated combination of both graph sites
 
+		self.graph1 = graph1
+		self.graph2 = graph2
+
 		super().__init__(query, type, depth, sites)
 
 	
@@ -22,5 +26,17 @@ class CompareGraph(Graph):
 		Construct compare graph
 		"""
 
-		# Get topic nodes
-		
+		topics = {}
+
+		# Create topic nodes
+		for topic in (self.graph1.topicNodes + self.graph2.topicNodes):
+			# If topic node already exists
+			if topic.name in topics.keys():
+				topics[topic.name].sourceNodes.extend(topic.sourceNodes)
+
+			# Otherwise create node
+			else:
+				topicNode = TopicNode(topic.name, topic.sourceNodes)
+				topics[topic.name] = topicNode
+
+				self.topicNodes.append(topicNode)
