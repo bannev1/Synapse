@@ -48,7 +48,11 @@ class CompareGraph(Graph):
 			if source in self.sources.keys():
 				dupliNode = self.sources[source]
 
-				# Add topics
+				# Add topic nodes to topics
+				for topic in node.topics:
+					if topic not in dupliNode.topics:
+						topics[topic].sourceNodes.append(dupliNode)
+
 				dupliNode.topics.extend(node.topics)
 				dupliNode.topics = list(set(dupliNode.topics))
 
@@ -61,6 +65,10 @@ class CompareGraph(Graph):
 				# Add neighboring nodes list
 				node.neighborSources = [neighbor.source for neighbor in node.neighbors]
 				self.sources[source] = node
+
+				# Add to topic nodes
+				for topic in node.topics:
+					topics[topic].sourceNodes.append(node)
 
 
 		# Create neighbor links
