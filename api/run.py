@@ -12,5 +12,5 @@ if __name__ == '__main__':
 	if os.path.isfile(envPath):
 		load_dotenv(envPath)
 
-	# Run app
+	# Run app (python -m flask run)
 	app.run(host="0.0.0.0", port=8080, debug=True)

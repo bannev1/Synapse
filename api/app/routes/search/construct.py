@@ -2,9 +2,10 @@ from flask import request, jsonify
 
 from app.exceptions import RequestBodyException, GraphConstructionException, GraphParseException, FailedSearchException, GraphNotFound
 from app.routes.routes import Routes
-from app.util.routes import checkStructure
 from app.models import Graph, CacheGraph
+from app.util.routes import checkStructure
 from app.util.graph import LocationalGraph, MediumGraph, TopicalGraph
+from config import Config
 
 
 search = Routes().search
@@ -45,6 +46,10 @@ def construct() -> Graph:
 
 	# Check if exists in Cache
 	try:
+		if not Config.ENABLE_CACHE: # Check if Cache enabled
+			raise GraphNotFound
+		
+		# Find CacheGraph
 		graph = CacheGraph(query, graphType, depth, sites)
 		
 	except GraphNotFound:
