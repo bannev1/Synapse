@@ -11,7 +11,7 @@ from app.routes import *
 
 
 # Create App function
-def createApp():
+def application():
 	Routes().registerBlueprints()
 
 	return Routes().index # Return main route

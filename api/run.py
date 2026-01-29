@@ -2,9 +2,9 @@ import os
 from dotenv import load_dotenv
 
 # Run from /app as root
-from app import createApp
+from app import application
 
-app = createApp()
+app = application()
 
 if __name__ == '__main__':
 	# Set up config/dotenv for locally run project
