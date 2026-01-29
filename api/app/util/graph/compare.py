@@ -54,3 +54,20 @@ class CompareGraph(Graph):
 		# Save locally as list
 		self.sources = list(sources.values())
 
+	
+	def parse(self):
+		"""
+		Custom function to parse specifically compare graphs
+		"""
+
+		graph = {
+			'name': self.query,
+			'type': self.type,
+			'depth': self.depth,
+			'topics': self.topics,
+			'sources': self.sources,
+			'topicLinks': self.topicLinks,
+			'sourceLinks': self.sourceLinks
+		}
+
+		return graph
