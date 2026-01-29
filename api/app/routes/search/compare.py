@@ -78,4 +78,16 @@ def compare() -> None:
 			}), 422 # Unprocessable entity status code
 
 	# Create compare graph
-	graph = CompareGraph()
+	try:
+		graph = CompareGraph(body['graph1'], body['graph2'])
+	except Exception as e:
+		return jsonify({
+			'status': 'error',
+			'message': 'Encountered an unexpected error when comparing these graphs'
+		}), 500
+	
+	# Return graph
+	return jsonify({
+		'status': 'success',
+		'graph': graph
+	}), 200

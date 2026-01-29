@@ -33,10 +33,10 @@ class CompareGraph(Graph):
 		topics = {}
 
 		# Create topic nodes
-		for topic in (self.graph1.topicNodes + self.graph2.topicNodes):
+		for topic in (self.graph1['topics'] + self.graph2['topics']):
 			# If topic node already exists
-			if topic.name in topics.keys():
-				topics[topic.name].sourceNodes.extend(topic.sourceNodes)
+			if topic in topics.keys():
+				topics[topic].sourceNodes.extend(topic.sourceNodes)
 
 			# Otherwise create node
 			else:
