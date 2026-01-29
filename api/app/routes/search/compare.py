@@ -1,8 +1,66 @@
 from app.routes.routes import Routes
+from app.util.graph import CompareGraph
 
 search = Routes().search
 
 
 @search.route('/compare')
 def compare() -> None:
-	return
+	"""
+	Create a compare graph given two graphs
+	"""
+
+	SAMPLE_REQUEST_DATA = {
+		"graph1": {
+			"name": "Graph #1 Name",
+			"type": "topical | locational | medium",
+			"depth": 6,
+			"topics": ["topic 1", "topic 2", "topic 3"],
+			"sources": [
+				{
+					"id": "https://nytimes.com/",
+					"source": "https://nytimes.com/",
+					"name": "New York Times",
+					"topics": ['topic 1', 'topic 2'],
+					"medium": "News",
+					"location": "US",
+					"neighbors": ["https://wikipedia.com", "https://bbc.com"]
+				}
+			],
+			"topicLinks": {
+				"target": "node1",
+				"source": "node2"
+			},
+			"sourceLinks": {
+				"target": "node1",
+				"source": "node2"
+			}
+		},
+
+		"graph2": {
+			"name": "Graph #2 Name",
+			"type": "topical | locational | medium",
+			"depth": 6,
+			"topics": ["topic A", "topic B", "topic C"],
+			"sources": [
+				{
+					"id": "https://bbc.com/",
+					"source": "https://bbc.com/",
+					"name": "BBC News",
+					"topics": ['topic A', 'topic B'],
+					"medium": "News",
+					"location": "US",
+					"neighbors": ["https://nytimes.com", "https://bbc.com"]
+				}
+			],
+			"topicLinks": {
+				"target": "node1",
+				"source": "node2"
+			},
+			"sourceLinks": {
+				"target": "node1",
+				"source": "node2"
+			}
+		}
+	}
+
