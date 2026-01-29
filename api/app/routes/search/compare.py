@@ -1,5 +1,9 @@
+from flask import jsonify, request
+
 from app.routes.routes import Routes
 from app.util.graph import CompareGraph
+from app.util.routes import checkStructure
+from app.exceptions import RequestBodyException
 
 search = Routes().search
 
@@ -64,3 +68,11 @@ def compare() -> None:
 		}
 	}
 
+	# Parse request
+	try:
+		body = checkStructure(request.data, SAMPLE_REQUEST_DATA)
+	except RequestBodyException as e: # If error with parsing data then return error
+		return jsonify({
+				'status': 'error',
+				'message': e
+			}), 422 # Unprocessable entity status code
