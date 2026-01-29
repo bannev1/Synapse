@@ -80,6 +80,8 @@ def compare() -> None:
 	# Create compare graph
 	try:
 		graph = CompareGraph(body['graph1'], body['graph2'])
+		parsedGraph = graph.parse()
+		
 	except Exception as e:
 		return jsonify({
 			'status': 'error',
@@ -89,5 +91,5 @@ def compare() -> None:
 	# Return graph
 	return jsonify({
 		'status': 'success',
-		'graph': graph
+		'graph': parsedGraph
 	}), 200
