@@ -31,14 +31,14 @@ def compare() -> None:
 					"neighbors": ["https://wikipedia.com", "https://bbc.com"]
 				}
 			],
-			"topicLinks": {
+			"topicLinks": [{
 				"target": "node1",
 				"source": "node2"
-			},
-			"sourceLinks": {
+			}],
+			"sourceLinks": [{
 				"target": "node1",
 				"source": "node2"
-			}
+			}]
 		},
 
 		"graph2": {
@@ -57,14 +57,14 @@ def compare() -> None:
 					"neighbors": ["https://nytimes.com", "https://bbc.com"]
 				}
 			],
-			"topicLinks": {
+			"topicLinks": [{
 				"target": "node1",
 				"source": "node2"
-			},
-			"sourceLinks": {
+			}],
+			"sourceLinks": [{
 				"target": "node1",
 				"source": "node2"
-			}
+			}]
 		}
 	}
 
@@ -76,3 +76,6 @@ def compare() -> None:
 				'status': 'error',
 				'message': e
 			}), 422 # Unprocessable entity status code
+
+	# Create compare graph
+	graph = CompareGraph()
