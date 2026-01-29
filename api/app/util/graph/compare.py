@@ -13,15 +13,10 @@ class CompareGraph(Graph):
 		type = f'{graph1["type"]} + {graph2["type"]}' if graph1["type"] != graph2["type"] else graph1["type"] # Either add types or change
 		depth = max(graph1["depth"], graph2["depth"]) # Max depth of both graphs
 
-		graph1Sites = [i['source'] for i in graph1['sources']]
-		graph2Sites = [i['source'] for i in graph2['sources']]
-
-		sites = list(set(graph1Sites + graph2Sites)) # Non-duplicated combination of both graph sites
-
 		self.graph1 = graph1
 		self.graph2 = graph2
 
-		super().__init__(query, type, depth, sites)
+		super().__init__(query, type, depth, [])
 
 	
 
@@ -30,54 +25,25 @@ class CompareGraph(Graph):
 		Construct compare graph
 		"""
 
-		topics = {}
+		# Get topics 
+		self.topics = list(set(self.graph1['topics'] + self.graph2['topics']))
 
-		# Create topic nodes
-		for topic in (self.graph1['topics'] + self.graph2['topics']):
-			# If topic node already exists
-			if topic in topics.keys():
-				topics[topic].sourceNodes.extend(topic.sourceNodes)
+		# Go through sources and add to list
+		sources = {}
 
-			# Otherwise create node
+		for source in (self.graph1['sources'] + self.graph2['sources']):
+			# If site already exists
+			if source['source'] in self.sites:
+				# Add topics (no duplicates)
+				sources[source['source']]['topics'] = list(set(sources[source['source']]['topics'] + source['topics']))
+
+				# Add neighbors
+				sources[source['source']]['neighbors'].extend(source['neighbors'])
+
+			# Otherwise add source
 			else:
-				topicNode = TopicNode(topic.name, topic.sourceNodes)
-				topics[topic.name] = topicNode
+				self.sites.append(source['source'])
+				sources[source['source']] = source
 
-				self.topicNodes.append(topicNode)
-
-
-		# Merge duplicate sourceNodes
-		for source, node in (self.graph1.sources.items() + self.graph2.sources.items()):
-			# If found duplicate
-			if source in self.sources.keys():
-				dupliNode = self.sources[source]
-
-				# Add topic nodes to topics
-				for topic in node.topics:
-					if topic not in dupliNode.topics:
-						topics[topic].sourceNodes.append(dupliNode)
-
-				dupliNode.topics.extend(node.topics)
-				dupliNode.topics = list(set(dupliNode.topics))
-
-				# Add neighboring nodes as a new attribute
-				dupliNode.neighborSources.extend([neighbor.source for neighbor in node.neighbors])
-				dupliNode.neighborSources = list(set(dupliNode.neighborSources))
-
-			# Otherwise
-			else:
-				# Add neighboring nodes list
-				node.neighborSources = [neighbor.source for neighbor in node.neighbors]
-				self.sources[source] = node
-
-				# Add to topic nodes
-				for topic in node.topics:
-					topics[topic].sourceNodes.append(node)
-
-
-		# Create neighbor links
-		for source, node in self.sources.items():
-			node.neighbors = []
-
-			for neighbor in node.neighborSources:
-				node.neighbors.append(self.sources[neighbor])
+		# Save locally as list
+		self.sources = list(sources.values())
