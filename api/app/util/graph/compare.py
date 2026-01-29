@@ -27,23 +27,30 @@ class CompareGraph(Graph):
 
 		# Get topics 
 		self.topics = list(set(self.graph1['topics'] + self.graph2['topics']))
+		
+		# Add topic links
+		self.sourceLinks = (self.graph1['sourceLinks'] + self.graph2['sourceLinks'])
+		self.topicLinks = (self.graph1['topicLinks'] + self.graph2['topicLinks'])
 
 		# Go through sources and add to list
 		sources = {}
 
 		for source in (self.graph1['sources'] + self.graph2['sources']):
-			# If site already exists
-			if source['source'] in self.sites:
-				# Add topics (no duplicates)
-				sources[source['source']]['topics'] = list(set(sources[source['source']]['topics'] + source['topics']))
+			url = source['source']
 
-				# Add neighbors
-				sources[source['source']]['neighbors'].extend(source['neighbors'])
+			# If site already exists
+			if url in self.sites:
+				# Add topics (no duplicates)
+				sources[url]['topics'] = list(set(sources[url]['topics'] + source['topics']))
+
+				# Add neighbors (no duplicates)
+				sources[url]['neighbors'] = list(set(sources[url]['neighbors'] + source['neighbors']))
 
 			# Otherwise add source
 			else:
-				self.sites.append(source['source'])
-				sources[source['source']] = source
+				self.sites.append(url)
+				sources[url] = source
 
 		# Save locally as list
 		self.sources = list(sources.values())
+
