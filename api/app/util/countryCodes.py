@@ -1,5 +1,9 @@
 COUNTRY_CODES = {
-
+	'us': 'United States',
+	'uk': 'United Kingdom',
+	'cn': 'China',
+	'ca': 'Canada',
+	'ge': 'Germany'
 }
 
 
@@ -7,7 +11,6 @@ def convertCodeToCountry(code: str) -> str:
 	"""
 	Given a country code convert it to its country name equivalent
 	"""
-
 
 	try:
 		return COUNTRY_CODES[code]
