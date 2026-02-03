@@ -1,9 +1,10 @@
 from app.models.graph import Graph
+from app.models.requestGraph import RequestGraph
 from app.models.database import Database
 from app.exceptions import GraphNotFound
 
 
-class SavedGraph(Graph):
+class SavedGraph(RequestGraph):
 	def __init__(self, id: str) -> None:
 		"""
 		Model for saved graph
@@ -22,7 +23,13 @@ class SavedGraph(Graph):
 		graph = graph[0]
 		
 		# Save attributes of inherited function
-		super(Graph, self).__init__(graph['name'], graph['graphType'], -1, [])
+		super(RequestGraph, self).__init__({
+			'name': graph['name'],
+			'id': id,
+			'type': graph['graphType'], 
+			'depth': -1,
+			'sources': []
+		})
 
 
 
@@ -46,60 +53,7 @@ class SavedGraph(Graph):
 		Convert saved retrieved graph into dictionary format
 		"""
 
-		# Create base graph
-		self.graph = {
-			'name': self.query,
-			'id': self.id,
-			'topics': [],
-			'sources': [],
-			'topicLinks': [],
-			'sourceLinks': []
-		}
-
-		# Retrieve topicNodes
-		topics = {}
-		for topic in self.topicNodes:
-			topics[topic['id']] = topic['name']
-			
-		self.graph['topics'] = list(topics.values())
-
-		# Retrieve sourceNodes
-		sources = {}
-		for source in self.sourceNodes:
-			# Add node as dictionary
-			sources[source['id']] = {
-				'source': source['source'],
-				'name': source['name'],
-				'topics': source['topics'].split(','), # Convert CSV to list object
-				'medium': source['medium'],
-				'location': source['location'],
-				'neighbors': []
-			}
-
-		# Make topic to source links
-		for topicLink in self.topicSourceLinks:
-			self.graph['topicLinks'].append({
-				'target': topics[topicLink['topicNode']],
-				'source': sources[topicLink['sourceNode']]['source']
-			})
-		
-		# Make source links
-		for sourceLink in self.sourceLinks:
-			node1 = sources[sourceLink['sourceNode1']]
-			node2 = sources[sourceLink['sourceNode2']]
-
-			self.graph['sourceLinks'].append({
-				'target': node1['source'],
-				'source': node2['source']
-			})
-
-			# Add as neighbor
-			node1['neighbors'].append(node2['source'])
-
-		# Add to main graph
-		self.graph['sources'] = list(sources.values())
-
-		return self.graph
+		return super(RequestGraph, self).parse()
 
 
 	@staticmethod

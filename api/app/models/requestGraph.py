@@ -32,16 +32,11 @@ class RequestGraph(Graph):
 		Parse graph in JSON format
 		"""
 
-		# Create base graph
-		self.graph = {
-			'name': self.query,
-			'type': self.type,
-			'depth': self.depth,
-			'topics': [],
-			'sources': [],
-			'topicLinks': [],
-			'sourceLinks': []
-		}
+		# Add base parts
+		self.graph['topics'] = []
+		self.graph['sources'] = []
+		self.graph['topicLinks'] = []
+		self.graph['sourceLinks'] = []
 
 		# Retrieve topicNodes
 		topics = {}

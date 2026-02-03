@@ -49,6 +49,15 @@ class CacheGraph(RequestGraph):
 		self.clearOldCache()
 
 
+	
+	def parse(self) -> dict:
+		"""
+		Convert cached retrieved graph into dictionary format
+		"""
+
+		return super(RequestGraph, self).parse()
+
+
 
 	@staticmethod
 	def saveCache(graph: Graph) -> None:
