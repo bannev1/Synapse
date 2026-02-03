@@ -56,3 +56,5 @@ def checkStructure(structure: dict[str], content: dict[str]) -> dict[str]:
 			# Check to see if list or dict
 			if type(check) == dict or type(check) == list:
 				checkStructure(check, item) # Recursively check
+
+	return content
