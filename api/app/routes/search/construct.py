@@ -1,4 +1,5 @@
 from flask import request, jsonify
+import traceback
 
 from app.exceptions import RequestBodyException, GraphConstructionException, GraphParseException, FailedSearchException, GraphNotFound
 from app.routes.routes import Routes
@@ -31,6 +32,7 @@ def construct() -> Graph:
 		if 'sites' not in body.keys():
 			body['sites'] = []
 	except RequestBodyException as e: # If error with parsing data then return error
+		print(traceback.format_exc())
 		return jsonify({
 				'status': 'error',
 				'message': e
@@ -81,6 +83,7 @@ def construct() -> Graph:
 		
 		# If caught an error during construction
 		except GraphConstructionException as e:
+			print(traceback.format_exc())
 			return jsonify({
 					'status': 'error',
 					'message': f'Failed to construct graph: {e}'
@@ -88,6 +91,7 @@ def construct() -> Graph:
 		
 		# If caught an error while parsing graph
 		except GraphParseException as e:
+			print(traceback.format_exc())
 			return jsonify({
 					'status': 'error',
 					'message': f'Failed to parse graph: {e}'
@@ -95,6 +99,7 @@ def construct() -> Graph:
 		
 		# If error from making request
 		except FailedSearchException as e:
+			print(traceback.format_exc())
 			return jsonify({
 					'status': 'error',
 					'message': f'Failed to make request for site: {e}'
@@ -102,6 +107,7 @@ def construct() -> Graph:
 		
 		# Otherwise
 		except Exception as e:
+			print(traceback.format_exc())
 			return jsonify({
 				'status': 'error',
 				'message': f'Caught unknown exception upon constructon of graph: {e}'

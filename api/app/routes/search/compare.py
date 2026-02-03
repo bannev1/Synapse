@@ -1,4 +1,5 @@
 from flask import jsonify, request
+import traceback
 
 from app.routes.routes import Routes
 from app.util.graph import CompareGraph
@@ -72,6 +73,7 @@ def compare() -> None:
 	try:
 		body = checkStructure(request.data, SAMPLE_REQUEST_DATA)
 	except RequestBodyException as e: # If error with parsing data then return error
+		print(traceback.format_exc())
 		return jsonify({
 				'status': 'error',
 				'message': e
@@ -83,6 +85,7 @@ def compare() -> None:
 		parsedGraph = graph.parse()
 		
 	except Exception as e:
+		print(traceback.format_exc())
 		return jsonify({
 			'status': 'error',
 			'message': 'Encountered an unexpected error when comparing these graphs'
