@@ -16,11 +16,13 @@ import panWhite from '/public/icons/panWhite.svg';
 import compareWhite from '/public/icons/compareWhite.svg';
 import compareBlack from '/public/icons/compareBlack.svg';
 import fullscreenWhite from '/public/icons/fullscreenWhite.svg'
+import fullscreenExitWhite from '/public/icons/fullscreenExitWhite.svg';
 
 
 function GraphToolbar({handleFullScreen}) {
 	const {handTool, setHandTool} = useContext(GraphContext);
 	const [showComparePopup, setShowComparePopup] = useState(false);
+	const [fullscreen, setFullscreen] = useState(false);
 
 
 	return (
@@ -56,8 +58,15 @@ function GraphToolbar({handleFullScreen}) {
 
 			{/* Full-Screen */}
 			<div className='noActive'>
-				<button onClick={handleFullScreen}>
-					<Image src={fullscreenWhite} alt='Fullscreen Icon'/>
+				<button onClick={() => {
+					setFullscreen(v => !v)
+					handleFullScreen(fullscreen)
+				}}>
+					{
+						!fullscreen ?
+						<Image src={fullscreenWhite} alt='Fullscreen Icon'/> :
+						<Image src={fullscreenExitWhite} alt='Fullscreen Exit Icon'/>
+					}
 				</button>
 			</div>
 		</div>

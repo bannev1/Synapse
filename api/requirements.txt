@@ -1,0 +1,6 @@
+Flask
+psycopg2
+requests
+flask-cors
+bs4
+dotenv
