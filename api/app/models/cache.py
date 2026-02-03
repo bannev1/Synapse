@@ -23,7 +23,7 @@ class CacheGraph(RequestGraph):
 		self.id = graphID[0]
 		
 		# Save attributes of inherited function
-		super(RequestGraph, self).__init__({
+		super().__init__({
 			'name': query,
 			'type': graphType,
 			'depth': depth,
@@ -55,7 +55,7 @@ class CacheGraph(RequestGraph):
 		Convert cached retrieved graph into dictionary format
 		"""
 
-		return super(RequestGraph, self).parse()
+		return super().parse()
 
 
 

@@ -23,7 +23,7 @@ class SavedGraph(RequestGraph):
 		graph = graph[0]
 		
 		# Save attributes of inherited function
-		super(RequestGraph, self).__init__({
+		super().__init__({
 			'name': graph['name'],
 			'id': id,
 			'type': graph['graphType'], 
@@ -53,7 +53,7 @@ class SavedGraph(RequestGraph):
 		Convert saved retrieved graph into dictionary format
 		"""
 
-		return super(RequestGraph, self).parse()
+		return super().parse()
 
 
 	@staticmethod

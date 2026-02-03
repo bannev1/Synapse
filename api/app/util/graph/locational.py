@@ -13,7 +13,7 @@ class LocationalGraph(Graph):
 		self.locations = self.createTopicNodes(locations)
 		
 		# Save attributes of inherited function
-		super(Graph, self).__init__(query, 'locational', depth, sites)
+		super().__init__(query, 'locational', depth, sites)
 
 
 

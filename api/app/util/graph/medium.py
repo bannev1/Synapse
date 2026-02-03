@@ -8,7 +8,7 @@ from app.util.search import subsites
 class MediumGraph(Graph):
 	def __init__(self, query: str, depth: int, sites: list[str]) -> None:
 		# Save attributes of inherited function
-		super(Graph, self).__init__(query, 'medium', depth, sites)
+		super().__init__(query, 'medium', depth, sites)
 
 		# Custom attribute for this class
 		self.mediums = {} # Store all main mediums with corresponding topic node

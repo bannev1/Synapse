@@ -14,7 +14,7 @@ class RequestGraph(Graph):
 
 		# Save attributes of inherited method if graph not None otherwise run construct method
 		if graph != None:
-			super(RequestGraph, self).__init__(graph['name'], graph['type'], graph['depth'], graph['sources'])
+			super().__init__(graph['name'], graph['type'], graph['depth'], graph['sources'])
 		else:
 			self.graph = {}
 			self.construct() # Construct graph

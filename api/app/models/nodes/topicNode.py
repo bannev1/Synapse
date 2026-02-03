@@ -9,7 +9,7 @@ class TopicNode(Node):
 			) -> None:
 		
 		# Save attributes of inherited function
-		super(Node, self).__init__(name)
+		super().__init__(name)
 
 		# Set own attributes
 		self.sourceNodes: list[SourceNode] = sourceNodes

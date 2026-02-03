@@ -13,7 +13,7 @@ class SourceNode(Node):
 			) -> None:
 		
 		# Save attributes of inherited function
-		super(Node, self).__init__(name)
+		super().__init__(name)
 
 		# Define attributes for SourceNode
 		self.source: str = source
