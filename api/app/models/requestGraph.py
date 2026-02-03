@@ -14,10 +14,7 @@ class RequestGraph(Graph):
 		if graph != None:
 			super(RequestGraph, self).__init__(graph['name'], graph['type'], graph['depth'], graph['sources'])
 		else:
-			self.construct()
-
-			# Save attributes after graph constructed
-			super(RequestGraph, self).__init__(graph['name'], graph['type'], graph['depth'], graph['sources'])
+			self.construct() # Construct graph
 
 
 
