@@ -1,4 +1,6 @@
 from app.models.graph import Graph
+from app.util.search import subsites
+from app.util.search.siteMetadata import siteLocation, siteMedium, siteTitle
 
 
 class RequestGraph(Graph):
@@ -14,7 +16,18 @@ class RequestGraph(Graph):
 		if graph != None:
 			super(RequestGraph, self).__init__(graph['name'], graph['type'], graph['depth'], graph['sources'])
 		else:
+			self.graph = {}
 			self.construct() # Construct graph
+
+		# Add base parts
+		self.graph['topics'] = []
+		self.graph['sources'] = []
+
+		self.sourceNodes = []
+		self.topicNodes = []
+
+		# Parse/construct graph
+		self.parse()
 
 
 
@@ -32,11 +45,6 @@ class RequestGraph(Graph):
 		Parse graph in JSON format
 		"""
 
-		# Add base parts
-		self.graph['topics'] = []
-		self.graph['sources'] = []
-		self.graph['topicLinks'] = []
-		self.graph['sourceLinks'] = []
 
 		# Retrieve topicNodes
 		topics = {}
@@ -57,6 +65,10 @@ class RequestGraph(Graph):
 				'location': source['location'],
 				'neighbors': []
 			}
+
+		# Clear graph
+		self.graph['topicLinks'] = []
+		self.graph['sourceLinks'] = []
 
 		# Make topic to source links
 		for topicLink in self.topicSourceLinks:
@@ -84,3 +96,44 @@ class RequestGraph(Graph):
 		return self.graph
 
 
+
+	def addNode(self, source: str) -> None:
+		"""
+		Method to add a node by its URL
+		"""
+
+		name = siteTitle(source)
+		location = siteLocation(source)
+		medium = siteMedium(source)
+		topics = []
+		neighbors = []
+
+		subsources = subsites(source)
+
+		# Make links (if any)
+		for subsource in subsources:
+			if subsource in self.sites:
+				# Add link
+				self.graph['sourceLinks'].append({
+					'target': subsource,
+					'source': source
+				})
+
+				neighbors.append(subsource)
+
+				# Add to neighbor
+				for i, sourceNode in enumerate(self.sourceNodes):
+					if sourceNode['source'] == subsource:
+						self.sourceNodes[i]['neighbors'] += f',{source}'
+
+						topics.append(sourceNode['topics'].split(',')) # Add topics
+
+		# Add node to sourceNodes
+		self.sourceNodes.append({
+			'source': source,
+			'name': name,
+			'location': location,
+			'medium': medium,
+			'topics': ','.join(list(set(topics))),
+			'neighbors': neighbors
+		})
