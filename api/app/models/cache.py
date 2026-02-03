@@ -1,3 +1,4 @@
+from app.models.graph import Graph
 from app.models.requestGraph import RequestGraph
 from app.models.database import Database
 from app.exceptions import GraphNotFound
@@ -22,7 +23,12 @@ class CacheGraph(RequestGraph):
 		self.id = graphID[0]
 		
 		# Save attributes of inherited function
-		super(RequestGraph, self).__init__(query, graphType, depth, sites)
+		super(RequestGraph, self).__init__({
+			'name': query,
+			'type': graphType,
+			'depth': depth,
+			'sources': sites
+		})
 
 
 
