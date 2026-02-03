@@ -11,7 +11,7 @@ from config import Config
 search = Routes().search
 
 
-@search.get('/construct')
+@search.get('/')
 def construct() -> Graph:
 	"""
 	Construct a graph
@@ -19,10 +19,6 @@ def construct() -> Graph:
 
 	SAMPLE_REQUEST_DATA = {
 		'query': 'My Query/Topic',
-		'sites': [
-			'https://www.website1.com',
-			'https://www.website2.com',
-		],
 		'type': 'topical | medium | locational',
 		'depth': 5
 	}
@@ -30,6 +26,10 @@ def construct() -> Graph:
 	# Parse request
 	try:
 		body = checkStructure(request.data, SAMPLE_REQUEST_DATA)
+
+		# Check if list of sites is in body
+		if 'sites' not in body.keys():
+			body['sites'] = []
 	except RequestBodyException as e: # If error with parsing data then return error
 		return jsonify({
 				'status': 'error',
