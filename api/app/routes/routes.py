@@ -21,11 +21,11 @@ class Routes:
 			self.index = Flask(__name__)
 
 			# Set up CORS
-			CORS(self.index, resources={r"/*": {"origins": [
-				"http://localhost:3000", # local frontend
-				"http://127.0.0.1:3000"  # local frontend
-			]
-			}}, supports_credentials=True)
+			# CORS(self.index, resources={r"/*": {"origins": [
+			# 	"http://localhost:3000", # local frontend
+			# 	"http://127.0.0.1:3000"  # local frontend
+			# ]
+			# }}, supports_credentials=True)
 
 			# Load configuration
 			self.index.config.from_object('config.Config')
@@ -39,4 +39,7 @@ class Routes:
 		"""Register blueprints once defined"""
 		self.index.register_blueprint(self.search)
 		self.index.register_blueprint(self.share)
+
+		print('Configured URL Map:')
+		print(self.index.url_map)
 

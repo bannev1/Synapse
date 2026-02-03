@@ -1,7 +1,3 @@
-from flask import Flask
-from flask_cors import CORS
-from app.models.database import Database
-
 # Initialize Routes
 from app.routes.routes import Routes
 Routes()

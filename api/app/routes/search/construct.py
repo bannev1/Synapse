@@ -47,7 +47,7 @@ def construct() -> Graph:
 	# Check if exists in Cache
 	try:
 		if not Config.ENABLE_CACHE: # Check if Cache enabled
-			raise GraphNotFound
+			raise GraphNotFound()
 		
 		# Find CacheGraph
 		graph = CacheGraph(query, graphType, depth, sites)
@@ -104,7 +104,7 @@ def construct() -> Graph:
 		except Exception as e:
 			return jsonify({
 				'status': 'error',
-				'message': 'Caught unknown exception upon constructon of graph.'
+				'message': f'Caught unknown exception upon constructon of graph: {e}'
 			})
 
 

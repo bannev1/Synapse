@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 # Run from /app as root
-from app import application
+from app import *
 
 app = application()
 
@@ -12,5 +12,5 @@ if __name__ == '__main__':
 	if os.path.isfile(envPath):
 		load_dotenv(envPath)
 
-	# Run app (python -m flask run)
-	app.run(host="0.0.0.0", port=8080, debug=True)
+	# Run app (hupper -m waitress --port=8000 main:app)
+	app.run(host="0.0.0.0", port=8000, debug=True)
