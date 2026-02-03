@@ -1,9 +1,9 @@
-from app.models.graph import Graph
+from app.models.requestGraph import RequestGraph
 from app.models.database import Database
 from app.exceptions import GraphNotFound
 
 
-class CacheGraph(Graph):
+class CacheGraph(RequestGraph):
 	def __init__(self, query: str, graphType: str, depth: int, sites: list[str]) -> None:
 		"""
 		Model for cache graph
@@ -22,7 +22,7 @@ class CacheGraph(Graph):
 		self.id = graphID[0]
 		
 		# Save attributes of inherited function
-		super(Graph, self).__init__(query, graphType, depth, sites)
+		super(RequestGraph, self).__init__(query, graphType, depth, sites)
 
 
 
@@ -41,68 +41,6 @@ class CacheGraph(Graph):
 
 		# Clear old cache
 		self.clearOldCache()
-
-
-	def parse(self) -> dict:
-		"""
-		Convert cached retrieved graph into dictionary format
-		"""
-
-		# Create base graph
-		self.graph = {
-			'name': self.query,
-			'type': self.type,
-			'depth': self.depth,
-			'topics': [],
-			'sources': [],
-			'topicLinks': [],
-			'sourceLinks': []
-		}
-
-		# Retrieve topicNodes
-		topics = {}
-		for topic in self.topicNodes:
-			topics[topic['id']] = topic['name']
-			
-		self.graph['topics'] = list(topics.values())
-
-		# Retrieve sourceNodes
-		sources = {}
-		for source in self.sourceNodes:
-			# Add node as dictionary
-			sources[source['id']] = {
-				'source': source['source'],
-				'name': source['name'],
-				'topics': source['topics'].split(','), # Convert CSV to list object
-				'medium': source['medium'],
-				'location': source['location'],
-				'neighbors': []
-			}
-
-		# Make topic to source links
-		for topicLink in self.topicSourceLinks:
-			self.graph['topicLinks'].append({
-				'target': topics[topicLink['topicNode']],
-				'source': sources[topicLink['sourceNode']]['source']
-			})
-		
-		# Make source links
-		for sourceLink in self.sourceLinks:
-			node1 = sources[sourceLink['sourceNode1']]
-			node2 = sources[sourceLink['sourceNode2']]
-
-			self.graph['sourceLinks'].append({
-				'target': node1['source'],
-				'source': node2['source']
-			})
-
-			# Add as neighbor
-			node1['neighbors'].append(node2['source'])
-
-		# Add to main graph
-		self.graph['sources'] = list(sources.values())
-
-		return self.graph
 
 
 

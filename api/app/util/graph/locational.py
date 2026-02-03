@@ -8,7 +8,7 @@ from config import Config
 
 
 class LocationalGraph(Graph):
-	def __init__(self, query: str, depth: int, sites: list[str], locations: list[str] = ['us', '']) -> None:
+	def __init__(self, query: str, depth: int, sites: list[str], locations: list[str] = ['us', 'cn', 'ca', 'ge', 'uk']) -> None:
 		# Custom attribute for this class
 		self.locations = self.createTopicNodes(locations)
 		
