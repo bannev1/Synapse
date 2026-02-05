@@ -28,14 +28,18 @@ def google(query: str, amtResults: int = 10, engineID: str = Config.GOOGLE_ANY_E
 	:rtype: list[dict[str]]
 	"""
 	
-	url = f"https://www.googleapis.com/customsearch/v1?key={Config.GOOGLE_API_KEY}&cx={engineID}&q={query}&num={amtResults}" + f"&{params}" if len(params) > 0 else ''
+	url = f"https://www.googleapis.com/customsearch/v1?key={Config.GOOGLE_API_KEY}&cx={engineID}&q={query}&num={amtResults}" + (f"&{params}" if len(params) > 0 else '')
+	print(Config.GOOGLE_API_KEY)
+	headers = {
+		"Authentication": f"Bearer {Config.GOOGLE_API_KEY}"
+	}
 
 	# Make request
-	req = requests.get(url)
+	req = requests.get(url, headers=headers)
 
 	# Check to ensure went well (check via status code)
 	if not (200 <= req.status_code < 300):
-		raise FailedSearchException(f"Google Search Query of {query} failed, request returned {req.status_code} status code")
+		raise FailedSearchException(f"Google Search Query of {query} failed, request returned {req.status_code} status code and the following: {req.text}")
 	
 	# Otherwise parse the JSON response
 	jsonData = req.json()
