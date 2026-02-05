@@ -35,4 +35,7 @@ class Config:
 
 	# Enable Cache
 	ENABLE_CACHE = True
+
+	# Unwanted Topics
+	UNWANTED_TOPICS = ['See also', 'References', 'Further reading', 'External links']
  
