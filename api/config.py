@@ -2,16 +2,16 @@ from os import getenv
 
 class Config:
 	# Database Connection String
-	DATABASE_URL = getenv('DATABASE_URL', '')
+	DATABASE_URL = getenv('SYNAPSE_DATABASE_URL', '')
 
 
 	# 3rd Party API Keys
-	GOOGLE_API_KEY = getenv('GOOGLE_API_KEY', '')
-	IP_WHO_API_KEY = getenv('IP_WHO_API_KEY', '')
+	GOOGLE_API_KEY = getenv('SYNAPSE_GOOGLE_API_KEY', '')
+	IP_WHO_API_KEY = getenv('SYNAPSE_IP_WHO_API_KEY', '')
 
 
 	# Google Search Engine IDs
-	GOOGLE_ANY_ENGINE_ID = getenv('GOOGLE_ANY_ENGINE_ID', '')
+	GOOGLE_ANY_ENGINE_ID = getenv('SYNAPSE_GOOGLE_ANY_ENGINE_ID', '')
 
 
 
