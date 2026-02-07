@@ -105,6 +105,8 @@ def siteMedium(url: str) -> str:
 	# Otherwise parse the JSON response
 	jsonData = req.json()
 
+	print(f'{jsonData=}')
+
 	return jsonData['category']
 
 

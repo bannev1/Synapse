@@ -11,6 +11,7 @@ class Config:
 	# 3rd Party API Keys
 	SERPAPI_KEY = get_key('.env', 'SYNAPSE_SERPAPI_KEY') or ''
 	IP_WHO_API_KEY = get_key('.env', 'SYNAPSE_IP_WHO_API_KEY') or ''
+	SITECATEGORY_SESSION_KEY = get_key('.env', 'SYNAPSE_SITECATEGORY_SESSION_KEY') or ''
 
 
 	# ==============

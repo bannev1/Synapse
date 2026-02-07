@@ -1,6 +1,8 @@
 import requests
 
 from app.exceptions import FailedSearchException
+from dotenv import set_key
+from config import Config
 
 
 class SiteCategorySess:
@@ -19,7 +21,12 @@ class SiteCategorySess:
 		"""Class to store the SiteCategory Session Key or to generate more"""
 
 		if not hasattr(self, "key"):
-			self.generateNewKey() # Generate session key
+			# Check if already has a previous session key
+			if Config.SITECATEGORY_SESSION_KEY != '':
+				self.key = Config.SITECATEGORY_SESSION_KEY
+			else:
+				# Otherwise generate new key
+				self.key = self.generateNewKey()
 
 
 	def generateNewKey(self) -> str:
@@ -36,5 +43,7 @@ class SiteCategorySess:
 		key = req.json()['token']
 
 		# Save key
+		set_key('.env', 'SYNAPSE_SITECATEGORY_SESSION_KEY', key)
+
 		self.key = key
 		return key
