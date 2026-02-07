@@ -88,19 +88,26 @@ def siteMedium(url: str) -> str:
 	if not (200 <= req.status_code < 300):
 		# See if need new token
 		try:
-			if req.json()['error'] == 'Invalid or expired session token':
+			if req.json()['error'] == 'Invalid or expired session token' or req.status_code == 401:
 				sessKey = SiteCategorySess().generateNewKey()
+
+				print(f"{sessKey=}")
+
+				headers = { # Request headers
+					"Authorization": f"Bearer {sessKey}",
+					"Content-Type": "application/json"
+				}
 
 				# Make request again
 				req = requests.post(requestURL, headers=headers, json=formData)
 
 				# See if valid
 				if not (200 <= req.status_code < 300):
-					raise Exception() # Trigger the except block
+					raise Exception(req.text) # Trigger the except block
 			else:
-				raise Exception() # Trigger except block
-		except:
-			raise FailedSearchException(f"SiteCategory.com for {url} failed, request returned {req.status_code} status code")
+				raise Exception(req.text) # Trigger except block
+		except Exception as e:
+			raise FailedSearchException(f"SiteCategory.com for {url} failed, request returned {req.status_code} status code and error {e}")
 	
 	# Otherwise parse the JSON response
 	jsonData = req.json()

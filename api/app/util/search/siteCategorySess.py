@@ -44,6 +44,6 @@ class SiteCategorySess:
 
 		# Save key
 		set_key('.env', 'SYNAPSE_SITECATEGORY_SESSION_KEY', key)
-
 		self.key = key
+
 		return key
