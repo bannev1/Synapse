@@ -1,21 +1,21 @@
-from os import getenv
+from dotenv import get_key
 
 class Config:
-	# Database Connection String
-	DATABASE_URL = getenv('SYNAPSE_DATABASE_URL', '')
+	# ===================
+	# CONNECTION/API KEYS
+	# ===================
 
+	# Database Connection String
+	DATABASE_URL = get_key('.env', 'SYNAPSE_DATABASE_URL') or ''
 
 	# 3rd Party API Keys
-	GOOGLE_API_KEY = getenv('SYNAPSE_GOOGLE_API_KEY', '')
-	IP_WHO_API_KEY = getenv('SYNAPSE_IP_WHO_API_KEY', '')
+	SERPAPI_KEY = get_key('.env', 'SYNAPSE_SERPAPI_KEY') or ''
+	IP_WHO_API_KEY = get_key('.env', 'SYNAPSE_IP_WHO_API_KEY') or ''
 
 
-	# Google Search Engine IDs
-	GOOGLE_ANY_ENGINE_ID = getenv('SYNAPSE_GOOGLE_ANY_ENGINE_ID', '')
-
-
-
+	# ==============
 	# GENERAL CONFIG
+	# ==============
 
 	# Colors
 	COLORS = [ # HEX code

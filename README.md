@@ -23,13 +23,10 @@ Backend is written in Python Flask (with PostGreSQL) and stored in the `api` fol
 Make sure to create a `.env` file in the `app` folder with the following contents (filled out):
 
 ```shell
-DATABASE_URL = '' # Connection String to Database
+SYNAPSE_DATABASE_URL = '' # Connection String to PostgreSQL Database
 
-GOOGLE_API_KEY = '' # https://developers.google.com/custom-search/v1/introduction
-IP_WHO_API_KEY = '' # https://ipwho.org/
-
-# Google Engine ID
-GOOGLE_ANY_ENGINE_ID = ''
+SYNAPSE_GOOGLE_API_KEY = '' # https://developers.google.com/custom-search/v1/introduction
+SYNAPSE_IP_WHO_API_KEY = '' # https://ipwho.org/
 ```
 
 ## Contribution

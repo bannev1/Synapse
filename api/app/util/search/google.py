@@ -28,10 +28,10 @@ def google(query: str, amtResults: int = 10, engineID: str = Config.GOOGLE_ANY_E
 	:rtype: list[dict[str]]
 	"""
 	
-	url = f"https://www.googleapis.com/customsearch/v1?key={Config.GOOGLE_API_KEY}&cx={engineID}&q={query}&num={amtResults}" + (f"&{params}" if len(params) > 0 else '')
-	print(Config.GOOGLE_API_KEY)
+	url = f"https://www.googleapis.com/customsearch/v1?key={Config.SERPAPI_KEY}&cx={engineID}&q={query}&num={amtResults}" + (f"&{params}" if len(params) > 0 else '')
+	print(Config.SERPAPI_KEY)
 	headers = {
-		"Authentication": f"Bearer {Config.GOOGLE_API_KEY}"
+		"Authentication": f"Bearer {Config.SERPAPI_KEY}"
 	}
 
 	# Make request
