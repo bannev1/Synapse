@@ -28,7 +28,7 @@ def google(query: str, params: str = '') -> list[dict[str]]:
 	:rtype: list[dict[str]]
 	"""
 	
-	url = f"https://serpapi.api/search.json?api_key={Config.SERPAPI_KEY}&q={query}&hl=en" + (f"&{params}" if len(params) > 0 else '')
+	url = f"https://serpapi.com/search.json?api_key={Config.SERPAPI_KEY}&q={query}&hl=en" + (f"&{params}" if len(params) > 0 else '')
 
 	# Make request
 	req = requests.get(url)
