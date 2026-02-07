@@ -26,7 +26,7 @@ class MediumGraph(Graph):
 		# Create SourceNodes
 		for site in sourceSites:
 			# Get metadata
-			info = siteLocationAndName(site)
+			info = siteLocationAndName(site['Link'])
 			location = info['location']
 			sourceName = info['sourceName']
 			
@@ -36,7 +36,7 @@ class MediumGraph(Graph):
 			node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location)
 			
 			# Check if topicnode for medium exists
-			if medium in self.mediums.keys():
+			if medium in list(self.mediums.keys()):
 				self.mediums[medium].sourceNodes.append(node)
 
 			# Otherwise create TopicNode
@@ -65,7 +65,7 @@ class MediumGraph(Graph):
 		
 		for site in neighborSites:
 			# Check if source already exists
-			if site in self.sources.keys():
+			if site in list(self.sources.keys()):
 				neighborNodes.append(self.sources[site])
 			
 			# Create new source
@@ -84,7 +84,7 @@ class MediumGraph(Graph):
 				self.sources[site] = newNode
 
 				# Determine if can link to TopicNode
-				if medium in self.mediums.keys():
+				if medium in list(self.mediums.keys()):
 					self.mediums[medium].sourceNodes.append(newNode)
 
 				# Get neighboring nodes

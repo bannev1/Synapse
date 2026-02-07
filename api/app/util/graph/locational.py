@@ -9,6 +9,7 @@ from config import Config
 class LocationalGraph(Graph):
 	def __init__(self, query: str, depth: int, locations: list[str] = Config.DEFAULT_LOCATIONS) -> None:
 		# Custom attribute for this class
+		self.locationList = locations
 		self.locations = self.createTopicNodes(locations) # For topic nodes
 		
 		# Save attributes of inherited function
@@ -36,7 +37,7 @@ class LocationalGraph(Graph):
 		"""
 		
 		# Get base SourceNodes (only sites)
-		searchedSites = googleLocation(self.query, self.locations.keys())
+		searchedSites = googleLocation(self.query, self.locationList)
 
 		# Create SourceNodes
 		for code, location in self.locations.items():
@@ -69,7 +70,7 @@ class LocationalGraph(Graph):
 		
 		for site in neighborSites:
 			# Check if source already exists
-			if site in self.sources.keys():
+			if site in list(self.sources.keys()):
 				neighborNodes.append(self.sources[site])
 			
 			# Create new source
@@ -88,7 +89,7 @@ class LocationalGraph(Graph):
 				self.sources[site] = newNode
 
 				# Determine if can link to TopicNode
-				if location in self.locations.keys():
+				if location in list(self.locations.keys()):
 					self.locations[location].sourceNodes.append(newNode)
 
 				# Get neighboring nodes

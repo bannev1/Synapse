@@ -4,7 +4,6 @@ from app.util.search import getTopics, subsites
 from app.util.search.google import google
 from app.util.search.siteMetadata import siteLocationAndName, siteMedium, siteTitle
 from app.exceptions import FailedSearchException
-from config import Config
 
 
 class TopicalGraph(Graph):
@@ -33,7 +32,7 @@ class TopicalGraph(Graph):
 			# Create source nodes for each site
 			for site in sourceNodeSites:
 				# Check to see if site already exists
-				if site in self.sources.keys():
+				if site in list(self.sources.keys()):
 					# Add this topic to the SourceNode
 					self.sources[site['Link']].topics.append(topicNode.name)
 					sourceNodes.append(self.sources[site['Link']])
@@ -41,7 +40,7 @@ class TopicalGraph(Graph):
 				# Otherwise create new SourceNode
 				else:
 					# Get metadata for node (location & medium)
-					info = siteLocationAndName(site)
+					info = siteLocationAndName(site['Link'])
 					location = info['location']
 					sourceName = info['sourceName']
 
