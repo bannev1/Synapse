@@ -41,19 +41,19 @@ class TopicalGraph(Graph):
 				# Check to see if site already exists
 				if site in self.sources.keys():
 					# Add this topic to the SourceNode
-					self.sources[site['Source']].topics.append(topicNode.name)
-					sourceNodes.append(self.sources[site['Source']])
+					self.sources[site['Link']].topics.append(topicNode.name)
+					sourceNodes.append(self.sources[site['Link']])
 				
 				# Otherwise create new SourceNode
 				else:
 					# Get metadata for node (location & medium)
-					location = siteLocation(site['Source'])
-					medium = siteMedium(site['Source'])
+					location = siteLocation(site['Link'])
+					medium = siteMedium(site['Link'])
 
 					# Create node
-					node = SourceNode(site['Title'], site['Source'], self.query, medium, location, [topicNode.name])
+					node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, location, [topicNode.name])
 					sourceNodes.append(node)
-					self.sources[site['Source']] = node # Add site to sources
+					self.sources[site['Link']] = node # Add site to sources
 
 					# Find neighbors
 					node.neighbors = self.findNeighboringNodes(node)

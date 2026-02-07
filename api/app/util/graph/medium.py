@@ -1,6 +1,6 @@
 from app.models import Graph
 from app.models.nodes import SourceNode, TopicNode
-from app.util.search.google import googleSites
+from app.util.search.google import google
 from app.util.search.siteMetadata import siteMedium, siteLocation, siteTitle
 from app.util.search import subsites
 
@@ -21,16 +21,16 @@ class MediumGraph(Graph):
 		"""
 		
 		# Get base SourceNodes (only sites)
-		sourceSites = [source for value in googleSites(self.query, self.sites).values() for source in value]
+		sourceSites = google(self.query, self.sites).values()
 
 		# Create SourceNodes
 		for site in sourceSites:
 			# Get metadata
-			medium = siteMedium(site['Source'])
-			location = siteLocation(site['Source'])
+			medium = siteMedium(site['Link'])
+			location = siteLocation(site['Link'])
 
 			# Create new SourceNode
-			node = SourceNode(site['Title'], site['Source'], self.query, medium, location)
+			node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, location)
 			
 			# Check if topicnode for medium exists
 			if medium in self.mediums.keys():
@@ -44,6 +44,7 @@ class MediumGraph(Graph):
 
 			# Get neighboring SourceNodes recursively
 			node.neighbors = self.findNeighboringNodes(node)
+
 
 
 	def findNeighboringNodes(self, node: SourceNode, currDepth: int = 1) -> list[SourceNode] | None:

@@ -7,12 +7,12 @@ from config import Config
 
 
 class LocationalGraph(Graph):
-	def __init__(self, query: str, depth: int, sites: list[str], locations: list[str] = ['us', 'cn', 'ca', 'ge', 'uk']) -> None:
+	def __init__(self, query: str, depth: int, locations: list[str] = Config.DEFAULT_LOCATIONS) -> None:
 		# Custom attribute for this class
-		self.locations = self.createTopicNodes(locations)
+		self.locations = self.createTopicNodes(locations) # For topic nodes
 		
 		# Save attributes of inherited function
-		super().__init__(query, 'locational', depth, sites)
+		super().__init__(query, 'locational', depth)
 
 
 
@@ -42,10 +42,10 @@ class LocationalGraph(Graph):
 		for code, location in self.locations.items():
 			for site in searchedSites[code]:
 				# Get metadata
-				medium = siteMedium(site['Source'])
+				medium = siteMedium(site['Link'])
 
 				# Create new SourceNode
-				node = SourceNode(site['Title'], site['Source'], self.query, medium, location)
+				node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, location)
 
 				self.locations[code].sourceNodes.append(node)
 				self.sources[node.source] = node
