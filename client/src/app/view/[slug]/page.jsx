@@ -39,8 +39,7 @@ function View() {
 
 	const [searchOptions, setSearchOptions] = useState({
 		'depth': 6,
-		'sources': [],
-		'useAll': true
+		'graphType': 'topical'
 	})
 
 	const [showListView, setShowListView] = useState(false)

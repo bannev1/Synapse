@@ -1,4 +1,3 @@
-from app.models.graph import Graph
 from app.models.requestGraph import RequestGraph
 from app.models.database import Database
 from app.exceptions import GraphNotFound
@@ -27,8 +26,7 @@ class SavedGraph(RequestGraph):
 			'name': graph['name'],
 			'id': id,
 			'type': graph['graphType'], 
-			'depth': -1,
-			'sources': []
+			'depth': -1
 		})
 
 
@@ -57,7 +55,7 @@ class SavedGraph(RequestGraph):
 
 
 	@staticmethod
-	def updateByID(id: str, graph: Graph) -> None:
+	def updateByID(id: str, graph: RequestGraph) -> None:
 		"""
 		Update graph in database after changes made (given the parsed graph)
 		"""
@@ -70,7 +68,7 @@ class SavedGraph(RequestGraph):
 
 
 	@staticmethod
-	def saveGraph(graph: Graph,  graphID: str = None) -> str:
+	def saveGraph(graph: RequestGraph,  graphID: str = None) -> str:
 		"""
 		Save graph to the Saved database and return its ID
 		"""
@@ -79,18 +77,15 @@ class SavedGraph(RequestGraph):
 		parsed = graph.parse()
 
 		# Save base graph
-		sources = ','.join(sorted(graph.sources)) # Convert to CSV
-
-		# Check if given ID otherwise let SQL generate
-		if graphID == None:
+		if graphID == None: # Check if given ID otherwise let SQL generate
 			graphID = Database().modifyAndReturn(f"""
-				INSERT INTO saved (query, graphType, depth, sources) 
-				VALUES ({graph.query}, {graph.type}, {graph.depth}, {sources}) 
+				INSERT INTO saved (query, graphType, depth) 
+				VALUES ({graph.query}, {graph.type}, {graph.depth}) 
 				RETURNING id;""")['id']
 		else:
 			Database().modify(f"""
-				INSERT INTO saved (query, graphType, depth, sources) 
-				VALUES ({graph.query}, {graph.type}, {graph.depth}, {sources})""")
+				INSERT INTO saved (query, graphType, depth) 
+				VALUES ({graph.query}, {graph.type}, {graph.depth};""")
 
 		# Save all sourceNodes
 		sourceNodes = {} # Dict of (source, id)
@@ -98,8 +93,8 @@ class SavedGraph(RequestGraph):
 		for node in parsed['sources']:
 			nodeTopics = ','.join(node['topics']) 
 			nodeID = Database().modifyAndReturn(f"""
-				INSERT INTO savedSourceNodes (graph, name, source, location, medium, topics)
-				VALUES ({graphID}, {node['name']}, {node['source']}, {node['location']}, {node['medium']}, {nodeTopics})
+				INSERT INTO savedSourceNodes (graph, name, source, sourceName, location, medium, topics)
+				VALUES ({graphID}, {node['name']}, {node['source']}, {node['sourceName']}, {node['location']}, {node['medium']}, {nodeTopics})
 				RETURNING id;""")['id']
 			
 			sourceNodes[node['source']] = nodeID

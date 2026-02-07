@@ -1,6 +1,6 @@
 from app.models.graph import Graph
 from app.util.search import subsites
-from app.util.search.siteMetadata import siteLocation, siteMedium, siteTitle
+from app.util.search.siteMetadata import siteLocationAndName, siteMedium, siteTitle
 
 
 class RequestGraph(Graph):
@@ -14,7 +14,7 @@ class RequestGraph(Graph):
 
 		# Save attributes of inherited method if graph not None otherwise run construct method
 		if graph != None:
-			super().__init__(graph['name'], graph['type'], graph['depth'], graph['sources'])
+			super().__init__(graph['name'], graph['type'], graph['depth'])
 		else:
 			self.graph = {}
 			self.construct() # Construct graph
@@ -103,7 +103,7 @@ class RequestGraph(Graph):
 		"""
 
 		name = siteTitle(source)
-		location = siteLocation(source)
+		location = siteLocationAndName(source)
 		medium = siteMedium(source)
 		topics = []
 		neighbors = []

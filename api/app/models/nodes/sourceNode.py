@@ -3,8 +3,9 @@ from app.models.nodes.node import Node
 
 class SourceNode(Node):
 	def __init__(self, 
-			  	name: str,
+			  	name: str, # Website Title
 				source: str,
+				sourceName: str, # Website Creator Title
 				query: str, 
 				medium: str,
 				location: str,
@@ -17,6 +18,7 @@ class SourceNode(Node):
 
 		# Define attributes for SourceNode
 		self.source: str = source
+		self.sourceName: str = sourceName
 		self.query: str = query
 		self.topics: list[str] | None = topics
 		self.medium: str = medium
@@ -31,7 +33,7 @@ class SourceNode(Node):
 		"""
 		Return the keys of the dictionary
 		"""
-		yield ['source', 'name', 'topics', 'medium', 'location', 'neighbors']
+		yield ['source', 'name', 'sourceName', 'topics', 'medium', 'location', 'neighbors']
 
 
 	def __getitem__(self, key: str):
@@ -44,6 +46,8 @@ class SourceNode(Node):
 				return self.source
 			case 'name':
 				return self.query
+			case 'sourceName':
+				return self.sourceName
 			case 'topics':
 				return self.topics
 			case 'medium':

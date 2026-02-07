@@ -1,18 +1,18 @@
 from app.models import Graph
 from app.models.nodes import SourceNode, TopicNode
 from app.util.search.google import googleLocation
-from app.util.search.siteMetadata import siteMedium, siteLocation, siteTitle
+from app.util.search.siteMetadata import siteMedium, siteLocationAndName, siteTitle
 from app.util.search import subsites
 from config import Config
 
 
 class LocationalGraph(Graph):
-	def __init__(self, query: str, depth: int, sites: list[str], locations: list[str] = ['us', 'cn', 'ca', 'ge', 'uk']) -> None:
+	def __init__(self, query: str, depth: int, locations: list[str] = Config.DEFAULT_LOCATIONS) -> None:
 		# Custom attribute for this class
-		self.locations = self.createTopicNodes(locations)
+		self.locations = self.createTopicNodes(locations) # For topic nodes
 		
 		# Save attributes of inherited function
-		super().__init__(query, 'locational', depth, sites)
+		super().__init__(query, 'locational', depth)
 
 
 
@@ -42,10 +42,10 @@ class LocationalGraph(Graph):
 		for code, location in self.locations.items():
 			for site in searchedSites[code]:
 				# Get metadata
-				medium = siteMedium(site['Source'])
+				medium = siteMedium(site['Link'])
 
 				# Create new SourceNode
-				node = SourceNode(site['Title'], site['Source'], self.query, medium, location)
+				node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, location)
 
 				self.locations[code].sourceNodes.append(node)
 				self.sources[node.source] = node
@@ -75,12 +75,15 @@ class LocationalGraph(Graph):
 			# Create new source
 			else:
 				# Get metadata
+				info = siteLocationAndName(site)
+				location = info['location']
+				sourceName = info['sourceName']
+
 				medium = siteMedium(site)
-				location = siteLocation(site)
 				title = siteTitle(site)
 
 				# Create node
-				newNode = SourceNode(title, site, self.query, medium, location)
+				newNode = SourceNode(title, site, sourceName, self.query, medium, location)
 
 				self.sources[site] = newNode
 

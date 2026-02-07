@@ -10,12 +10,12 @@ from app.exceptions import FailedSearchException
 
 
 
-def siteLocation(url: str) -> str:
+def siteLocationAndName(url: str) -> str:
 	"""
-	Return a website's location given a domain using the IP2Location.io API 
-	_(Gets the domain's admin location)_
+	Return a website's location and source/organization name given a domain using the https://ipwho.org API 
+	_(Gets the domain's admin location/registered organization name)_
 
-	:param url: Website URL to get location of
+	:param url: Website URL to get location/source name of
 	"""
 
 	# Remove https and / from URL (only get base)
@@ -28,22 +28,25 @@ def siteLocation(url: str) -> str:
 	ip = socket.gethostbyname(url)
 
 	# Configure API
-	requestURL = f'https://api.ipwho.org/ip/{ip}?get=country&apiKey={Config.IP_WHO_API_KEY}'
+	requestURL = f'https://api.ipwho.org/ip/{ip}?apiKey={Config.IP_WHO_API_KEY}'
 
 	# Make request
 	try:
 		req = requests.get(requestURL)
-		location = req.json()
+		websiteInfo = req.json()
 
 		# Check if went well
 		if not (200 <= req.status_code < 300):
 			raise Exception() # Trigger exception block
-		if location['success'] != True:
+		if websiteInfo['success'] != True:
 			raise Exception()
 	except:
 		raise FailedSearchException(f"Request to IPwho.org for {url} at {ip} failed")
 
-	return location['data']['country']
+	return {
+			'location': websiteInfo['data']['geoLocation']['country'],
+			'sourceName': websiteInfo['data']['connection']['org']
+		}
 
 
 

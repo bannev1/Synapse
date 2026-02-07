@@ -1,16 +1,16 @@
 from app.models import Graph
 from app.models.nodes import SourceNode, TopicNode
 from app.util.search import getTopics, subsites
-from app.util.search.google import google, googleSites
-from app.util.search.siteMetadata import siteLocation, siteMedium, siteTitle
+from app.util.search.google import google
+from app.util.search.siteMetadata import siteLocationAndName, siteMedium, siteTitle
 from app.exceptions import FailedSearchException
 from config import Config
 
 
 class TopicalGraph(Graph):
-	def __init__(self, query: str, depth: int, sites: list[str]) -> None:
+	def __init__(self, query: str, depth: int) -> None:
 		# Save attributes of inherited function
-		super().__init__(query, 'topical', depth, sites)
+		super().__init__(query, 'topical', depth)
 
 
 
@@ -27,33 +27,30 @@ class TopicalGraph(Graph):
 			topicalQuery = f'{self.query} {topicNode.name}'
 
 			sourceNodes: list[SourceNode] = [] # List of source nodes for this topic
-			sourceNodeSites: list[str] = None
 
-			# Check if need to get all sites or just one site
-			if len(self.sites) > 0:
-				# Only get sources/titles no need by site
-				sourceNodeSites = [source for value in googleSites(topicalQuery, self.sites).values() for source in value]
-			else:
-				sourceNodeSites = google(topicalQuery)
+			sourceNodeSites = google(topicalQuery)
 
 			# Create source nodes for each site
 			for site in sourceNodeSites:
 				# Check to see if site already exists
 				if site in self.sources.keys():
 					# Add this topic to the SourceNode
-					self.sources[site['Source']].topics.append(topicNode.name)
-					sourceNodes.append(self.sources[site['Source']])
+					self.sources[site['Link']].topics.append(topicNode.name)
+					sourceNodes.append(self.sources[site['Link']])
 				
 				# Otherwise create new SourceNode
 				else:
 					# Get metadata for node (location & medium)
-					location = siteLocation(site['Source'])
-					medium = siteMedium(site['Source'])
+					info = siteLocationAndName(site)
+					location = info['location']
+					sourceName = info['sourceName']
+
+					medium = siteMedium(site['Link'])
 
 					# Create node
-					node = SourceNode(site['Title'], site['Source'], self.query, medium, location, [topicNode.name])
+					node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [topicNode.name])
 					sourceNodes.append(node)
-					self.sources[site['Source']] = node # Add site to sources
+					self.sources[site['Link']] = node # Add site to sources
 
 					# Find neighbors
 					node.neighbors = self.findNeighboringNodes(node)
@@ -107,7 +104,7 @@ class TopicalGraph(Graph):
 					continue
 
 				# Get metadata (location/medium)
-				location = siteLocation(site)
+				location = siteLocationAndName(site)
 				medium = siteMedium(site)
 
 				# Create node

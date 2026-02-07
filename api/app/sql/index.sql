@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS cache (
 	query VARCHAR(100) NOT NULL,
 	graphType VARCHAR(20) CHECK (graphType IN ('topical', 'medium', 'locational')) NOT NULL,
 	depth int NOT NULL,
-	sources VARCHAR(8000) NOT NULL, -- CSV list of sources
 	timestamp TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
@@ -36,6 +35,7 @@ CREATE TABLE IF NOT EXISTS cacheSourceNodes (
 	graph INT REFERENCES cache(id) ON DELETE CASCADE,
 	name VARCHAR(150) NOT NULL,
 	source VARCHAR(100) NOT NULL,
+	sourceName VARCHAR(50) NOT NULL,
 	location VARCHAR(50) NOT NULL,
 	medium VARCHAR(15) NOT NULL, 
 	topics VARCHAR(1500) NOT NULL -- CSV list of topics
@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS savedSourceNodes (
 	graph INT REFERENCES saved(id) ON DELETE CASCADE,
 	name VARCHAR(150) NOT NULL,
 	source VARCHAR(100) NOT NULL,
+	sourceName VARCHAR(50) NOT NULL,
 	location VARCHAR(50) NOT NULL,
 	medium VARCHAR(15) NOT NULL,
 	topics VARCHAR(1500) NOT NULL -- CSV list of topics

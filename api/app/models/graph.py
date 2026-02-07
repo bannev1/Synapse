@@ -5,7 +5,7 @@ from app.models.nodes import Node, SourceNode, TopicNode
 
 
 class Graph:
-	def __init__(self, query: str, type: Literal['topical', 'medium', 'locational'], depth: int, sites: list[str]) -> None:
+	def __init__(self, query: str, type: Literal['topical', 'medium', 'locational'], depth: int) -> None:
 		"""
 		Graph Base Class
 		"""
@@ -14,7 +14,6 @@ class Graph:
 		self.query: str = query
 		self.type: Literal['topical', 'medium', 'locational'] = type
 		self.depth: int = depth
-		self.sites: list[str] = sites
 
 		# Define attributes which will be set later
 		self.topicNodes: list[TopicNode] = [] # List of all topicnodes (linked to sourceNodes)

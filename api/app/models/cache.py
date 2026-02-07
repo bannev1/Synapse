@@ -1,20 +1,16 @@
-from app.models.graph import Graph
 from app.models.requestGraph import RequestGraph
 from app.models.database import Database
 from app.exceptions import GraphNotFound
 
 
 class CacheGraph(RequestGraph):
-	def __init__(self, query: str, graphType: str, depth: int, sites: list[str]) -> None:
+	def __init__(self, query: str, graphType: str, depth: int) -> None:
 		"""
 		Model for cache graph
 		"""
 
-		# Convert sources to CSV format
-		sources = ','.join(list(sorted(sites)))
-
 		# Find graph
-		graphID = Database().fetch(f"SELECT id FROM cache WHERE query={query} AND graphType={graphType} AND depth={depth} AND sources={sources};")
+		graphID = Database().fetch(f"SELECT id FROM cache WHERE query={query} AND graphType={graphType} AND depth={depth};")
 
 		# Check if any
 		if len(graphID) <= 0:
@@ -26,8 +22,7 @@ class CacheGraph(RequestGraph):
 		super().__init__({
 			'name': query,
 			'type': graphType,
-			'depth': depth,
-			'sources': sites
+			'depth': depth
 		})
 
 
@@ -60,7 +55,7 @@ class CacheGraph(RequestGraph):
 
 
 	@staticmethod
-	def saveCache(graph: Graph) -> None:
+	def saveCache(graph: RequestGraph) -> None:
 		"""
 		Save graph to the Cache database
 		"""
@@ -69,10 +64,9 @@ class CacheGraph(RequestGraph):
 		parsed = graph.parse()
 
 		# Save base graph
-		sources = ','.join(sorted(graph.sources)) # Convert to CSV
 		graphID = Database().modifyAndReturn(f"""
-			INSERT INTO cache (query, graphType, depth, sources) 
-			VALUES ({graph.query}, {graph.type}, {graph.depth}, {sources}) 
+			INSERT INTO cache (query, graphType, depth) 
+			VALUES ({graph.query}, {graph.type}, {graph.depth}) 
 			RETURNING id;""")['id']
 
 		# Save all sourceNodes
@@ -81,8 +75,8 @@ class CacheGraph(RequestGraph):
 		for node in parsed['sources']:
 			nodeTopics = ','.join(node['topics']) 
 			nodeID = Database().modifyAndReturn(f"""
-				INSERT INTO cacheSourceNodes (graph, name, source, location, medium, topics)
-				VALUES ({graphID}, {node['name']}, {node['source']}, {node['location']}, {node['medium']}, {nodeTopics})
+				INSERT INTO cacheSourceNodes (graph, name, source, sourceName, location, medium, topics)
+				VALUES ({graphID}, {node['name']}, {node['source']}, {node['sourceName']}, {node['location']}, {node['medium']}, {nodeTopics})
 				RETURNING id;""")['id']
 			
 			sourceNodes[node['source']] = nodeID
@@ -125,4 +119,4 @@ class CacheGraph(RequestGraph):
 		"""
 
 		# Remove 30 day old records from cache (as cascade set so others will delete subsequently)
-		Database().modify("DELETE FROM cache WHERE STR_TO_DATE(timestamp,%Y-%m-%d %H:%M:%S) < (NOW() - INTERVAL 30 DAY)")
+		Database().modify("DELETE FROM cache WHERE STR_TO_DATE(timestamp,%Y-%m-%d %H:%M:%S) < (NOW() - INTERVAL 30 DAY);")

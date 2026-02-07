@@ -1,14 +1,14 @@
 from app.models import Graph
 from app.models.nodes import SourceNode, TopicNode
-from app.util.search.google import googleSites
-from app.util.search.siteMetadata import siteMedium, siteLocation, siteTitle
+from app.util.search.google import google
+from app.util.search.siteMetadata import siteMedium, siteLocationAndName, siteTitle
 from app.util.search import subsites
 
 
 class MediumGraph(Graph):
-	def __init__(self, query: str, depth: int, sites: list[str]) -> None:
+	def __init__(self, query: str, depth: int) -> None:
 		# Save attributes of inherited function
-		super().__init__(query, 'medium', depth, sites)
+		super().__init__(query, 'medium', depth)
 
 		# Custom attribute for this class
 		self.mediums = {} # Store all main mediums with corresponding topic node
@@ -21,16 +21,19 @@ class MediumGraph(Graph):
 		"""
 		
 		# Get base SourceNodes (only sites)
-		sourceSites = [source for value in googleSites(self.query, self.sites).values() for source in value]
+		sourceSites = google(self.query)
 
 		# Create SourceNodes
 		for site in sourceSites:
 			# Get metadata
-			medium = siteMedium(site['Source'])
-			location = siteLocation(site['Source'])
+			info = siteLocationAndName(site)
+			location = info['location']
+			sourceName = info['sourceName']
+			
+			medium = siteMedium(site['Link'])
 
 			# Create new SourceNode
-			node = SourceNode(site['Title'], site['Source'], self.query, medium, location)
+			node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location)
 			
 			# Check if topicnode for medium exists
 			if medium in self.mediums.keys():
@@ -44,6 +47,7 @@ class MediumGraph(Graph):
 
 			# Get neighboring SourceNodes recursively
 			node.neighbors = self.findNeighboringNodes(node)
+
 
 
 	def findNeighboringNodes(self, node: SourceNode, currDepth: int = 1) -> list[SourceNode] | None:
@@ -67,12 +71,15 @@ class MediumGraph(Graph):
 			# Create new source
 			else:
 				# Get metadata
+				info = siteLocationAndName(site)
+				location = info['location']
+				sourceName = info['sourceName']
+
 				medium = siteMedium(site)
-				location = siteLocation(site)
 				title = siteTitle(site)
 
 				# Create node
-				newNode = SourceNode(title, site, self.query, medium, location)
+				newNode = SourceNode(title, site, sourceName, self.query, medium, location)
 
 				self.sources[site] = newNode
 
