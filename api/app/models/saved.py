@@ -26,8 +26,7 @@ class SavedGraph(RequestGraph):
 			'name': graph['name'],
 			'id': id,
 			'type': graph['graphType'], 
-			'depth': -1,
-			'sources': []
+			'depth': -1
 		})
 
 

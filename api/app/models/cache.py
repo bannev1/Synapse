@@ -22,8 +22,7 @@ class CacheGraph(RequestGraph):
 		super().__init__({
 			'name': query,
 			'type': graphType,
-			'depth': depth,
-			'sources': []
+			'depth': depth
 		})
 
 

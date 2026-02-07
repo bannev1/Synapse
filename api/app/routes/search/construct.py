@@ -40,7 +40,6 @@ def construct() -> Graph:
 
 	# Get data from request body
 	query = body['query']
-	sites = body['sites']
 	graphType = body['type']
 	depth = body['depth']
 
@@ -52,7 +51,7 @@ def construct() -> Graph:
 			raise GraphNotFound()
 		
 		# Find CacheGraph
-		graph = CacheGraph(query, graphType, depth, sites)
+		graph = CacheGraph(query, graphType, depth)
 		
 	except GraphNotFound:
 		# Construct Graph
@@ -60,13 +59,13 @@ def construct() -> Graph:
 			# Check type of graph
 			match graphType:
 				case 'topical':
-					graph = TopicalGraph(query, depth, sites)
+					graph = TopicalGraph(query, depth)
 					
 				case 'medium':
-					graph = MediumGraph(query, depth, sites)
+					graph = MediumGraph(query, depth)
 
 				case 'locational':
-					graph = LocationalGraph(query, depth, sites)
+					graph = LocationalGraph(query, depth)
 
 				# If none of those, then return error
 				case _:
