@@ -28,9 +28,6 @@ def construct() -> Graph:
 	try:
 		body = checkStructure(SAMPLE_REQUEST_DATA, request.get_json())
 
-		# Check if list of sites is in body
-		if 'sites' not in body.keys():
-			body['sites'] = []
 	except RequestBodyException as e: # If error with parsing data then return error
 		print(traceback.format_exc())
 		return jsonify({
