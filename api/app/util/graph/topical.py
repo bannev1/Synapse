@@ -34,7 +34,7 @@ class TopicalGraph(Graph):
 				# Only get sources/titles no need by site
 				sourceNodeSites = [source for value in googleSites(topicalQuery, self.sites).values() for source in value]
 			else:
-				sourceNodeSites = google(topicalQuery, amtResults=Config.AMT_RESULTS_TOPICAL)
+				sourceNodeSites = google(topicalQuery)
 
 			# Create source nodes for each site
 			for site in sourceNodeSites:

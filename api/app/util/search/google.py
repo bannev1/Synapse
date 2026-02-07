@@ -7,12 +7,11 @@ from app.exceptions import FailedSearchException
 
 
 # Parse Google Search
-def google(query: str, amtResults: int = 10, params: str = '') -> list[dict[str]]:
+def google(query: str, params: str = '') -> list[dict[str]]:
 	"""
-	Google Search a query with a given amt of returned results
+	Google Search a query with a given amt of returned results using the SerpAPI
 	
 	:param query: Search query
-	:param amtResults: Amount of returned results
 	:params params: Additional parameters or config for the GET request
 	:return: Parsed results, example format below:
 	```
@@ -28,14 +27,10 @@ def google(query: str, amtResults: int = 10, params: str = '') -> list[dict[str]
 	:rtype: list[dict[str]]
 	"""
 	
-	url = f"https://www.googleapis.com/customsearch/v1?key={Config.SERPAPI_KEY}&q={query}&num={amtResults}" + (f"&{params}" if len(params) > 0 else '')
-	print(Config.SERPAPI_KEY)
-	headers = {
-		"Authentication": f"Bearer {Config.SERPAPI_KEY}"
-	}
+	url = f"https://serpapi.api/search.json?api_key={Config.SERPAPI_KEY}&q={query}&hl=en" + (f"&{params}" if len(params) > 0 else '')
 
 	# Make request
-	req = requests.get(url, headers=headers)
+	req = requests.get(url)
 
 	# Check to ensure went well (check via status code)
 	if not (200 <= req.status_code < 300):
@@ -104,17 +99,17 @@ def googleSites(query: str, sites: list[str]) -> dict[dict[str]]:
 
 
 # Google Search by Locations
-def googleLocation(query: str, locations: list[str], amtResults: int = 5) -> list[str]:
+def googleLocation(query: str, locations: list[str] = Config.DEFAULT_LOCATIONS, amtResults: int = 5) -> list[str]:
 	"""
 	Google search with grouping by specific locations
 	
 	:param query: Search query
-	:param locations: List of country codes to search for (see https://developers.google.com/custom-search/docs/json_api_reference#country-codes for list of country codes)
+	:param locations: List of countrys to search for
 	:param amtResults: Amount of returned results per location
 	:return: Parsed search results + websites, example format below:
 	```
 	{
-		'fr': [ # France
+		'Canada': [
 			{
 				'Source': 'https://www.website1.com/',
 				'Title': 'Website Title'
@@ -122,7 +117,7 @@ def googleLocation(query: str, locations: list[str], amtResults: int = 5) -> lis
 			...
 		],
 
-		'us': ... # United States
+		'United States': ...
 	}
 	```
 
@@ -134,7 +129,7 @@ def googleLocation(query: str, locations: list[str], amtResults: int = 5) -> lis
 
 	# Search each location
 	for location in locations:
-		locationParam = f'gl={location}'
+		locationParam = f'location={location.replace(' ', '+')}'
 		locationResults = google(query, amtResults, params=locationParam)
 
 		# Save data/results

@@ -3,7 +3,6 @@ from app.models.nodes import SourceNode, TopicNode
 from app.util.search.google import googleLocation
 from app.util.search.siteMetadata import siteMedium, siteLocation, siteTitle
 from app.util.search import subsites
-from app.util import convertCodeToCountry
 from config import Config
 
 
@@ -25,8 +24,7 @@ class LocationalGraph(Graph):
 		topicNodes = {}
 
 		for location in locations:
-			countryName = convertCodeToCountry(location)
-			topicNodes[location] = [TopicNode(countryName, [])]
+			topicNodes[location] = [TopicNode(location, [])]
 
 		return topicNodes
 
@@ -38,7 +36,7 @@ class LocationalGraph(Graph):
 		"""
 		
 		# Get base SourceNodes (only sites)
-		searchedSites = googleLocation(self.query, self.locations.keys(), amtResults=Config.AMT_RESULTS_LOCATIONAL)
+		searchedSites = googleLocation(self.query, self.locations.keys())
 
 		# Create SourceNodes
 		for code, location in self.locations.items():

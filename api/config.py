@@ -28,14 +28,11 @@ class Config:
 		"#abad23"
 	]
 
-	# Default Amount of SourceNodes per topic for diff graphs
-	AMT_RESULTS_TOPICAL = 6
-	AMT_RESULTS_LOCATIONAL = 6
-	AMT_RESULTS_MEDIUM = 12 # This is total amt to generate initially
-
 	# Enable Cache
 	ENABLE_CACHE = True
 
 	# Unwanted Topics
 	UNWANTED_TOPICS = ['See also', 'References', 'Further reading', 'External links']
- 
+
+	# Default Locations for locational search
+	DEFAULT_LOCATIONS = ['United States', 'United Kingdom', 'Canada', 'China', 'Germany']
