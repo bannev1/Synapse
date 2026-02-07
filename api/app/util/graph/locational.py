@@ -1,7 +1,7 @@
 from app.models import Graph
 from app.models.nodes import SourceNode, TopicNode
 from app.util.search.google import googleLocation
-from app.util.search.siteMetadata import siteMedium, siteLocation, siteTitle
+from app.util.search.siteMetadata import siteMedium, siteLocationAndName, siteTitle
 from app.util.search import subsites
 from config import Config
 
@@ -75,12 +75,15 @@ class LocationalGraph(Graph):
 			# Create new source
 			else:
 				# Get metadata
+				info = siteLocationAndName(site)
+				location = info['location']
+				sourceName = info['sourceName']
+
 				medium = siteMedium(site)
-				location = siteLocation(site)
 				title = siteTitle(site)
 
 				# Create node
-				newNode = SourceNode(title, site, self.query, medium, location)
+				newNode = SourceNode(title, site, sourceName, self.query, medium, location)
 
 				self.sources[site] = newNode
 

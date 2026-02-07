@@ -1,14 +1,14 @@
 from app.models import Graph
 from app.models.nodes import SourceNode, TopicNode
 from app.util.search.google import google
-from app.util.search.siteMetadata import siteMedium, siteLocation, siteTitle
+from app.util.search.siteMetadata import siteMedium, siteLocationAndName, siteTitle
 from app.util.search import subsites
 
 
 class MediumGraph(Graph):
-	def __init__(self, query: str, depth: int, sites: list[str]) -> None:
+	def __init__(self, query: str, depth: int) -> None:
 		# Save attributes of inherited function
-		super().__init__(query, 'medium', depth, sites)
+		super().__init__(query, 'medium', depth)
 
 		# Custom attribute for this class
 		self.mediums = {} # Store all main mediums with corresponding topic node
@@ -21,16 +21,19 @@ class MediumGraph(Graph):
 		"""
 		
 		# Get base SourceNodes (only sites)
-		sourceSites = google(self.query, self.sites).values()
+		sourceSites = google(self.query)
 
 		# Create SourceNodes
 		for site in sourceSites:
 			# Get metadata
+			info = siteLocationAndName(site)
+			location = info['location']
+			sourceName = info['sourceName']
+			
 			medium = siteMedium(site['Link'])
-			location = siteLocation(site['Link'])
 
 			# Create new SourceNode
-			node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, location)
+			node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location)
 			
 			# Check if topicnode for medium exists
 			if medium in self.mediums.keys():
@@ -68,12 +71,15 @@ class MediumGraph(Graph):
 			# Create new source
 			else:
 				# Get metadata
+				info = siteLocationAndName(site)
+				location = info['location']
+				sourceName = info['sourceName']
+
 				medium = siteMedium(site)
-				location = siteLocation(site)
 				title = siteTitle(site)
 
 				# Create node
-				newNode = SourceNode(title, site, self.query, medium, location)
+				newNode = SourceNode(title, site, sourceName, self.query, medium, location)
 
 				self.sources[site] = newNode
 
