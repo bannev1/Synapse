@@ -56,48 +56,6 @@ def google(query: str, params: str = '') -> list[dict[str]]:
 
 
 
-# Google Search by Specific Sites
-def googleSites(query: str, sites: list[str]) -> dict[dict[str]]:
-	"""
-	Google search for only specific sites
-	
-	:param query: Search query
-	:return: Parsed search results + websites, example format below:
-	```
-	{
-		'https://www.platform123.com': [
-			{
-				'Link': 'https://www.platform123.com/subpage.html',
-				'Title': 'Website Title About Topic',
-				'Source': 'Platform 123'
-			},
-			...
-		],
-
-		'https://www.website.com': ...
-	}
-	```
-
-	:rtype: dict[dict[str]]
-	"""
-
-	# To store queried results
-	sitesResults = {}
-
-	# Google Search each given site
-	for site in sites:
-		siteParam = f'SiteSearch={site}'
-		parsedData = google(query, params=siteParam)
-
-		if len(parsedData) == 0: # If no results then go to next site
-			continue
-
-	# Return results
-	return sitesResults
-
-
-
-
 # Google Search by Locations
 def googleLocation(query: str, locations: list[str] = Config.DEFAULT_LOCATIONS) -> list[str]:
 	"""
