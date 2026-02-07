@@ -17,8 +17,9 @@ def google(query: str, params: str = '') -> list[dict[str]]:
 	```
 	[
 		{
-			'Source': 'https://www.website.com/',
-			'Title': 'Website Title'
+			'Link': 'https://www.platform123.com/',
+			'Title': 'Website Title About Topic',
+			'Source': 'Platform 123'
 		},
 		...
 	]
@@ -40,14 +41,15 @@ def google(query: str, params: str = '') -> list[dict[str]]:
 	jsonData = req.json()
 
 	# Get query data
-	data = jsonData['items']
+	data = jsonData['organic_results']
 
 	parsedData = [] # To store parsed data
 
 	for item in data:
 		parsedData.append({
-			'Source': item['url'],
-			'Title': item['title']
+			'Link': item['link'],
+			'Title': item['title'],
+			'Source': item['source'] # Website Name
 		})
 
 	return parsedData
@@ -63,15 +65,16 @@ def googleSites(query: str, sites: list[str]) -> dict[dict[str]]:
 	:return: Parsed search results + websites, example format below:
 	```
 	{
-		'https://www.website1.com': [
+		'https://www.platform123.com': [
 			{
-				'Source': 'https://www.website1.com/',
-				'Title': 'Website Title'
+				'Link': 'https://www.platform123.com/subpage.html',
+				'Title': 'Website Title About Topic',
+				'Source': 'Platform 123'
 			},
 			...
 		],
 
-		'https://www.website2.com': ...
+		'https://www.website.com': ...
 	}
 	```
 
@@ -84,13 +87,10 @@ def googleSites(query: str, sites: list[str]) -> dict[dict[str]]:
 	# Google Search each given site
 	for site in sites:
 		siteParam = f'SiteSearch={site}'
-		parsedData = google(query, 1, params=siteParam)
+		parsedData = google(query, params=siteParam)
 
 		if len(parsedData) == 0: # If no results then go to next site
 			continue
-
-		# Save result
-		sitesResults[site] = parsedData[0] # Only return first
 
 	# Return results
 	return sitesResults
@@ -99,20 +99,20 @@ def googleSites(query: str, sites: list[str]) -> dict[dict[str]]:
 
 
 # Google Search by Locations
-def googleLocation(query: str, locations: list[str] = Config.DEFAULT_LOCATIONS, amtResults: int = 5) -> list[str]:
+def googleLocation(query: str, locations: list[str] = Config.DEFAULT_LOCATIONS) -> list[str]:
 	"""
 	Google search with grouping by specific locations
 	
 	:param query: Search query
 	:param locations: List of countrys to search for
-	:param amtResults: Amount of returned results per location
 	:return: Parsed search results + websites, example format below:
 	```
 	{
 		'Canada': [
 			{
-				'Source': 'https://www.website1.com/',
-				'Title': 'Website Title'
+				'Link': 'https://www.platform123.com/',
+				'Title': 'Website Title About Topic',
+				'Source': 'Platform 123'
 			},
 			...
 		],
@@ -130,7 +130,7 @@ def googleLocation(query: str, locations: list[str] = Config.DEFAULT_LOCATIONS, 
 	# Search each location
 	for location in locations:
 		locationParam = f'location={location.replace(' ', '+')}'
-		locationResults = google(query, amtResults, params=locationParam)
+		locationResults = google(query, params=locationParam)
 
 		# Save data/results
 		locationSearch[location] = locationResults
