@@ -13,7 +13,7 @@ def subsites(url: str) -> list[str]:
 		# Get URL contents
 		page = requests.get(url)
 	except:
-		raise FailedSearchException(f'Failed to retrieve contents of {url}.')
+		return [] # Assume empty page
 	
 	links = []
 	
