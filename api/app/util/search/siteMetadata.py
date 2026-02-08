@@ -104,9 +104,7 @@ def siteMedium(url: str) -> str:
 		try:
 			if (req.json()['error'] == 'Invalid or expired session token') or (req.status_code == 401):
 				sessKey = SiteCategorySess().generateNewKey()
-
-				print(f"{sessKey=}")
-
+				
 				headers = { # Request headers
 					"Authorization": f"Bearer {sessKey}",
 					"Content-Type": "application/json"
