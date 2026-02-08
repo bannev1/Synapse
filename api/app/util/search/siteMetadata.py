@@ -3,6 +3,7 @@
 import requests
 import socket
 from bs4 import BeautifulSoup
+import tldextract
 
 from config import Config
 from app.util.search.siteCategorySess import SiteCategorySess
@@ -19,13 +20,13 @@ def siteLocationAndName(url: str) -> str:
 	"""
 
 	# Remove https and / from URL (only get base)
-	url = url.replace('https', '').replace('http', '').replace('://', '')
-	url = url[:url.find('/') if url.find('/') > 0 else len(url)] # Get rid of anything past the first /
-	while '/' in url: # Remove all / in URL until no more
-		url = url.replace('/', '')
+	strippedUrl = url.replace('https', '').replace('http', '').replace('://', '')
+	strippedUrl = strippedUrl[:strippedUrl.find('/') if strippedUrl.find('/') > 0 else len(strippedUrl)] # Get rid of anything past the first /
+	while '/' in strippedUrl: # Remove all / in URL until no more
+		strippedUrl = strippedUrl.replace('/', '')
 	
 	# Get domain IP
-	ip = socket.gethostbyname(url)
+	ip = socket.gethostbyname(strippedUrl)
 
 	# Configure API
 	requestURL = f'https://api.ipwho.org/ip/{ip}?apiKey={Config.IP_WHO_API_KEY}'
@@ -36,12 +37,25 @@ def siteLocationAndName(url: str) -> str:
 		websiteInfo = req.json()
 
 		# Check if went well
+		if websiteInfo['success'] != True:
+			# See if IP error
+			if websiteInfo['message'] == 'Reserved range/Invalid IP address': # Not possible to retrieve
+				# Manually get SourceName by domain
+				sourceName = tldextract.extract(url).domain
+
+				return {
+					'location': 'Unknown', # Unknown
+					'sourceName': sourceName.capitalize() # Make sure it's capitalized
+				}
+			
+			# Otherwise raise error for debugging
+			else:
+				raise Exception(req.text)
+		
 		if not (200 <= req.status_code < 300):
 			raise Exception(req.text) # Trigger exception block
-		if websiteInfo['success'] != True:
-			raise Exception(req.text)
 	except Exception as e:
-		raise FailedSearchException(f"Request to IPwho.org for {url} at {ip} failed with response {e}")
+		raise FailedSearchException(f"Request to IPwho.org for {strippedUrl} at {ip} failed with response {e}")
 
 	return {
 			'location': websiteInfo['data']['geoLocation']['country'],

@@ -5,3 +5,4 @@ requests
 flask-cors
 bs4
 dotenv
+tldextract
