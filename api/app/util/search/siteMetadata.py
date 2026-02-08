@@ -37,11 +37,11 @@ def siteLocationAndName(url: str) -> str:
 
 		# Check if went well
 		if not (200 <= req.status_code < 300):
-			raise Exception() # Trigger exception block
+			raise Exception(req.text) # Trigger exception block
 		if websiteInfo['success'] != True:
-			raise Exception()
-	except:
-		raise FailedSearchException(f"Request to IPwho.org for {url} at {ip} failed")
+			raise Exception(req.text)
+	except Exception as e:
+		raise FailedSearchException(f"Request to IPwho.org for {url} at {ip} failed with response {e}")
 
 	return {
 			'location': websiteInfo['data']['geoLocation']['country'],
