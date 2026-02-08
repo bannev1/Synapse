@@ -88,7 +88,7 @@ def siteMedium(url: str) -> str:
 	if not (200 <= req.status_code < 300):
 		# See if need new token
 		try:
-			if req.json()['error'] == 'Invalid or expired session token' or req.status_code == 401:
+			if (req.json()['error'] == 'Invalid or expired session token') or (req.status_code == 401):
 				sessKey = SiteCategorySess().generateNewKey()
 
 				print(f"{sessKey=}")
@@ -112,7 +112,13 @@ def siteMedium(url: str) -> str:
 	# Otherwise parse the JSON response
 	jsonData = req.json()
 
-	print(f'{jsonData=}')
+	# Check if categorized
+	if ('error' in jsonData.keys()): # See if error exists first as key
+		if jsonData['error'] == 'uncategorized':
+			return 'Unknown'
+		else:
+			# Otherwise raise error
+			raise FailedSearchException(f'SiteCategory.com for {url} failed with error, received {req.text}')
 
 	return jsonData['category']
 
