@@ -1,8 +1,7 @@
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 
-from app.exceptions import FailedSearchException
-
+from config import Config
 
 def subsites(url: str) -> list[str]:
 	"""
@@ -21,5 +20,9 @@ def subsites(url: str) -> list[str]:
 	for link in BeautifulSoup(page.content, 'html.parser', parse_only = SoupStrainer('a')):
 		if link.has_attr('href'):
 			links.append(link)
+
+	# Make sure not too many links
+	if len(links) > Config.MAX_SUBSITES:
+		return links[:Config.MAX_SUBSITES]
 
 	return links

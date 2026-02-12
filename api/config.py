@@ -37,3 +37,6 @@ class Config:
 
 	# Default Locations for locational search
 	DEFAULT_LOCATIONS = ['United States', 'United Kingdom', 'Canada', 'China', 'Germany']
+
+	# Max Subsites
+	MAX_SUBSITES = 5
