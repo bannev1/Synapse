@@ -21,8 +21,9 @@ def subsites(url: str) -> list[str]:
 		if link.has_attr('href'):
 			links.append(link)
 
-	# Make sure not too many links
-	if len(links) > Config.MAX_SUBSITES:
-		return links[:Config.MAX_SUBSITES]
+		# Make sure not too many links
+		if len(links) == Config.MAX_SUBSITES:
+			return links
+
 
 	return links
