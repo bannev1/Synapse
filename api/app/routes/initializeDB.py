@@ -17,18 +17,10 @@ def initialize() -> None:
 	db = Database()
 
 	# Run index.sql file
-	conn = db.get_connection()
-	
 	try:
 		with open(indexPath, "r") as file:
-			cursor = conn.cursor()
-			cursor.execute(file.read())
-			cursor.close()
-	
+			db.modify(file.read())
+
 	# Don't close app if error
 	except Exception as e:
 		return jsonify({'Error': str(e)})
-	
-	# Release connection
-	finally:
-		db.release_connection(conn)
