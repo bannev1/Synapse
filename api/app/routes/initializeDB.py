@@ -20,9 +20,10 @@ def initialize() -> None:
 	conn = db.get_connection()
 	
 	try:
-		cursor = conn.cursor()
-		cursor.execute(open(indexPath, "r").read())
-		cursor.close()
+		with open(indexPath, "r") as file:
+			cursor = conn.cursor()
+			cursor.execute(file.read())
+			cursor.close()
 	
 	# Don't close app if error
 	except Exception as e:
