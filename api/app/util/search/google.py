@@ -52,6 +52,9 @@ def google(query: str, params: str = '') -> list[dict[str]]:
 			'Source': item['source'] # Website Name
 		})
 
+		if len(parsedData) == Config.MAX_STARTING_NODES:
+			return parsedData
+
 	return parsedData
 
 

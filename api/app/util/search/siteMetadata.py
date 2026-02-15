@@ -26,9 +26,21 @@ def siteLocationAndName(url: str) -> str:
 		strippedUrl = strippedUrl.replace('/', '')
 	
 	# Get domain IP
-	ip = socket.gethostbyname(strippedUrl)
+	try:
+		ip = socket.gethostbyname(strippedUrl)
+	
+	# If failed to get hostname
+	except socket.gaierror:
+		# Manually get SourceName by domain
+		sourceName = tldextract.extract(url).domain
 
-	# Configure API
+		return {
+			'location': 'Unknown', # Unknown
+			'sourceName': sourceName.capitalize() # Make sure it's capitalized
+		}
+
+
+	# Configure API (with IP from socket)
 	requestURL = f'https://api.ipwho.org/ip/{ip}?apiKey={Config.IP_WHO_API_KEY}'
 
 	# Make request

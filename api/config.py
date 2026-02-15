@@ -30,7 +30,7 @@ class Config:
 	]
 
 	# Enable Cache
-	ENABLE_CACHE = True
+	ENABLE_CACHE = False
 
 	# Unwanted Topics
 	UNWANTED_TOPICS = ['See also', 'References', 'Further reading', 'External links']
@@ -38,5 +38,8 @@ class Config:
 	# Default Locations for locational search
 	DEFAULT_LOCATIONS = ['United States', 'United Kingdom', 'Canada', 'China', 'Germany']
 
+	# Max Starting Nodes
+	MAX_STARTING_NODES = 5
+
 	# Max Subsites
-	MAX_SUBSITES = 5
+	MAX_SUBSITES = 3
