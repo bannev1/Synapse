@@ -465,3 +465,6 @@ api/Environment/Variables.cs
 
 # SCSS Compiler
 *.css.map
+
+# Virtual environments
+api/venv/
