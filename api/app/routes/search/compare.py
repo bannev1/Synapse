@@ -78,7 +78,7 @@ def compare() -> None:
 		print(traceback.format_exc())
 		return jsonify({
 				'status': 'error',
-				'message': e
+				'message': str(e)
 			}), 422 # Unprocessable entity status code
 
 	# Create compare graph
@@ -90,7 +90,7 @@ def compare() -> None:
 		print(traceback.format_exc())
 		return jsonify({
 			'status': 'error',
-			'message': 'Encountered an unexpected error when comparing these graphs'
+			'message': f'Encountered an unexpected error when comparing these graphs: {e}'
 		}), 500
 	
 	# Return graph

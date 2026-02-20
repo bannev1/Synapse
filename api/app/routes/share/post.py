@@ -51,7 +51,7 @@ def post() -> None:
 		print(traceback.format_exc())
 		return jsonify({
 				'status': 'error',
-				'message': e
+				'message': str(e)
 			}), 422 # Unprocessable entity status code
 
 	# Upload to create a saved graph
@@ -71,5 +71,5 @@ def post() -> None:
 		print(traceback.format_exc())
 		return jsonify({
 				'status': 'error',
-				'message': e
+				'message': str(e)
 			}), 500

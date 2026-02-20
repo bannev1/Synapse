@@ -32,7 +32,7 @@ def construct() -> Graph:
 		print(traceback.format_exc())
 		return jsonify({
 				'status': 'error',
-				'message': e
+				'message': str(e)
 			}), 422 # Unprocessable entity status code
 
 	# Get data from request body

@@ -53,7 +53,7 @@ def nodeAdd() -> None:
 		print(traceback.format_exc())
 		return jsonify({
 				'status': 'error',
-				'message': e
+				'message': str(e)
 			}), 422 # Unprocessable entity status code
 	
 	# Add node
@@ -74,5 +74,5 @@ def nodeAdd() -> None:
 		print(traceback.format_exc())
 		return jsonify({ # Return failed as error encountered
 				'status': 'error',
-				'message': e
+				'message': str(e)
 			}), 500

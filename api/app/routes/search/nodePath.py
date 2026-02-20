@@ -81,5 +81,5 @@ def nodePath() -> None:
 		print(traceback.print_exc())
 		return jsonify({
 				'status': 'error',
-				'message': e
+				'message': str(e)
 			}), 500

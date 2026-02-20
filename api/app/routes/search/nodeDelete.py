@@ -53,7 +53,7 @@ def nodeDelete() -> None:
 		print(traceback.format_exc())
 		return jsonify({
 				'status': 'error',
-				'message': e
+				'message': str(e)
 			}), 422 # Unprocessable entity status code
 	
 	# Delete node
@@ -73,6 +73,6 @@ def nodeDelete() -> None:
 		print(traceback.format_exc())
 		return jsonify({
 				'status': 'error',
-				'message': e
+				'message': str(e)
 			}), 500
 	
