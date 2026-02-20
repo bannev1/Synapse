@@ -23,38 +23,36 @@ def parseRequest(request, structure: dict[str] = {}) -> None:
 	return content
 
 
-def checkStructure(structure: dict[str], content: dict[str]) -> dict[str]:
+def checkStructure(structure: dict[str], content: dict[str], path: str = "") -> dict[str]:
 	"""
 	Recursive helper function to check the structure
 	"""
 
-	# If given dictionary
-	if type(content) == dict:
-		# Check against example structure to see if fits
+	if isinstance(content, dict):
 		for key, value in structure.items():
-			try: # Try to access item
-				content[key]
-			except:
-				raise RequestBodyException(f'Missing {key} parameter in body.')
+			full_key = f"{path}.{key}" if path else key
+			if key not in content:
+				raise RequestBodyException(f'Missing {full_key} parameter in body.')
 			
-			# If structure's value is a list or a dictionary then iteratively check that
-			if type(value) == dict or type(value) == list:
-				if type(value) == type(content[key]): # Check to make sure same data type
-					checkStructure(value, content[key])
-				else:
-					raise RequestBodyException(f'Wrong data type for {key} for value of data. Expected {type(value)}')
-
-	# If given list
-	elif type(content) == list:
-		check = value[0] # Only compare first value
-
-		# Check every item in content
-		for item in content:
-			if type(item) != type(check):
-				raise RequestBodyException(f'Wrong data type for {key} for value of data. Expected {type(check)}')
+			if type(value) != type(content[key]):
+				raise RequestBodyException(f'Wrong data type for {full_key}. Expected {type(value).__name__}')
 			
-			# Check to see if list or dict
-			if type(check) == dict or type(check) == list:
-				checkStructure(check, item) # Recursively check
+			if isinstance(value, (dict, list)):
+				checkStructure(value, content[key], full_key)
 
+	elif isinstance(content, list):
+		if len(structure) == 0:
+			return  # Allow empty list template, no further type checking
+		
+		check = structure[0]
+		check_type = type(check)
+		
+		for i, item in enumerate(content):
+			item_path = f"{path}[{i}]"
+			if type(item) != check_type:
+				raise RequestBodyException(f'Wrong data type for {item_path}. Expected {check_type.__name__}')
+			
+			if isinstance(check, (dict, list)):
+				checkStructure(check, item, item_path)
+	
 	return content
