@@ -2,7 +2,7 @@ from flask import jsonify, request
 import traceback
 
 from app.routes.routes import Routes
-from app.util.graph import CompareGraph
+from app.models import RequestGraph
 from app.util.routes import checkStructure
 from app.exceptions import RequestBodyException
 
@@ -56,3 +56,23 @@ def nodeAdd() -> None:
 				'message': e
 			}), 422 # Unprocessable entity status code
 	
+	# Add node
+	try:
+		# Use RequestGraph
+		graph = RequestGraph(body['graph'])
+
+		# Call addNode for source
+		graph.addNode(body['source'])
+
+		# Return updated graph
+		return jsonify({
+				'status': 'success',
+				'graph': graph.parse()
+			})
+	
+	except Exception as e:
+		print(traceback.format_exc())
+		return jsonify({ # Return failed as error encountered
+				'status': 'error',
+				'message': e
+			}), 500
