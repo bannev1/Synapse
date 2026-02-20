@@ -125,12 +125,12 @@ class SavedGraph(RequestGraph):
 		if graphID == None: # Check if given ID otherwise let SQL generate
 			graphID = Database().modifyAndReturn(f'''
 				INSERT INTO saved (name, graphType) 
-				VALUES ('{graph.query}', '{graph.type}') 
+				VALUES ('{graph.query.replace("'", "''")}', '{graph.type}') 
 				RETURNING id;''')[0]
 		else:
 			Database().modify(f'''
 				INSERT INTO saved (id, name, graphType) 
-				VALUES ('{graphID}', '{graph.query}', '{graph.type}';''')
+				VALUES ('{graphID}', '{graph.query.replace("'", "''")}', '{graph.type}';''')
 
 		# Save all sourceNodes
 		sourceNodes = {} # Dict of (source, id)
@@ -139,7 +139,7 @@ class SavedGraph(RequestGraph):
 			nodeTopics = ','.join(node['topics']) 
 			nodeID = Database().modifyAndReturn(f'''
 				INSERT INTO savedSourceNodes (graph, name, source, sourceName, location, medium, topics)
-				VALUES ('{graphID}', '{node['name']}', '{node['source']}', '{node['sourceName']}', '{node['location']}', '{node['medium']}', '{nodeTopics}')
+				VALUES ('{graphID}', '{node['name'].replace("'", "''")}', '{node['source'].replace("'", "''")}', '{node['sourceName'].replace("'", "''")}', '{node['location'].replace("'", "''")}', '{node['medium'].replace("'", "''")}', '{nodeTopics.replace("'", "''")}')
 				RETURNING id;''')[0]
 			
 			sourceNodes[node['source']] = nodeID
@@ -151,7 +151,7 @@ class SavedGraph(RequestGraph):
 		for topic in parsed['topics']:
 			topicID = Database().modifyAndReturn(f'''
 				INSERT INTO savedTopicNodes (graph, name)
-				VALUES ('{graphID}', '{topic}')
+				VALUES ('{graphID}', '{topic.replace("'", "''")}')
 				RETURNING id;''')[0]
 			
 			topicNodes[topic] = topicID

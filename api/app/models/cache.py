@@ -10,7 +10,7 @@ class CacheGraph(RequestGraph):
 		'''
 
 		# Find graph
-		graphID = Database().fetch(f'SELECT id FROM cache WHERE query=\'{query}\' AND graphType=\'{graphType}\' AND depth={depth};')
+		graphID = Database().fetch(f'SELECT id FROM cache WHERE query=\'{query.replace("'", "''")}\' AND graphType=\'{graphType}\' AND depth={depth};')
 
 		# Check if any
 		if len(graphID) <= 0:
@@ -113,7 +113,7 @@ class CacheGraph(RequestGraph):
 		# Save base graph
 		graphID = Database().modifyAndReturn(f'''
 			INSERT INTO cache (query, graphType, depth) 
-			VALUES ('{graph.query}', '{graph.type}', {graph.depth}) 
+			VALUES ('{graph.query.replace("'", "''")}', '{graph.type}', {graph.depth}) 
 			RETURNING id;''')[0]
 
 		# Save all sourceNodes
@@ -123,7 +123,7 @@ class CacheGraph(RequestGraph):
 			nodeTopics = ','.join(node['topics']) 
 			nodeID = Database().modifyAndReturn(f'''
 				INSERT INTO cacheSourceNodes (graph, name, source, sourceName, location, medium, topics)
-				VALUES ('{graphID}', '{node['name']}', '{node['source']}', '{node['sourceName']}', '{node['location']}', '{node['medium']}', '{nodeTopics}')
+				VALUES ('{graphID}', '{node['name'].replace("'", "''")}', '{node['source'].replace("'", "''")}', '{node['sourceName'].replace("'", "''")}', '{node['location']}', '{node['medium']}', '{nodeTopics}')
 				RETURNING id;''')[0]
 			
 			sourceNodes[node['source']] = nodeID
@@ -135,7 +135,7 @@ class CacheGraph(RequestGraph):
 		for topic in parsed['topics']:
 			topicID = Database().modifyAndReturn(f'''
 				INSERT INTO cacheTopicNodes (graph, name)
-				VALUES ('{graphID}', '{topic}')
+				VALUES ('{graphID}', '{topic.replace("'", "''")}')
 				RETURNING id;''')[0]
 			
 			topicNodes[topic] = topicID
