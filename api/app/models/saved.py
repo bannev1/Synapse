@@ -13,7 +13,7 @@ class SavedGraph(RequestGraph):
 		self.id = id
 
 		# Find graph by ID
-		graph = Database().fetch(f"SELECT name, graphType FROM saved WHERE id={id};")
+		graph = Database().fetch(f"SELECT name, graphType FROM saved WHERE id=\"{id}\";")
 
 		# Check if any
 		if len(graph) != 1:
@@ -36,12 +36,12 @@ class SavedGraph(RequestGraph):
 		"""
 		
 		# Retrieve topic nodes and source nodes
-		self.topicNodes = Database().fetch(f'SELECT id, name FROM savedTopicNodes WHERE graph={self.id};')
-		self.sourceNodes = Database().fetch(f'SELECT id, name, source, location, medium, topics FROM savedSourceNodes WHERE graph={self.id};')
+		self.topicNodes = Database().fetch(f'SELECT id, name FROM savedTopicNodes WHERE graph="{self.id}";')
+		self.sourceNodes = Database().fetch(f'SELECT id, name, source, location, medium, topics FROM savedSourceNodes WHERE graph="{self.id}";')
 		
 		# Retrieve links
-		self.topicSourceLinks = Database().fetch(f'SELECT topicNode, sourceNode FROM savedTopicSourceJoinTable WHERE graph={self.id};')
-		self.sourceLinks = Database().fetch(f'SELECT sourceNode1, sourceNode2 FROM savedSourceSourceJoinTable WHERE graph={self.id};')
+		self.topicSourceLinks = Database().fetch(f'SELECT topicNode, sourceNode FROM savedTopicSourceJoinTable WHERE graph="{self.id}";')
+		self.sourceLinks = Database().fetch(f'SELECT sourceNode1, sourceNode2 FROM savedSourceSourceJoinTable WHERE graph="{self.id}";')
 
 
 
@@ -126,12 +126,12 @@ class SavedGraph(RequestGraph):
 		if graphID == None: # Check if given ID otherwise let SQL generate
 			graphID = Database().modifyAndReturn(f"""
 				INSERT INTO saved (query, graphType, depth) 
-				VALUES ({graph.query}, {graph.type}, {graph.depth}) 
+				VALUES ("{graph.query}", "{graph.type}", {graph.depth}) 
 				RETURNING id;""")['id']
 		else:
 			Database().modify(f"""
 				INSERT INTO saved (query, graphType, depth) 
-				VALUES ({graph.query}, {graph.type}, {graph.depth};""")
+				VALUES ("{graph.query}", "{graph.type}", {graph.depth};""")
 
 		# Save all sourceNodes
 		sourceNodes = {} # Dict of (source, id)
@@ -140,7 +140,7 @@ class SavedGraph(RequestGraph):
 			nodeTopics = ','.join(node['topics']) 
 			nodeID = Database().modifyAndReturn(f"""
 				INSERT INTO savedSourceNodes (graph, name, source, sourceName, location, medium, topics)
-				VALUES ({graphID}, {node['name']}, {node['source']}, {node['sourceName']}, {node['location']}, {node['medium']}, {nodeTopics})
+				VALUES ("{graphID}", "{node['name']}", "{node['source']}", "{node['sourceName']}", "{node['location']}", "{node['medium']}", "{nodeTopics}")
 				RETURNING id;""")['id']
 			
 			sourceNodes[node['source']] = nodeID
@@ -152,7 +152,7 @@ class SavedGraph(RequestGraph):
 		for topic in parsed['topics']:
 			topicID = Database().modifyAndReturn(f"""
 				INSERT INTO savedTopicNodes (graph, name)
-				VALUES ({graphID}, {topic})
+				VALUES ("{graphID}", "{topic}")
 				RETURNING id;""")['id']
 			
 			topicNodes[topic] = topicID
@@ -164,7 +164,7 @@ class SavedGraph(RequestGraph):
 
 			Database().modify(f"""
 							INSERT INTO savedTopicSourceJoinTable (graph, topicNode, sourceNode)
-					 		VALUES ({graphID}, {topicID}, {sourceID});""")
+					 		VALUES ("{graphID}", "{topicID}", "{sourceID}");""")
 
 		# Save source-source links
 		for link in parsed['sourceLinks']:
@@ -173,7 +173,7 @@ class SavedGraph(RequestGraph):
 
 			Database().modify(f"""
 							INSERT INTO savedSourceSourceJoinTable (graph, sourceNode1, sourceNode2)
-					 		VALUES ({graphID}, {node1}, {node2});""")
+					 		VALUES ("{graphID}", "{node1}", "{node2}");""")
 			
 		# Return ID
 		return graphID
@@ -185,4 +185,4 @@ class SavedGraph(RequestGraph):
 		Delete a SavedGraph given its ID
 		"""
 
-		Database().modify(f"DELETE FROM saved WHERE id={id};")
+		Database().modify(f"DELETE FROM saved WHERE id=\"{id}\";")

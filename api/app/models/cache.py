@@ -10,7 +10,7 @@ class CacheGraph(RequestGraph):
 		"""
 
 		# Find graph
-		graphID = Database().fetch(f"SELECT id FROM cache WHERE query={query} AND graphType={graphType} AND depth={depth};")
+		graphID = Database().fetch(f"SELECT id FROM cache WHERE query=\"{query}\" AND graphType=\"{graphType}\" AND depth=\"{depth}\";")
 
 		# Check if any
 		if len(graphID) <= 0:
@@ -33,12 +33,12 @@ class CacheGraph(RequestGraph):
 		"""
 		
 		# Retrieve topic nodes and source nodes
-		self.topicNodes = Database().fetch(f'SELECT id, name FROM cacheTopicNodes WHERE graph={self.id};')
-		self.sourceNodes = Database().fetch(f'SELECT id, name, source, location, medium, topics FROM cacheSourceNodes WHERE graph={self.id};')
+		self.topicNodes = Database().fetch(f'SELECT id, name FROM cacheTopicNodes WHERE graph="{self.id}";')
+		self.sourceNodes = Database().fetch(f'SELECT id, name, source, location, medium, topics FROM cacheSourceNodes WHERE graph="{self.id}";')
 		
 		# Retrieve links
-		self.topicSourceLinks = Database().fetch(f'SELECT topicNode, sourceNode FROM cacheTopicSourceJoinTable WHERE graph={self.id};')
-		self.sourceLinks = Database().fetch(f'SELECT sourceNode1, sourceNode2 FROM cacheSourceSourceJoinTable WHERE graph={self.id};')
+		self.topicSourceLinks = Database().fetch(f'SELECT topicNode, sourceNode FROM cacheTopicSourceJoinTable WHERE graph="{self.id}";')
+		self.sourceLinks = Database().fetch(f'SELECT sourceNode1, sourceNode2 FROM cacheSourceSourceJoinTable WHERE graph="{self.id}";')
 
 		# Clear old cache
 		self.clearOldCache()
@@ -113,7 +113,7 @@ class CacheGraph(RequestGraph):
 		# Save base graph
 		graphID = Database().modifyAndReturn(f"""
 			INSERT INTO cache (query, graphType, depth) 
-			VALUES ({graph.query}, {graph.type}, {graph.depth}) 
+			VALUES ("{graph.query}", "{graph.type}", "{graph.depth}") 
 			RETURNING id;""")['id']
 
 		# Save all sourceNodes
@@ -123,7 +123,7 @@ class CacheGraph(RequestGraph):
 			nodeTopics = ','.join(node['topics']) 
 			nodeID = Database().modifyAndReturn(f"""
 				INSERT INTO cacheSourceNodes (graph, name, source, sourceName, location, medium, topics)
-				VALUES ({graphID}, {node['name']}, {node['source']}, {node['sourceName']}, {node['location']}, {node['medium']}, {nodeTopics})
+				VALUES ("{graphID}", "{node['name']}", "{node['source']}", "{node['sourceName']}", "{node['location']}", "{node['medium']}", "{nodeTopics}")
 				RETURNING id;""")['id']
 			
 			sourceNodes[node['source']] = nodeID
@@ -135,7 +135,7 @@ class CacheGraph(RequestGraph):
 		for topic in parsed['topics']:
 			topicID = Database().modifyAndReturn(f"""
 				INSERT INTO cacheTopicNodes (graph, name)
-				VALUES ({graphID}, {topic})
+				VALUES ("{graphID}", "{topic}")
 				RETURNING id;""")['id']
 			
 			topicNodes[topic] = topicID
@@ -147,7 +147,7 @@ class CacheGraph(RequestGraph):
 
 			Database().modify(f"""
 							INSERT INTO cacheTopicSourceJoinTable (graph, topicNode, sourceNode)
-					 		VALUES ({graphID}, {topicID}, {sourceID});""")
+					 		VALUES ("{graphID}", "{topicID}", "{sourceID}");""")
 
 		# Save source-source links
 		for link in parsed['sourceLinks']:
@@ -156,7 +156,7 @@ class CacheGraph(RequestGraph):
 
 			Database().modify(f"""
 							INSERT INTO cacheSourceSourceJoinTable (graph, sourceNode1, sourceNode2)
-					 		VALUES ({graphID}, {node1}, {node2});""")
+					 		VALUES ("{graphID}", "{node1}", "{node2}");""")
 
 
 	@staticmethod
