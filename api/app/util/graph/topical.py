@@ -31,28 +31,29 @@ class TopicalGraph(Graph):
 
 			# Create source nodes for each site
 			for site in sourceNodeSites:
-				# Check to see if site already exists
-				if site in list(self.sources.keys()):
-					# Add this topic to the SourceNode
-					self.sources[site['Link']].topics.append(topicNode.name)
-					sourceNodes.append(self.sources[site['Link']])
-				
-				# Otherwise create new SourceNode
-				else:
-					# Get metadata for node (location & medium)
-					info = siteLocationAndName(site['Link'])
-					location = info['location']
-					sourceName = info['sourceName']
+				if 'wikipedia' not in site: # Don't add wikipedia
+					# Check to see if site already exists
+					if site in list(self.sources.keys()):
+						# Add this topic to the SourceNode
+						self.sources[site['Link']].topics.append(topicNode.name)
+						sourceNodes.append(self.sources[site['Link']])
+					
+					# Otherwise create new SourceNode
+					else:
+						# Get metadata for node (location & medium)
+						info = siteLocationAndName(site['Link'])
+						location = info['location']
+						sourceName = info['sourceName']
 
-					medium = siteMedium(site['Link'])
+						medium = siteMedium(site['Link'])
 
-					# Create node
-					node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [topicNode.name])
-					sourceNodes.append(node)
-					self.sources[site['Link']] = node # Add site to sources
+						# Create node
+						node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [topicNode.name])
+						sourceNodes.append(node)
+						self.sources[site['Link']] = node # Add site to sources
 
-					# Find neighbors
-					node.neighbors = self.findNeighboringNodes(node)
+						# Find neighbors
+						node.neighbors = self.findNeighboringNodes(node)
 
 
 	def createTopicNodes(self) -> list[TopicNode]:
@@ -87,32 +88,33 @@ class TopicalGraph(Graph):
 		neighboringNodes = []
 
 		for site in neighboringSites:
-			# Check if site already is a SourceNode
-			if site in self.sources.values():
-				neighboringNodes.append(self.sources[site])
-				
-				# If neighbor node doesn't already have the node's topics then add
-				self.sources[site].neighbors = self.sources[site].neighbors + [topic for topic in node.topics if topic not in self.sources[site].neighbors]
+			if 'wikipedia' not in site: # Don't add wikipedia
+				# Check if site already is a SourceNode
+				if site in self.sources.values():
+					neighboringNodes.append(self.sources[site])
+					
+					# If neighbor node doesn't already have the node's topics then add
+					self.sources[site].neighbors = self.sources[site].neighbors + [topic for topic in node.topics if topic not in self.sources[site].neighbors]
 
-			# Create new SourceNode
-			else:
-				# Get site title (if site inaccessible then go to next site)
-				try:
-					title = siteTitle(site)
-				except FailedSearchException:
-					continue
+				# Create new SourceNode
+				else:
+					# Get site title (if site inaccessible then go to next site)
+					try:
+						title = siteTitle(site)
+					except FailedSearchException:
+						continue
 
-				# Get metadata (location/medium)
-				location = siteLocationAndName(site)
-				medium = siteMedium(site)
+					# Get metadata (location/medium)
+					location = siteLocationAndName(site)
+					medium = siteMedium(site)
 
-				# Create node
-				neighbor = SourceNode(title, site, self.query, medium, location, node.topics)
-				self.sources[site] = neighbor
-				neighboringNodes.append(neighbor)
-				
-				# Recursively get node's neighbors
-				neighbor.neighbors = self.findNeighboringNodes(neighbor, currDepth+1)
+					# Create node
+					neighbor = SourceNode(title, site, self.query, medium, location, node.topics)
+					self.sources[site] = neighbor
+					neighboringNodes.append(neighbor)
+					
+					# Recursively get node's neighbors
+					neighbor.neighbors = self.findNeighboringNodes(neighbor, currDepth+1)
 		
 		return neighboringNodes
 
