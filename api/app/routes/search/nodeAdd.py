@@ -48,7 +48,7 @@ def nodeAdd() -> None:
 
 	# Parse request
 	try:
-		body = checkStructure(request.data, SAMPLE_REQUEST_DATA)
+		body = checkStructure(SAMPLE_REQUEST_DATA, request.get_json())
 	except RequestBodyException as e: # If error with parsing data then return error
 		print(traceback.format_exc())
 		return jsonify({
