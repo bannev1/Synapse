@@ -32,7 +32,8 @@ def getTopics(query: str)-> list[str]:
 
 		for section in response['parse']['tocdata']['sections']:
 			if section['line'] not in Config.UNWANTED_TOPICS:
-				topics.append(section['line'])
+				# Add capitalized topics
+				topics.append(' '.join(i.capitalize() for i in [section['line'].split(' ')]))
 
 		return topics
 
