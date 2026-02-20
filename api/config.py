@@ -39,7 +39,7 @@ class Config:
 	DEFAULT_LOCATIONS = ['United States', 'United Kingdom', 'Canada', 'China', 'Germany']
 
 	# Max Starting Nodes
-	MAX_STARTING_NODES = 5
+	MAX_STARTING_NODES = 3
 
 	# Max Subsites
 	MAX_SUBSITES = 3
