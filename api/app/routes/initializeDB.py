@@ -27,3 +27,8 @@ def initialize() -> None:
 				'status': 'error',
 				'message': e
 			}), 500
+	
+	# If modified, return success
+	return jsonify({
+		'status': 'success'
+	}), 200
