@@ -125,13 +125,13 @@ class SavedGraph(RequestGraph):
 		# Save base graph
 		if graphID == None: # Check if given ID otherwise let SQL generate
 			graphID = Database().modifyAndReturn(f"""
-				INSERT INTO saved (query, graphType, depth) 
+				INSERT INTO saved (name, graphType, depth) 
 				VALUES ("{graph.query}", "{graph.type}", {graph.depth}) 
 				RETURNING id;""")['id']
 		else:
 			Database().modify(f"""
-				INSERT INTO saved (query, graphType, depth) 
-				VALUES ("{graph.query}", "{graph.type}", {graph.depth};""")
+				INSERT INTO saved (id, name, graphType, depth) 
+				VALUES ("{graphID}", "{graph.query}", "{graph.type}", {graph.depth};""")
 
 		# Save all sourceNodes
 		sourceNodes = {} # Dict of (source, id)
