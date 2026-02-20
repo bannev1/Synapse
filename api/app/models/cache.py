@@ -114,7 +114,7 @@ class CacheGraph(RequestGraph):
 		graphID = Database().modifyAndReturn(f'''
 			INSERT INTO cache (query, graphType, depth) 
 			VALUES ('{graph.query}', '{graph.type}', {graph.depth}) 
-			RETURNING id;''')['id']
+			RETURNING id;''')[0]
 
 		# Save all sourceNodes
 		sourceNodes = {} # Dict of (source, id)
@@ -124,7 +124,7 @@ class CacheGraph(RequestGraph):
 			nodeID = Database().modifyAndReturn(f'''
 				INSERT INTO cacheSourceNodes (graph, name, source, sourceName, location, medium, topics)
 				VALUES ('{graphID}', '{node['name']}', '{node['source']}', '{node['sourceName']}', '{node['location']}', '{node['medium']}', '{nodeTopics}')
-				RETURNING id;''')['id']
+				RETURNING id;''')[0]
 			
 			sourceNodes[node['source']] = nodeID
 		
@@ -136,7 +136,7 @@ class CacheGraph(RequestGraph):
 			topicID = Database().modifyAndReturn(f'''
 				INSERT INTO cacheTopicNodes (graph, name)
 				VALUES ('{graphID}', '{topic}')
-				RETURNING id;''')['id']
+				RETURNING id;''')[0]
 			
 			topicNodes[topic] = topicID
 
