@@ -7,7 +7,7 @@ from app.exceptions import GraphNotFound
 share = Routes().share
 
 
-@share.get('/<str:id>')
+@share.get('/<id>')
 def get(id: str) -> None:
 	"""
 	Get a graph saved in the local database given its ID
