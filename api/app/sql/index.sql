@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS cacheSourceNodes (
 CREATE TABLE IF NOT EXISTS cacheTopicNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES cache(id) ON DELETE CASCADE,
-	name VARCHAR(5000) NOT NULL,
+	name VARCHAR(5000) NOT NULL
 );
 
 -- Join Table for cache source/topic nodes
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS savedSourceNodes (
 CREATE TABLE IF NOT EXISTS savedTopicNodes (
 	id SERIAL PRIMARY KEY,
 	graph INT REFERENCES saved(id) ON DELETE CASCADE,
-	name VARCHAR(5000) NOT NULL,
+	name VARCHAR(5000) NOT NULL
 );
 
 -- Join Table for saved graph source/topic nodes
