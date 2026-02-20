@@ -2,7 +2,7 @@ from flask import jsonify, request
 import traceback
 
 from app.routes.routes import Routes
-from app.util.graph import CompareGraph
+from app.models import RequestGraph
 from app.util.routes import checkStructure
 from app.exceptions import RequestBodyException
 
@@ -55,3 +55,31 @@ def nodePath() -> None:
 				'status': 'error',
 				'message': e
 			}), 422 # Unprocessable entity status code
+
+	# Find path of node
+	try:
+		# Use RequestGraph
+		graph = RequestGraph(body['graph'])
+
+		# Find path of graph recursively
+		path = graph.nodePath(body['source'])
+
+		# Check if found path
+		if path == None:
+			return jsonify({
+					'status': 'error',
+					'message': 'Path not found'
+				}), 500
+
+		# Return found path
+		return jsonify({
+				'status': 'success',
+				'path': path
+			}), 200
+
+	except Exception as e: # If error encountered
+		print(traceback.print_exc())
+		return jsonify({
+				'status': 'error',
+				'message': e
+			}), 500

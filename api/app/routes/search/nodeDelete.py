@@ -2,7 +2,7 @@ from flask import jsonify, request
 import traceback
 
 from app.routes.routes import Routes
-from app.util.graph import CompareGraph
+from app.models import RequestGraph
 from app.util.routes import checkStructure
 from app.exceptions import RequestBodyException
 
@@ -55,4 +55,24 @@ def nodeDelete() -> None:
 				'status': 'error',
 				'message': e
 			}), 422 # Unprocessable entity status code
+	
+	# Delete node
+	try:
+		# Use RequestGraph
+		graph = RequestGraph(body['graph'])
+
+		# Delete the node using defined method
+		graph.deleteNode(body['source'])
+
+		return jsonify({
+				'status': 'success',
+				'graph': graph.parse()
+			}), 200
+	
+	except Exception as e: # If error encountered
+		print(traceback.format_exc())
+		return jsonify({
+				'status': 'error',
+				'message': e
+			}), 500
 	

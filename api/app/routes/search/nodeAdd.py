@@ -68,7 +68,7 @@ def nodeAdd() -> None:
 		return jsonify({
 				'status': 'success',
 				'graph': graph.parse()
-			})
+			}), 200
 	
 	except Exception as e:
 		print(traceback.format_exc())
