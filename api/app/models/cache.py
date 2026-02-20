@@ -62,6 +62,7 @@ class CacheGraph(RequestGraph):
 		for source in self.sourceNodes:
 			# Add node as dictionary
 			sources[source['id']] = {
+				'id': source['source'],
 				'source': source['source'],
 				'name': source['name'],
 				'topics': source['topics'].split(','), # Convert CSV to list object
