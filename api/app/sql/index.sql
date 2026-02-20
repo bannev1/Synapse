@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS cacheSourceSourceJoinTable (
 -- Source nodes table for saved graphs
 CREATE TABLE IF NOT EXISTS savedSourceNodes (
 	id SERIAL PRIMARY KEY,
-	graph INT REFERENCES saved(id) ON DELETE CASCADE,
+	graph UUID REFERENCES saved(id) ON DELETE CASCADE,
 	name VARCHAR(150) NOT NULL,
 	source VARCHAR(100) NOT NULL,
 	sourceName VARCHAR(50) NOT NULL,
@@ -82,14 +82,14 @@ CREATE TABLE IF NOT EXISTS savedSourceNodes (
 -- Topic nodes table for saved graphs
 CREATE TABLE IF NOT EXISTS savedTopicNodes (
 	id SERIAL PRIMARY KEY,
-	graph INT REFERENCES saved(id) ON DELETE CASCADE,
+	graph UUID REFERENCES saved(id) ON DELETE CASCADE,
 	name VARCHAR(5000) NOT NULL
 );
 
 -- Join Table for saved graph source/topic nodes
 CREATE TABLE IF NOT EXISTS savedTopicSourceJoinTable (
 	id SERIAL PRIMARY KEY,
-	graph INT REFERENCES cache(id) ON DELETE CASCADE,
+	graph UUID REFERENCES saved(id) ON DELETE CASCADE,
 	topicNode INT REFERENCES savedTopicNodes(id) ON DELETE CASCADE,
 	sourceNode INT REFERENCES savedSourceNodes(id) ON DELETE CASCADE
 );
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS savedTopicSourceJoinTable (
 -- Join Table for saved source/source nodes
 CREATE TABLE IF NOT EXISTS savedSourceSourceJoinTable (
 	id SERIAL PRIMARY KEY,
-	graph INT REFERENCES cache(id) ON DELETE CASCADE,
+	graph UUID REFERENCES saved(id) ON DELETE CASCADE,
 	sourceNode1 INT REFERENCES savedSourceNodes(id) ON DELETE CASCADE,
 	sourceNode2 INT REFERENCES savedSourceNodes(id) ON DELETE CASCADE
 );

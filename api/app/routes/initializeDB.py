@@ -23,4 +23,7 @@ def initialize() -> None:
 
 	# Don't close app if error
 	except Exception as e:
-		return jsonify({'Error': str(e)})
+		return jsonify({
+				'status': 'error',
+				'message': e
+			}), 500
