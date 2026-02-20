@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 
@@ -15,18 +15,6 @@ import GraphToolbar from '@/components/graph/GraphToolbar';
 import TabBar from '@/components/TabBar';
 import SearchBar from '@/components/SearchBar';
 import SearchOptions from '@/components/SearchOptions';
-
-// Icons
-import refresh from '/public/icons/refresh.svg';
-import downRed from '/public/icons/downRed.svg';
-import filterRed from '/public/icons/filterRed.svg';
-import compareWhite from '/public/icons/compareWhite.svg';
-import zoomWhite from '/public/icons/zoomWhite.svg';
-import listFilterWhite from '/public/icons/listFilterWhite.svg';
-import fullscreenWhite from '/public/icons/fullscreenWhite.svg';
-import fullscreenExitWhite from '/public/icons/fullscreenExitWhite.svg';
-import appsWhite from '/public/icons/appsWhite.svg';
-
 
 
 function View() {
@@ -50,19 +38,19 @@ function View() {
 	const [showComparePopup, setShowComparePopup] = useState(false)
 
 	// Find tab
-	// var tab = undefined;
-	// tabs.forEach(tabElem => {
-	// 	if (tabElem.name == refTab)
-	// 		tab = tabElem
-	// });
+	useEffect(() => {
+		var tab = undefined;
+		tabs.forEach(tabElem => {
+			if (tabElem.name == refTab)
+				tab = tabElem
+		});
+	
+		// Check if tab exists
+		if (tab == undefined)
+			notFound()
 
-	// Check if tab exists
-	// if (tab == undefined)
-	// 	notFound()
-
-	// const graph = tab.graph;
-
-	const listView = []
+		const graph = tab.graph;
+	}, [])
 
 	return (
 		<>
@@ -96,10 +84,6 @@ function View() {
 					<div id="home">
 						<div id="toolbarPlaceholder"/>
 						<div id="toolbar">
-							<button id="refresh">
-								<Image src={refresh} alt='Refresh Icon'/>
-							</button>
-
 							<SearchBar inverted={true}/>
 
 							<SearchOptions onChangeOptions={setSearchOptions} inverted={true}/>
