@@ -4,6 +4,7 @@ from app.util.search import getTopics, subsites
 from app.util.search.google import google
 from app.util.search.siteMetadata import siteLocationAndName, siteMedium, siteTitle
 from app.exceptions import FailedSearchException
+from config import Config
 
 
 class TopicalGraph(Graph):
@@ -64,6 +65,10 @@ class TopicalGraph(Graph):
 		topics = getTopics(self.query)
 
 		self.topicNodes = []
+
+		# Make sure not too many topics
+		if len(topics) > Config.MAX_TOPICS:
+			topics = topics[:Config.MAX_TOPICS]
 
 		# Go through each topic
 		for topic in topics:

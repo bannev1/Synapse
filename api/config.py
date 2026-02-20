@@ -43,3 +43,6 @@ class Config:
 
 	# Max Subsites
 	MAX_SUBSITES = 3
+
+	# Max Topics (for topical)
+	MAX_TOPICS = 5
