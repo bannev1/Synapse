@@ -10,7 +10,7 @@ class CacheGraph(RequestGraph):
 		"""
 
 		# Find graph
-		graphID = Database().fetch(f"SELECT id FROM cache WHERE query=\"{query}\" AND graphType=\"{graphType}\" AND depth=\"{depth}\";")
+		graphID = Database().fetch(f"SELECT id FROM cache WHERE query=\"{query}\" AND graphType=\"{graphType}\" AND depth={depth};")
 
 		# Check if any
 		if len(graphID) <= 0:
@@ -113,7 +113,7 @@ class CacheGraph(RequestGraph):
 		# Save base graph
 		graphID = Database().modifyAndReturn(f"""
 			INSERT INTO cache (query, graphType, depth) 
-			VALUES ("{graph.query}", "{graph.type}", "{graph.depth}") 
+			VALUES ("{graph.query}", "{graph.type}", {graph.depth}) 
 			RETURNING id;""")['id']
 
 		# Save all sourceNodes
