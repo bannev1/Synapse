@@ -53,7 +53,7 @@ class CacheGraph(RequestGraph):
 		# Retrieve topicNodes
 		topics = {}
 		for topic in self.topicNodes:
-			topics[topic['id']] = topic['name']
+			topics[topic[0]] = topic[1]
 			
 		self.graph['topics'] = list(topics.values())
 
@@ -61,13 +61,14 @@ class CacheGraph(RequestGraph):
 		sources = {}
 		for source in self.sourceNodes:
 			# Add node as dictionary
-			sources[source['id']] = {
-				'id': source['source'],
-				'source': source['source'],
-				'name': source['name'],
-				'topics': source['topics'].split(','), # Convert CSV to list object
-				'medium': source['medium'],
-				'location': source['location'],
+			sources[source[0]] = {
+				'id': source[2],
+				'source': source[2],
+				'name': source[1],
+				'sourceName': source[3],
+				'location': source[4],
+				'medium': source[5],
+				'topics': source[6].split(','), # Convert CSV to list object
 				'neighbors': []
 			}
 
@@ -78,14 +79,14 @@ class CacheGraph(RequestGraph):
 		# Make topic to source links
 		for topicLink in self.topicSourceLinks:
 			self.graph['topicLinks'].append({
-				'target': topics[topicLink['topicNode']],
-				'source': sources[topicLink['sourceNode']]['source']
+				'target': topics[topicLink[0]],
+				'source': sources[topicLink[1]]['source']
 			})
 		
 		# Make source links
 		for sourceLink in self.sourceLinks:
-			node1 = sources[sourceLink['sourceNode1']]
-			node2 = sources[sourceLink['sourceNode2']]
+			node1 = sources[sourceLink[0]]
+			node2 = sources[sourceLink[1]]
 
 			self.graph['sourceLinks'].append({
 				'target': node1['source'],
