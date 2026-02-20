@@ -137,6 +137,12 @@ class RequestGraph(Graph):
 		self.sourceNodes = [node for node in self.sourceNodes 
 								 if node['id'] != source]
 		
+		# Delete node from neighbors
+		for idx, node in enumerate(self.sourceNodes):
+			if source in node['neighbors']:
+				self.sourceNodes[idx]['neighbors'] = [neighbor for neighbor in node['neighbors']
+															   if neighbor != source]
+
 		# Delete node reference from topic links
 		self.topicLinks = [link for link in self.topicLinks
 					 			if link['source'] != source]
