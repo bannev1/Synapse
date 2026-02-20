@@ -9,7 +9,7 @@ from app.models import SavedGraph, RequestGraph
 share = Routes().share
 
 
-@share.route('/save/<id>', methods=["UPDATE"])
+@share.route('/save/<id>', methods=["POST"])
 def save(id: str) -> None:
 	"""
 	Update an existing/stored graph at ID with a new graph
