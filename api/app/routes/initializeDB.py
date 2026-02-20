@@ -25,7 +25,7 @@ def initialize() -> None:
 	except Exception as e:
 		return jsonify({
 				'status': 'error',
-				'message': e
+				'message': str(e)
 			}), 500
 	
 	# If modified, return success

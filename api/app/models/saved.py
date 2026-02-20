@@ -126,7 +126,7 @@ class SavedGraph(RequestGraph):
 			graphID = Database().modifyAndReturn(f'''
 				INSERT INTO saved (name, graphType) 
 				VALUES ('{graph.query}', '{graph.type}') 
-				RETURNING id;''')['id']
+				RETURNING id;''')[0]
 		else:
 			Database().modify(f'''
 				INSERT INTO saved (id, name, graphType) 
@@ -140,7 +140,7 @@ class SavedGraph(RequestGraph):
 			nodeID = Database().modifyAndReturn(f'''
 				INSERT INTO savedSourceNodes (graph, name, source, sourceName, location, medium, topics)
 				VALUES ('{graphID}', '{node['name']}', '{node['source']}', '{node['sourceName']}', '{node['location']}', '{node['medium']}', '{nodeTopics}')
-				RETURNING id;''')['id']
+				RETURNING id;''')[0]
 			
 			sourceNodes[node['source']] = nodeID
 		
@@ -152,7 +152,7 @@ class SavedGraph(RequestGraph):
 			topicID = Database().modifyAndReturn(f'''
 				INSERT INTO savedTopicNodes (graph, name)
 				VALUES ('{graphID}', '{topic}')
-				RETURNING id;''')['id']
+				RETURNING id;''')[0]
 			
 			topicNodes[topic] = topicID
 

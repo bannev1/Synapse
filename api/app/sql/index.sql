@@ -36,8 +36,8 @@ CREATE TABLE IF NOT EXISTS cacheSourceNodes (
 	name VARCHAR(150) NOT NULL,
 	source VARCHAR(100) NOT NULL,
 	sourceName VARCHAR(50) NOT NULL,
-	location VARCHAR(50) NOT NULL,
-	medium VARCHAR(15) NOT NULL, 
+	location VARCHAR(30) NOT NULL,
+	medium VARCHAR(25) NOT NULL, 
 	topics VARCHAR(1500) NOT NULL -- CSV list of topics
 );
 
@@ -74,8 +74,8 @@ CREATE TABLE IF NOT EXISTS savedSourceNodes (
 	name VARCHAR(150) NOT NULL,
 	source VARCHAR(100) NOT NULL,
 	sourceName VARCHAR(50) NOT NULL,
-	location VARCHAR(50) NOT NULL,
-	medium VARCHAR(15) NOT NULL,
+	location VARCHAR(30) NOT NULL,
+	medium VARCHAR(25) NOT NULL,
 	topics VARCHAR(1500) NOT NULL -- CSV list of topics
 );
 
