@@ -7,10 +7,12 @@ export const GRAPH = {
 	'compare': `${HOST}/search/compare`,
 	'nodeAdd': `${HOST}/search/nodeAdd`,
 	'nodeDelete': `${HOST}/search/nodeDelete`,
-	'path': `${HOST}/search/path`
+	'path': `${HOST}/search/nodePath`
 }
 
 // Endpoints for saved graphs
 export const SAVED = {
-	'load': `${HOST}`
+	'load': `${HOST}/share`,
+	'post': `${HOST}/share`,
+	'update': `${HOST}/share/save`
 }
