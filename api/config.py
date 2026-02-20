@@ -33,7 +33,7 @@ class Config:
 	ENABLE_CACHE = False
 
 	# Unwanted Topics
-	UNWANTED_TOPICS = ['See also', 'References', 'Further reading', 'External links']
+	UNWANTED_TOPICS = ['See also', 'References', 'Further reading', 'External links', 'Introduction', 'Notes']
 
 	# Default Locations for locational search
 	DEFAULT_LOCATIONS = ['United States', 'United Kingdom', 'Canada', 'China', 'Germany']
