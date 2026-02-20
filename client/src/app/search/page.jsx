@@ -10,33 +10,37 @@ import ConfirmModal from '@/components/modals/ConfirmModal';
 import SearchOptions from '@/components/SearchOptions';
 
 function Search({forceNewTabView = false}) {
-  const {tabs, setTabs} = useContext(TabContext)
-  
-  const tabsExist = tabs.length > 0 || forceNewTabView // If tabs, then show tab bar (or if forcing)
-  const inverted = tabsExist ? '' : 'inverted'
+	const {tabs, setTabs} = useContext(TabContext)
+	
+	const tabsExist = tabs.length > 0 || forceNewTabView // If tabs, then show tab bar (or if forcing)
+	const inverted = tabsExist ? '' : 'inverted'
 
-  const [searchOptions, setSearchOptions] = useState({})
+	const [searchOptions, setSearchOptions] = useState({})
 
-  return (
-    <>
-      { // Tab viewer
-        tabsExist && 
-        <TabBar isNewTab={true}/>
-      }
+	const searchQuery = () => {
+		// Add 
+	}
 
-      {/* Main content */}
-      <div id="home" className={inverted}>
-        <div style={{'position': 'relative'}}>
-          <h1 className={`underline blue ${inverted}`}>Synapse</h1>
-          <p id="slogan">Think connected.</p>
-        </div>
+	return (
+		<>
+			{ // Tab viewer
+				tabsExist && 
+				<TabBar isNewTab={true}/>
+			}
 
-        <SearchBar inverted={tabsExist} placeholder="What's your next search?" height={25}/>
+			{/* Main content */}
+			<div id="home" className={inverted}>
+				<div style={{'position': 'relative'}}>
+					<h1 className={`underline blue ${inverted}`}>Synapse</h1>
+					<p id="slogan">Think connected.</p>
+				</div>
 
-        <SearchOptions onChangeOptions={setSearchOptions} inverted={tabsExist}/>
-      </div>
-    </>
-  )
+				<SearchBar onSearch={searchQuery} inverted={tabsExist} placeholder="What's your next search?" height={25}/>
+
+				<SearchOptions onChangeOptions={setSearchOptions} inverted={tabsExist}/>
+			</div>
+		</>
+	)
 }
 
 export default Search
