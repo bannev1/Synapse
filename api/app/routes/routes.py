@@ -1,5 +1,4 @@
 from flask import Blueprint, Flask
-from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 
@@ -26,13 +25,6 @@ class Routes:
 			envPath = os.path.join(os.getcwd(), '', '.env')
 			if os.path.isfile(envPath):
 				load_dotenv(envPath)
-
-			# Set up CORS
-			# CORS(self.index, resources={r"/*": {"origins": [
-			# 	"http://localhost:3000", # local frontend
-			# 	"http://127.0.0.1:3000"  # local frontend
-			# ]
-			# }}, supports_credentials=True)
 
 			# Load configuration
 			self.index.config.from_object('config.Config')

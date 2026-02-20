@@ -2,7 +2,6 @@ Flask
 psycopg2-binary
 psycopg2
 requests
-flask-cors
 bs4
 dotenv
 tldextract
