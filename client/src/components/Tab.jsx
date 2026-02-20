@@ -8,6 +8,7 @@ import closeBlack from '/public/icons/closeBlack.svg'
 import ConfirmModal from './modals/ConfirmModal';
 
 function Tab({
+	index,
 	tabName,
 	graph,
 	isCurrTab = false,
@@ -42,9 +43,13 @@ function Tab({
 
 				<p className={isNewTab ? 'newTab' : ''}>{isNewTab ? 'New Tab' : tabName}</p>
 
-				<button onClick={() => {setShowConfirmModal(true)}}>
-					<Image src={closeBlack} alt="Close Icon" />
-				</button>
+				{
+					!isCurrTab && // So can't close current or new tabs
+
+					<button onClick={() => {setShowConfirmModal(true)}}>
+						<Image src={closeBlack} alt="Close Icon" />
+					</button>
+				}
 			</div>
 		</>
 	)

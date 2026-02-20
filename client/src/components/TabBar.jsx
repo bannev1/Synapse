@@ -26,8 +26,8 @@ function TabBar({ currTab = '', isNewTab = false }) {
 				}
 
 				{ // Get all tabs
-					tabs.forEach(tab => {
-						<Tab tabName={tab.name} isCurrTab={isNewTab || currTab==tab.name} graph={tab.graph}/>
+					tabs.map((tab, idx) => {
+						<Tab index={idx} tabName={tab.name} isCurrTab={isNewTab || currTab==tab.name} graph={tab.graph}/>
 					})
 				}
 
