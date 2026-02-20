@@ -22,12 +22,11 @@ class SavedGraph(RequestGraph):
 		graph = graph[0]
 		
 		# Save attributes of inherited function
-		super().__init__({
-			'name': graph['name'],
-			'id': id,
-			'type': graph['graphType'], 
-			'depth': -1
-		})
+		super().__init__()
+
+		self.query = graph['name']
+		self.type = graph['graphType']
+		self.depth = -1
 
 
 
@@ -51,7 +50,54 @@ class SavedGraph(RequestGraph):
 		Convert saved retrieved graph into dictionary format
 		"""
 
-		return super().parse()
+		# Retrieve topicNodes
+		topics = {}
+		for topic in self.topicNodes:
+			topics[topic['id']] = topic['name']
+			
+		self.graph['topics'] = list(topics.values())
+
+		# Retrieve sourceNodes
+		sources = {}
+		for source in self.sourceNodes:
+			# Add node as dictionary
+			sources[source['id']] = {
+				'source': source['source'],
+				'name': source['name'],
+				'topics': source['topics'].split(','), # Convert CSV to list object
+				'medium': source['medium'],
+				'location': source['location'],
+				'neighbors': []
+			}
+
+		# Clear graph
+		self.graph['topicLinks'] = []
+		self.graph['sourceLinks'] = []
+
+		# Make topic to source links
+		for topicLink in self.topicSourceLinks:
+			self.graph['topicLinks'].append({
+				'target': topics[topicLink['topicNode']],
+				'source': sources[topicLink['sourceNode']]['source']
+			})
+		
+		# Make source links
+		for sourceLink in self.sourceLinks:
+			node1 = sources[sourceLink['sourceNode1']]
+			node2 = sources[sourceLink['sourceNode2']]
+
+			self.graph['sourceLinks'].append({
+				'target': node1['source'],
+				'source': node2['source']
+			})
+
+			# Add as neighbor
+			node1['neighbors'].append(node2['source'])
+
+		# Add to main graph
+		self.graph['sources'] = list(sources.values())
+
+		return self.graph
 
 
 	@staticmethod

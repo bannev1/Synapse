@@ -37,6 +37,7 @@ class RequestGraph(Graph):
 				self.sources[source['id']] = source
 		else:
 			self.graph = {}
+			self.construct()
 
 
 	def construct(self) -> None:
