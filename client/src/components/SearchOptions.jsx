@@ -10,6 +10,7 @@ import removeWhite from '/public/icons/removeWhite.svg';
 import dropdownWhite from '/public/icons/dropdownWhite.svg';
 import dropdownBlack from '/public/icons/dropdownBlack.svg';
 
+
 function SearchOptions({
 	onChangeOptions,
 	inverted = false,
@@ -18,20 +19,20 @@ function SearchOptions({
 	const [depthVal, setDepthVal] = useState(6)
 	const [showGraphTypes, setShowGraphTypes] = useState(false)
 	const [graphType, setGraphType] = useState(0) // either 0 for topical, 1 for medium, and 2 for location
-
+	
+	const graphTypes =[
+		'Topical',
+		'Medium',
+		'Locational'
+	]
 
 	useEffect(() => {
 		onChangeOptions({
 			'depth': depthVal,
 			'graphType': graphType
 		})
-	}, [depthVal, graphType])
 
-	const graphTypes = useRef([
-		'Topical',
-		'Medium',
-		'Locational'
-	]).current
+	}, [depthVal, graphType])
 
 	return (
 		<div id="searchOptions" className={inverted ? 'inverted' : ''}>
@@ -73,7 +74,7 @@ function SearchOptions({
 				{ showGraphTypes &&
 					<div className='dropdown'>
 						{
-							graphTypes.forEach((val, index) => {
+							graphTypes.map((val, index) => {
 								return <div key={index} className={`type ${graphType == index ? 'active' : ''}`} onClick={() => {
 											if (canEdit) {
 												setGraphType(index)

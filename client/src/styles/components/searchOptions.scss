@@ -156,16 +156,22 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			text-align: center;
 			justify-content: space-evenly;
 			gap: 5px;
 
 			& div {
 				width: 100%;
-				height: 25px;
+				height: fit-content;
 				border-radius: 7px;
 				background-color: v.$background-color;
+				filter: invert(10%);
 				border: none;
-				padding: 5px;
+				text-align: center;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 7px 2px;
 				font-weight: 500;
 				transition: opacity 200ms ease-in-out,
 							filter 200ms ease-in-out;
@@ -173,7 +179,7 @@
 				&:hover,
 				&:focus {
 					opacity: .7;
-					filter: invert(70%);
+					filter: invert(90%);
 					cursor: pointer;
 				}
 			}
