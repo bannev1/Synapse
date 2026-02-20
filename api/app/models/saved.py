@@ -22,7 +22,7 @@ class SavedGraph(RequestGraph):
 		graph = graph[0]
 		
 		# Save attributes of inherited function
-		super().__init__()
+		super().__init__(None)
 
 		self.query = graph['name']
 		self.type = graph['graphType']
