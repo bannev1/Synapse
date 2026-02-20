@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 
-import { search } from '@/scripts/requests/processor';
+import { search } from '@/scripts/requests/search';
 
 // Icons
 import searchBlack from '/public/icons/searchBlack.svg';
