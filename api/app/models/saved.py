@@ -23,8 +23,7 @@ class SavedGraph(RequestGraph):
 		
 		# Save attributes of inherited function
 		super().__init__(None)
-
-		self.graph = graph
+		
 		self.query = graph[0]
 		self.type = graph[1]
 
