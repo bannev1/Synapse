@@ -25,7 +25,8 @@ def compare() -> None:
 				{
 					"id": "https://nytimes.com/",
 					"source": "https://nytimes.com/",
-					"name": "New York Times",
+					"name": "New York Times Subpage",
+					"sourceName": "New York Times",
 					"topics": ['topic 1', 'topic 2'],
 					"medium": "News",
 					"location": "US",
@@ -51,7 +52,8 @@ def compare() -> None:
 				{
 					"id": "https://bbc.com/",
 					"source": "https://bbc.com/",
-					"name": "BBC News",
+					"name": "BBC News Subpage",
+					"sourceName": "BBC News",
 					"topics": ['topic A', 'topic B'],
 					"medium": "News",
 					"location": "US",
