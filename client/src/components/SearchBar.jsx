@@ -27,6 +27,19 @@ function SearchBar({
 		'--search-height': `${height}px`
 	}
 
+	const [query, setQuery] = useState('')
+
+	const handleSearch = () => {
+		onSearch(query)
+		setQuery('')
+	};
+
+	const handleKeyDown = (e) => {
+		if (e.key === 'Enter') {
+			handleSearch()
+		}
+	}
+
 	return (
 		<div 
 			id="search" 
@@ -37,13 +50,21 @@ function SearchBar({
 			<Image src={inverted ? searchWhite : searchBlack} alt="Search Icon"/>
 			
 			{/* Input field */}
-			<input type="text" placeholder={placeholder} className={(editable ? '' : 'notEditable') + (isPlaceholder ? 'placeholder' : '')} readOnly={!editable}/>
+			<input 
+				type="text" 
+				placeholder={placeholder} 
+				className={(editable ? '' : 'notEditable') + (isPlaceholder ? 'placeholder' : '')} 
+				readOnly={!editable}
+				value={query}
+				onChange={(e) => setQuery(e.target.value)}
+				onKeyDown={handleKeyDown}
+			/>
 			
 			{/* Send button/search (only when editable) */}
 			{
 				editable &&
 
-				<button onClick={onSearch}>
+				<button onClick={handleSearch}>
 					<Image src={sendWhite} alt="Submit Icon"/>
 				</button>
 			}

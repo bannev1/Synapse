@@ -1,13 +1,16 @@
 'use client';
 
 import React, { useContext, useState } from 'react'
+import { useRouter } from 'next/navigation';
 
+import '@/styles/search/styles.css'
+
+import { TabContext } from '@/components/contexts/TabContext';
 import SearchBar from '@/components/SearchBar'
 import TabBar from '@/components/TabBar';
-import '@/styles/search/styles.css'
-import { TabContext } from '@/components/contexts/TabContext';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import SearchOptions from '@/components/SearchOptions';
+import { search } from '@/scripts/requests/search';
 
 function Search({forceNewTabView = false}) {
 	const {tabs, setTabs} = useContext(TabContext)
@@ -17,8 +20,33 @@ function Search({forceNewTabView = false}) {
 
 	const [searchOptions, setSearchOptions] = useState({})
 
-	const searchQuery = () => {
-		// Add 
+	const router = useRouter();
+
+	const searchQuery = async (query) => {
+		if (!query || !query.trim()) {
+			console.log('No query provided');
+			return;
+		}
+
+		// Map graphType index to string (assuming backend expects 'topical', 'medium', 'locational')
+		const graphTypeMap = ['topical', 'medium', 'locational'];
+		const graphType = graphTypeMap[searchOptions.graphType] || 'topical';
+		const depth = searchOptions.depth || 6;
+
+		// Perform the search
+		const graph = await search(query, depth, graphType);
+
+		if (graph === 'error') {
+			console.log('Error fetching graph');
+			return;
+		}
+
+		// Add a new tab
+		const newTab = { name: query, graph };
+		setTabs(prevTabs => [...prevTabs, newTab]);
+
+		// Navigate to view page
+		router.push(`/view/${encodeURIComponent(query)}`);
 	}
 
 	return (

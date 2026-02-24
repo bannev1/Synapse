@@ -6,6 +6,8 @@ import { SAVED } from "./endpoints";
 export const uploadGraph = async (graph) => {
 	const url = SAVED['post'];
 
+	console.log(`Fetching uploadGraph from: ${url}`);
+
 	const body = {
 		'graph': graph
 	};
@@ -13,6 +15,8 @@ export const uploadGraph = async (graph) => {
 	// Make request to server
 	const response = await fetch(url, {
 		method: 'POST',
+		mode: 'cors',
+		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json'
 		},
@@ -35,6 +39,8 @@ export const uploadGraph = async (graph) => {
 export const updateGraph = async (id, graph) => {
 	const url = `${SAVED['update']}/${id}`;
 
+	console.log(`Fetching updateGraph from: ${url}`);
+
 	const body = {
 		'graph': graph
 	};
@@ -42,6 +48,8 @@ export const updateGraph = async (id, graph) => {
 	// Make request to server
 	const response = await fetch(url, {
 		method: 'POST',
+		mode: 'cors',
+		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json'
 		},
@@ -64,9 +72,13 @@ export const updateGraph = async (id, graph) => {
 export const loadGraph = async (id) => {
 	const url = `${SAVED['load']}/${id}`;
 
+	console.log(`Fetching loadGraph from: ${url}`); 
+
 	// Make request to server
 	const response = await fetch(url, {
-		method: 'GET'
+		method: 'GET',
+		mode: 'cors',
+		credentials: 'same-origin'
 	});
 
 	const result = await response.json();

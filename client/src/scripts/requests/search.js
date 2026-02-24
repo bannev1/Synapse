@@ -6,6 +6,8 @@ import { GRAPH } from "./endpoints";
 export const search = async (query, depth, graphType) => {
 	const url = GRAPH['search'];
 
+	console.log(`Fetching search from: ${url}`); 
+
 	const body = {
 		'query': query,
 		'depth': depth,
@@ -15,6 +17,8 @@ export const search = async (query, depth, graphType) => {
 	// Make request to server
 	const response = await fetch(url, {
 		method: 'POST',
+		mode: 'cors', 
+		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json'
 		},
@@ -37,6 +41,8 @@ export const search = async (query, depth, graphType) => {
 export const compare = async (graph1, graph2) => {
 	const url = GRAPH['compare'];
 
+	console.log(`Fetching compare from: ${url}`);
+
 	const body = {
 		'graph1': graph1,
 		'graph2': graph2
@@ -45,6 +51,8 @@ export const compare = async (graph1, graph2) => {
 	// Make request to server
 	const response = await fetch(url, {
 		method: 'POST',
+		mode: 'cors',
+		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json'
 		},
@@ -67,6 +75,8 @@ export const compare = async (graph1, graph2) => {
 export const addNode = async (graph, source) => {
 	const url = GRAPH['nodeAdd'];
 
+	console.log(`Fetching addNode from: ${url}`);
+
 	const body = {
 		'graph': graph,
 		'source': source
@@ -75,6 +85,8 @@ export const addNode = async (graph, source) => {
 	// Make request to server
 	const response = await fetch(url, {
 		method: 'POST',
+		mode: 'cors',
+		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json'
 		},
@@ -97,6 +109,8 @@ export const addNode = async (graph, source) => {
 export const deleteNode = async (graph, source) => {
 	const url = GRAPH['nodeDelete'];
 
+	console.log(`Fetching deleteNode from: ${url}`);
+
 	const body = {
 		'graph': graph,
 		'source': source
@@ -105,6 +119,8 @@ export const deleteNode = async (graph, source) => {
 	// Make request to server
 	const response = await fetch(url, {
 		method: 'POST',
+		mode: 'cors',
+		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json'
 		},
@@ -127,6 +143,8 @@ export const deleteNode = async (graph, source) => {
 export const findPath = async (graph, source) => {
 	const url = GRAPH['path'];
 
+	console.log(`Fetching findPath from: ${url}`);
+
 	const body = {
 		'graph': graph,
 		'source': source
@@ -135,6 +153,8 @@ export const findPath = async (graph, source) => {
 	// Make request to server
 	const response = await fetch(url, {
 		method: 'POST',
+		mode: 'cors',
+		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json'
 		},
