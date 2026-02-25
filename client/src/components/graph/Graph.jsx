@@ -37,15 +37,6 @@ function Graph() {
 	// Node Info
 	const [nodeInfo, setNodeInfo] = useState(<></>)
 
-	useEffect(() => {
-		// Apply colors based on current graph view
-		const updatedNodes = nodes.map((node, index) => ({
-			...node,
-			color: generateNodeColor(node, graphView, index),
-		}))
-		setColoredNodes(updatedNodes)
-	}, [nodes, graphView])
-
 	// Fullscreen function
 	function handleFullScreen(state) {
 		if (!graphContainerRef.current) return
@@ -68,7 +59,7 @@ function Graph() {
 	// Effects
 	useEffect(() => {
 		// Check if nodes are valid
-		if (coloredNodes == null) return
+		if (nodes == null) return
 
 		// Load imgs
 		const imgWhite = new Image()
@@ -80,7 +71,7 @@ function Graph() {
 		imgBlack.crossOrigin = "anonymous"
 		imgBlack.src = "/icons/openInNewBlack.svg"
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack)
-	}, [coloredNodes])
+	}, [nodes])
 
 	// Set graph coords when mouse change
 	useEffect(() => {
@@ -110,7 +101,7 @@ function Graph() {
 				const newSizes = { ...prev }
 				let hasChanges = false
 
-				coloredNodes.forEach((node) => {
+				nodes.forEach((node) => {
 				const nodeId = node.id
 				const targetSize = hoveredNodeLink === node ? 31.2 : 24 // 24 * 1.3
 				const currentSize = prev[nodeId] || 24
@@ -142,7 +133,7 @@ function Graph() {
 				cancelAnimationFrame(animationRef.current)
 			}
 		}
-	}, [hoveredNodeLink, coloredNodes])
+	}, [hoveredNodeLink, nodes])
 
 	// Return
 	return (
@@ -150,18 +141,24 @@ function Graph() {
 				<ForceGraph
 					ref={graphRef}
 					graphData={{
-						nodes: coloredNodes,
+						nodes: nodes,
 						links: links,
 					}}
 					enableNodeDrag={false}
 					// enableNavigationControls={handTool == 0} // Only allow cam movement if on pan tool (0)
 					// Set up links
-					linkWidth={4}
+					linkWidth={3}
 					linkColor={() => "rgba(200, 200, 200, 0.3)"}
 					backgroundColor="#feefdd"
 
+					// Set up coloring
+					nodeAutoColorBy={d => d.id}
+					linkAutoColorBy={d => coloredNodes[d.source].id}
+
+					// Styling
 					className={freezeGraph ? 'nopan' : ''}
 
+					// Rendering
 					onEngineTick={() => {
 						if (graphRef.current) {
 							// Set strength of links

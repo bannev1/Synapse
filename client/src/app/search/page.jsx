@@ -9,7 +9,7 @@ import { TabContext } from '@/components/contexts/TabContext'
 import SearchBar from '@/components/SearchBar'
 import TabBar from '@/components/TabBar'
 import SearchOptions from '@/components/SearchOptions'
-import { search } from '@/scripts/requests/search'
+import { search } from '@/scripts/search'
 import Loading from '@/components/Loading'
 import ErrorModal from '@/components/modals/ErrorModal'
 
