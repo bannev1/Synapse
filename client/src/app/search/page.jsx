@@ -29,24 +29,27 @@ function Search({forceNewTabView = false}) {
 		}
 
 		// Map graphType index to string (assuming backend expects 'topical', 'medium', 'locational')
-		const graphTypeMap = ['topical', 'medium', 'locational'];
-		const graphType = graphTypeMap[searchOptions.graphType] || 'topical';
-		const depth = searchOptions.depth || 6;
+		const graphTypeMap = ['topical', 'medium', 'locational']
+		const graphType = graphTypeMap[searchOptions.graphType] || 'topical'
+		const depth = searchOptions.depth || 6
 
 		// Perform the search
-		const graph = await search(query, depth, graphType);
+		const graph = await search(query, depth, graphType)
 
 		if (graph === 'error') {
-			console.log('Error fetching graph');
-			return;
+			console.log('Error fetching graph')
+			return
 		}
 
 		// Add a new tab
-		const newTab = { name: query, graph };
+		const newTab = { 
+			name: encodeURIComponent(query),
+			graph: graph 
+		}
 		setTabs(prevTabs => [...prevTabs, newTab]);
 
 		// Navigate to view page
-		router.push(`/view/${encodeURIComponent(query)}`);
+		router.push(`/view/${encodeURIComponent(query)}`)
 	}
 
 	return (

@@ -11,6 +11,7 @@ function Tab({
 	index,
 	tabName,
 	graph,
+	onDelete,
 	isCurrTab = false,
 	isNewTab = false,
 }) {
@@ -21,7 +22,9 @@ function Tab({
 
 
 	const closeTab = () => {
-
+		if (!isCurrTab) {
+			onDelete()
+		}
 	}
 
 	const switchTab = () => {
