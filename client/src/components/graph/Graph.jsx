@@ -75,7 +75,7 @@ function Graph() {
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack)
 
 		// Color nodes
-		topicColors = assignColorTopics(topics)
+		const topicColors = assignColorTopics(topics)
 		setColoredNodes(colorNodes(topicColors, nodes))
 	}, [nodes])
 
