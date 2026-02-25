@@ -10,15 +10,20 @@ import GraphToolbar from "./GraphToolbar"
 import GraphOptions from "./GraphOptions"
 import NodeInfo from "./NodeInfo"
 
+import { assignColorTopics, colorNodes } from "@/scripts/color"
+
 
 function Graph() {
-	const { handTool, nodes, links } = useContext(GraphContext)
+	const { handTool, nodes, links, topics } = useContext(GraphContext)
 	const graphRef = useRef(null)
 	const graphContainerRef = useRef(null)
 
 	// Set up Images
 	const [whiteOpenNewImg, setWhiteOpenNewImg] = useState(null)
 	const [blackOpenNewImg, setBlackOpenNewImg] = useState(null)
+
+	// Colored nodes
+	const [coloredNodes, setColoredNodes] = useState(nodes)
 
 	// Hover state with animation
 	const [hoveredNodeLink, setHoveredNodeLink] = useState(null)
@@ -68,6 +73,10 @@ function Graph() {
 		imgBlack.crossOrigin = "anonymous"
 		imgBlack.src = "/icons/openInNewBlack.svg"
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack)
+
+		// Color nodes
+		topicColors = assignColorTopics(topics)
+		setColoredNodes(colorNodes(topicColors, nodes))
 	}, [nodes])
 
 	// Set graph coords when mouse change
@@ -138,24 +147,16 @@ function Graph() {
 				<ForceGraph
 					ref={graphRef}
 					graphData={{
-						nodes: nodes,
+						nodes: coloredNodes,
 						links: links,
 					}}
 					enableNodeDrag={false}
 					// enableNavigationControls={handTool == 0} // Only allow cam movement if on pan tool (0)
+					
 					// Set up links
 					linkWidth={3}
 					linkColor={() => "rgba(200, 200, 200, 0.3)"}
 					backgroundColor="#feefdd"
-
-					// Set up coloring
-					nodeAutoColorBy={d => {
-						if (d.group == 'topic')
-							return d.id
-						
-						if (d.group == 'source')
-							return d.topics[0]
-					}}
 
 					// Styling
 					className={freezeGraph ? 'nopan' : ''}
