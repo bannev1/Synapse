@@ -90,7 +90,3 @@ class MediumGraph(Graph):
 
 				# Get neighboring nodes
 				newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
-
-
-	def parse(self):
-		return super().parse()

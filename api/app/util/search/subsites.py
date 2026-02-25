@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 
-from config import Config
 
 def subsites(url: str, maxSubsites: int = -1) -> list[str]:
 	"""
@@ -43,10 +42,6 @@ def subsites(url: str, maxSubsites: int = -1) -> list[str]:
 			# Check equivalence
 			if strippedLink.strip().lower() != strippedURL.strip().lower():
 				links.append(link)
-
-		# Make sure not too many links
-		if len(links) == Config.MAX_SUBSITES:
-			return links
 
 
 	return links

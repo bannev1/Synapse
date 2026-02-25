@@ -122,8 +122,3 @@ class TopicalGraph(Graph):
 					neighbor.neighbors = self.findNeighboringNodes(neighbor, currDepth+1)
 		
 		return neighboringNodes
-
-
-
-	def parse(self): # Inherit parse method
-		return super().parse()
