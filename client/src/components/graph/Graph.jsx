@@ -99,22 +99,22 @@ function Graph() {
 				let hasChanges = false
 
 				nodes.forEach((node) => {
-				const nodeId = node.id
-				const targetSize = hoveredNodeLink === node ? 31.2 : 24 // 24 * 1.3
-				const currentSize = prev[nodeId] || 24
+					const nodeId = node.id
+					const targetSize = hoveredNodeLink === node ? 31.2 : 24 // 24 * 1.3
+					const currentSize = prev[nodeId] || 24
 
-				// Smooth interpolation with easing
-				if (Math.abs(currentSize - targetSize) > 0.1) {
-					const direction = currentSize < targetSize ? 1 : -1
-					const distance = Math.abs(targetSize - currentSize)
-					const easing = Math.min(distance * 0.3, 2) // Ease-in-out effect
+					// Smooth interpolation with easing
+					if (Math.abs(currentSize - targetSize) > 0.1) {
+						const direction = currentSize < targetSize ? 1 : -1
+						const distance = Math.abs(targetSize - currentSize)
+						const easing = Math.min(distance * 0.3, 2) // Ease-in-out effect
 
-					newSizes[nodeId] = currentSize + easing * direction
-					hasChanges = true
-				} else if (currentSize !== targetSize) {
-					newSizes[nodeId] = targetSize
-					hasChanges = true
-				}
+						newSizes[nodeId] = currentSize + easing * direction
+						hasChanges = true
+					} else if (currentSize !== targetSize) {
+						newSizes[nodeId] = targetSize
+						hasChanges = true
+					}
 				})
 
 				return hasChanges ? newSizes : prev
