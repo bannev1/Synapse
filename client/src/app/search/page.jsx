@@ -29,7 +29,8 @@ function Search({forceNewTabView = false}) {
 
 	const searchQuery = async (query) => {
 		if (!query || !query.trim()) {
-			console.log('No query provided')
+			console.log('No query provided.')
+			setError(true)
 			return
 		}
 

@@ -12,7 +12,7 @@ import NodeInfo from "./NodeInfo"
 
 
 function Graph() {
-	const { handTool, nodes, links, graphView } = useContext(GraphContext)
+	const { handTool, nodes, links } = useContext(GraphContext)
 	const graphRef = useRef(null)
 	const graphContainerRef = useRef(null)
 
