@@ -24,7 +24,7 @@ class TopicalGraph(Graph):
 		
 		# Iterate through topics and populate with sourceNodes
 		for topic, topicNode in self.topicNodes.items():
-			topicalQuery = f'{self.query} {topicNode.name}'
+			topicalQuery = f'{self.query} {topic}'
 
 			sourceNodes: list[SourceNode] = [] # List of source nodes for this topic
 
@@ -60,7 +60,7 @@ class TopicalGraph(Graph):
 						self.topicNodes[topic].sourceNodes.append(node)
 
 
-	def createTopicNodes(self) -> list[TopicNode]:
+	def createTopicNodes(self) -> dict[str, TopicNode]:
 		"""
 		Construct topic nodes
 		"""
