@@ -12,6 +12,9 @@ import { redirect } from 'next/navigation'
 function TabBar({ currTab = '', isNewTab = false }) {
 	const {tabs, setTabs} = useContext(TabContext)
 
+	console.log('tabs:', tabs)
+	console.log('currTab:', currTab)
+
 	const handleDelete = (idx) => {
 		setTabs(prevTabs => prevTabs.filter((_, index) => index !== idx))
 	}
@@ -30,9 +33,9 @@ function TabBar({ currTab = '', isNewTab = false }) {
 				}
 
 				{ // Get all tabs
-					tabs.map((tab, idx) => {
-						<Tab index={idx} tabName={decodeURIComponent(tab.name)} isCurrTab={isNewTab || currTab==tab.name} graph={tab.graph} onDelete={() => {handleDelete(idx)}}/>
-					})
+					tabs.map((tab, idx) => (
+						<Tab key={idx} tabName={decodeURIComponent(tab.name)} isCurrTab={currTab===tab.name} graph={tab.graph} onDelete={() => {handleDelete(idx)}}/>
+					))
 				}
 
 				{/* Add tab button (when not already new tab) */}

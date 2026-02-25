@@ -8,7 +8,6 @@ import closeBlack from '/public/icons/closeBlack.svg'
 import ConfirmModal from './modals/ConfirmModal';
 
 function Tab({
-	index,
 	tabName,
 	graph,
 	onDelete,
@@ -16,7 +15,7 @@ function Tab({
 	isNewTab = false,
 }) {
 	if (graph == undefined && !isCurrTab)
-		return
+		return null
 
 	const [showConfirmModal, setShowConfirmModal] = useState(false)
 
@@ -31,7 +30,7 @@ function Tab({
 		if (isCurrTab)
 			return
 
-		redirect(`/view/${tabName}`)
+		redirect(`/view/${encodeURIComponent(tabName)}`)
 	}
 	
 	return (
