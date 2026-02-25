@@ -7,7 +7,7 @@ import '@/styles/view/styles.css'
 
 // Components
 import { GraphProvider } from '@/components/contexts/GraphContext';
-import { TabContext, TabProvider } from '@/components/contexts/TabContext';
+import { TabContext } from '@/components/contexts/TabContext';
 import Graph from '@/components/graph/Graph';
 import TabBar from '@/components/TabBar';
 import SearchBar from '@/components/SearchBar';
@@ -19,17 +19,6 @@ export default function View() {
 	const params = useParams()
 	const pid = params.slug
 
-	// TabProvider must be at the top level
-	return (
-		<>
-			<ViewContent pid={pid} />
-		</>
-	)
-}
-
-
-// Content to display
-function ViewContent({ pid }) {
 	const { tabs } = useContext(TabContext)
 
 	const [currTab, setTab] = useState(undefined)
