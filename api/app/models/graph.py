@@ -51,7 +51,7 @@ class Graph:
 			'name': self.query,
 			'type': self.type,
 			'depth': self.depth,
-			'topics': [topic.name for topic in self.topicNodes], # Get each topic by name as string
+			'topics': [topic for topic in self.topicNodes.keys()], # Get each topic by name as string
 			'sources': [],
 			'topicLinks': [],
 			'sourceLinks': []
@@ -60,7 +60,7 @@ class Graph:
 		# Go through each topic node and recursively get sources + sourceNode Links
 		self.traversed = [] # list of sources traversed (str to keep less memory)
 
-		for topic in self.topicNodes:
+		for topic in self.topicNodes.values():
 			for source in topic.sourceNodes:
 				# Create link between source and topic nodes
 				self.graph['topicLinks'].append({
