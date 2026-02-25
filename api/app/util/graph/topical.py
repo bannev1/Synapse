@@ -32,9 +32,9 @@ class TopicalGraph(Graph):
 
 			# Create source nodes for each site
 			for site in sourceNodeSites:
-				if 'wikipedia' not in site: # Don't add wikipedia
+				if 'wikipedia' not in site['Link']: # Don't add wikipedia
 					# Check to see if site already exists
-					if site in list(self.sources.keys()):
+					if site['Link'] in list(self.sources.keys()):
 						# Add this topic to the SourceNode
 						self.sources[site['Link']].topics.append(topicNode.name)
 						sourceNodes.append(self.sources[site['Link']])
