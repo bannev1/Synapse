@@ -1,4 +1,5 @@
 from flask import Blueprint, Flask
+from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 
@@ -20,6 +21,10 @@ class Routes:
 		
 		if not hasattr(self, "index"):
 			self.index = Flask(__name__)
+
+			CORS(self.index, resources={
+				r"/*": {"origins": "*"}
+			})
 
 			# Set up config/dotenv for project
 			envPath = os.path.join(os.getcwd(), '', '.env')
