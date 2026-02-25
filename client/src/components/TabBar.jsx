@@ -27,15 +27,15 @@ function TabBar({ currTab = '', isNewTab = false }) {
 			</h1>
 
 			<div id="tabs">
-				{ // New 'tab' (false tab)
-					isNewTab && 
-					<Tab isNewTab={true} isCurrTab={true} graph={undefined} onDelete={() => {}}/>
-				}
-
 				{ // Get all tabs
 					tabs.map((tab, idx) => (
 						<Tab key={idx} tabName={decodeURIComponent(tab.name)} isCurrTab={currTab===tab.name} graph={tab.graph} onDelete={() => {handleDelete(idx)}}/>
 					))
+				}
+
+				{ // New 'tab' (false tab)
+					isNewTab && 
+					<Tab isNewTab={true} isCurrTab={true} graph={undefined} onDelete={() => {}}/>
 				}
 
 				{/* Add tab button (when not already new tab) */}

@@ -404,6 +404,7 @@
   width: 100%;
   display: flex;
   flex-direction: row;
+  gap: 22px;
   flex-wrap: nowrap;
   padding: 0 10px;
   align-items: end;
@@ -415,6 +416,7 @@
   color: #201E1F;
   height: 40px;
   width: 150px;
+  padding: 0px 5px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   display: flex;
@@ -424,15 +426,9 @@
   position: relative;
   opacity: 0.8;
 }
-#tabGroup #tabs .tab:hover {
-  cursor: pointer;
-}
 #tabGroup #tabs .tab.active {
   opacity: 1;
   z-index: 5;
-}
-#tabGroup #tabs .tab.active:hover {
-  cursor: default;
 }
 #tabGroup #tabs .tab p {
   font-size: 13px;
@@ -442,7 +438,19 @@
 #tabGroup #tabs .tab p.newTab {
   font-style: italic;
 }
-#tabGroup #tabs .tab button {
+#tabGroup #tabs .tab button.invisible {
+  padding: none;
+  border: none;
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  background-color: transparent;
+}
+#tabGroup #tabs .tab button.invisible:hover {
+  cursor: pointer;
+}
+#tabGroup #tabs .tab button.close {
   border: none;
   border-radius: 100%;
   padding: 0;
@@ -452,11 +460,11 @@
   background-color: transparent;
   transition: opacity 200ms ease-in-out;
 }
-#tabGroup #tabs .tab button:hover, #tabGroup #tabs .tab button:focus {
+#tabGroup #tabs .tab button.close:hover, #tabGroup #tabs .tab button.close:focus {
   opacity: 0.6;
   cursor: pointer;
 }
-#tabGroup #tabs .tab button img {
+#tabGroup #tabs .tab button.close img {
   margin: auto;
   width: 20px;
   height: 20px;

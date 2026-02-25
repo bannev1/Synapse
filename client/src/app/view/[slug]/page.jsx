@@ -106,6 +106,10 @@ export default function View() {
 	// If valid tab, render everything
 	return (
 		<GraphProvider allNodes={graph.allNodes} allLinks={graph.allLinks}>
+			<TabBar 
+				currTab={currTab ? decodeURIComponent(currTab.name) : ''} 
+			/>
+
 			<div id="home">
 				<div id="toolbarPlaceholder" />
 
@@ -113,10 +117,6 @@ export default function View() {
 					<SearchBar inverted={true} />
 					<SearchOptions onChangeOptions={setSearchOptions} inverted={true} />
 				</div>
-
-				<TabBar 
-					currTab={currTab ? decodeURIComponent(currTab.name) : ''} 
-				/>
 
 				<Graph />
 			</div>

@@ -35,20 +35,17 @@ function Tab({
 	
 	return (
 		<>
-			{
-				showConfirmModal &&
-				<ConfirmModal content="Close this tab?" onConfirm={closeTab} refresh={showConfirmModal}/>
-			}
-
-			<div className={`tab ${isCurrTab ? 'active' : ''}`} onClick={switchTab}>
+			<div className={`tab ${isCurrTab ? 'active' : ''}`}>
 				<div/>
 
-				<p className={isNewTab ? 'newTab' : ''}>{isNewTab ? 'New Tab' : tabName}</p>
+				<button className='invisible' onClick={switchTab}>
+					<p className={isNewTab ? 'newTab' : ''}>{isNewTab ? 'New Tab' : tabName}</p>
+				</button>
 
 				{
 					!isCurrTab && // So can't close current or new tabs
 
-					<button onClick={() => {setShowConfirmModal(true)}}>
+					<button className='close' onClick={() => {closeTab(true)}}>
 						<Image src={closeBlack} alt="Close Icon" />
 					</button>
 				}

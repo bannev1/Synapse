@@ -26,6 +26,7 @@
 		width: 100%;
 		display: flex;
 		flex-direction: row;
+		gap: 22px;
 		flex-wrap: nowrap;
 		padding: 0 10px;
 		align-items: end;
@@ -37,6 +38,7 @@
 			color: v.$black;
 			height: 40px;
 			width: 150px;
+			padding: 0px 5px;
 			border-top-left-radius: 15px;
 			border-top-right-radius: 15px;
 			display: flex;
@@ -45,18 +47,10 @@
 			justify-content: space-evenly;
 			position: relative;
 			opacity: .8;
-
-			&:hover {
-				cursor: pointer;
-			}
 	
 			&.active {
 				opacity: 1;
 				z-index: 5;
-
-				&:hover {
-					cursor: default;
-				}
 			}
 	
 			// Content
@@ -71,28 +65,47 @@
 			}
 	
 			& button {
-				border: none;
-				border-radius: 100%;
-				padding: 0;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				background-color: transparent;
-				transition: opacity 200ms ease-in-out;
-	
-				&:hover,
-				&:focus {
-					opacity: .6;
-					cursor: pointer;
+				// Switch tab button
+				&.invisible {
+					padding: none;
+					border: none;
+					opacity: 1;
+					width: 100%;
+					height: 100%;
+					text-align: left;
+					background-color: transparent;
+
+					&:hover {
+						cursor: pointer;
+					}
 				}
-	
-				& img {
-					margin: auto;
-					width: 20px;
-					height: 20px;
+
+
+				// Close button
+				&.close {
+					border: none;
+					border-radius: 100%;
+					padding: 0;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					background-color: transparent;
+					transition: opacity 200ms ease-in-out;
+		
+					&:hover,
+					&:focus {
+						opacity: .6;
+						cursor: pointer;
+					}
+		
+					& img {
+						margin: auto;
+						width: 20px;
+						height: 20px;
+					}
 				}
 			}
-	
+
 			// Sides
 			&::before,
 			&::after,
