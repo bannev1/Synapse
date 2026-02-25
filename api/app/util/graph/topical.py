@@ -23,7 +23,7 @@ class TopicalGraph(Graph):
 		self.createTopicNodes()
 		
 		# Iterate through topics and populate with sourceNodes
-		for topicNode in self.topicNodes:
+		for topic, topicNode in self.topicNodes.items():
 			topicalQuery = f'{self.query} {topicNode.name}'
 
 			sourceNodes: list[SourceNode] = [] # List of source nodes for this topic
@@ -49,12 +49,15 @@ class TopicalGraph(Graph):
 						medium = siteMedium(site['Link'])
 
 						# Create node
-						node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [topicNode.name])
+						node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [topic])
 						sourceNodes.append(node)
 						self.sources[site['Link']] = node # Add site to sources
 
 						# Find neighbors
 						node.neighbors = self.findNeighboringNodes(node)
+
+						# Add link
+						self.topicNodes[topic].sourceNodes.append(node)
 
 
 	def createTopicNodes(self) -> list[TopicNode]:
@@ -64,7 +67,7 @@ class TopicalGraph(Graph):
 
 		topics = getTopics(self.query)
 
-		self.topicNodes = []
+		self.topicNodes = {}
 
 		# Make sure not too many topics
 		if len(topics) > Config.MAX_TOPICS:
@@ -73,7 +76,7 @@ class TopicalGraph(Graph):
 		# Go through each topic
 		for topic in topics:
 			topicNode = TopicNode(topic, [])
-			self.topicNodes.append(topicNode)
+			self.topicNodes[topic] = topicNode
 
 		return self.topicNodes
 	
