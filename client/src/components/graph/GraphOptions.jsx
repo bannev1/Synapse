@@ -35,11 +35,11 @@ function GraphOptions({ tabName, graph }) {
 
 
 	// Add Node
-	const addNodeHandler = async (sourceUrl) => {
+	const addNodeHandler = async (source) => {
 		setLoading(true) // Show loading
 
 		// Call API to add node to current graph
-		const updatedGraph = await addNode(graph, sourceUrl)
+		const updatedGraph = await addNode(graph, source)
 		
 		if (updatedGraph === 'error') {
 			console.log(updatedGraph)
@@ -68,11 +68,11 @@ function GraphOptions({ tabName, graph }) {
 
 
 	// Delete Node
-	const deleteNodeHandler = async (sourceUrl) => {
+	const deleteNodeHandler = async (source) => {
 		setLoading(true) // Show loading
 
 		// Call API to add node to current graph
-		const updatedGraph = await deleteNode(graph, sourceUrl)
+		const updatedGraph = await deleteNode(graph, source)
 		
 		if (updatedGraph === 'error') {
 			console.log(updatedGraph)

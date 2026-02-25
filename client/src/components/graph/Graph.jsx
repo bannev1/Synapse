@@ -11,7 +11,7 @@ import NodeInfo from "./NodeInfo"
 
 
 function Graph() {
-	const { handTool, nodes, links } = useContext(GraphContext)
+	const { handTool, nodes, links, highlightNodes } = useContext(GraphContext)
 	const graphRef = useRef(null)
 	const graphContainerRef = useRef(null)
 
@@ -353,6 +353,15 @@ function Graph() {
 									ctx.fillText(label, node.x - (fontSize - paddingWidth)/2, node.y)
 								
 									break;
+							}
+							
+							// If needs to be highlighted
+							if (node.group != 'title') {
+								if (highlightNodes.includes(node.id)) {
+									ctx.shadowColor = "rgba(0, 0, 0, 0.7)" // Bolder back shadow
+									ctx.fillStyle = "#ed3e3e" // Highlight node in red
+									ctx.fill()
+								}
 							}
 						}
 					}

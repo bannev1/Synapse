@@ -9,6 +9,7 @@ export const GraphProvider = ({ allNodes, allLinks, children }) => {
 	const [handTool, setHandTool] = useState(0);
 	const [nodes, setNodes] = useState(allNodes || []);
 	const [links, setLinks] = useState(allLinks || []);
+	const [highlightNodes, setHighlightNodes] = useState([]);
 	
 	useEffect(() => {
 		setNodes(allNodes || [])
@@ -22,7 +23,8 @@ export const GraphProvider = ({ allNodes, allLinks, children }) => {
 		<GraphContext.Provider value={{ 
 			handTool, setHandTool, 
 			nodes, setNodes, 
-			links, setLinks
+			links, setLinks,
+			highlightNodes, setHighlightNodes
 		}}>
 			{children}
 		</GraphContext.Provider>
