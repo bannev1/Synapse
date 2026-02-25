@@ -21,8 +21,6 @@ function View() {
 	const params = useParams()
 	const pid = params.slug;
 
-	console.log(pid)
-
 	const {tabs, setTabs} = useContext(TabContext);
 
 	const [currTab, setTab] = useState(undefined)
@@ -44,24 +42,24 @@ function View() {
 
 	// Find tab
 	useEffect(() => {
-		tabs.forEach(tabElem => {
-			console.log('hello')
-			console.log(tabElem.name)
-			if (tabElem.name == refTab) {
-				setTab(tabElem)
+		const foundTabs = tabs.find(tabElem => tabElem.name === pid)
 
-				// Get links and nodes
-				setGraph({
-					'allNodes': tabElem.graph['sources'] + tabElem.graph['topics'],
-					'allLinks': tabElem.graph['topicLinks'] + tabElem.graph['sourceLinks']
-				})
-			}
-		});
-	
+		if (foundTabs) {
+			const tabElem = foundTabs[0]
+
+			setTab(tabElem)
+
+			// Get links and nodes
+			setGraph({
+				'allNodes': tabElem.graph['sources'] + tabElem.graph['topics'],
+				'allLinks': tabElem.graph['topicLinks'] + tabElem.graph['sourceLinks']
+			})
+
 		// Check if tab exists
-		if (currTab == undefined)
+		} else if (tabs.length > 0) {
 			notFound()
-	}, [])
+		}
+	}, [pid, tabs])
 
 	return (
 		<>
