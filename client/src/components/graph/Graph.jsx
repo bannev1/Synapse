@@ -4,7 +4,6 @@ import { useContext, useRef, useState, useEffect } from "react"
 import ForceGraph from "react-force-graph-2d"
 
 import { GraphContext } from "@/components/contexts/GraphContext"
-import { generateNodeColor } from "@/scripts/colorSystem"
 
 // Components
 import GraphToolbar from "./GraphToolbar"
