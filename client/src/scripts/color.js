@@ -32,7 +32,7 @@ const RGBtoHex = (RGB) => {
 		return hexVal
 	})
 
-	return hex
+	return '#' + hex[0] + hex[1] + hex[2]
 }
 
 
