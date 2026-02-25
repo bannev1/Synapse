@@ -11,6 +11,8 @@ import TabBar from '@/components/TabBar';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import SearchOptions from '@/components/SearchOptions';
 import { search } from '@/scripts/requests/search';
+import Loading from '@/components/Loading';
+import ErrorModal from '@/components/modals/ErrorModal';
 
 function Search({forceNewTabView = false}) {
 	const {tabs, setTabs} = useContext(TabContext)
@@ -20,12 +22,15 @@ function Search({forceNewTabView = false}) {
 
 	const [searchOptions, setSearchOptions] = useState({})
 
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState(false)
+
 	const router = useRouter();
 
 	const searchQuery = async (query) => {
 		if (!query || !query.trim()) {
-			console.log('No query provided');
-			return;
+			console.log('No query provided')
+			return
 		}
 
 		// Map graphType index to string (assuming backend expects 'topical', 'medium', 'locational')
@@ -33,12 +38,16 @@ function Search({forceNewTabView = false}) {
 		const graphType = graphTypeMap[searchOptions.graphType] || 'topical'
 		const depth = searchOptions.depth || 6
 
+		// Show loading screen
+		setLoading(true)
+
 		// Perform the search
 		const graph = await search(query, depth, graphType)
 
 		if (graph === 'error') {
 			console.log('Error fetching graph')
-			return
+			setError(true)
+			setLoading(false)
 		}
 
 		// Add a new tab
@@ -70,6 +79,14 @@ function Search({forceNewTabView = false}) {
 
 				<SearchOptions onChangeOptions={setSearchOptions} inverted={tabsExist}/>
 			</div>
+			
+			{/* Search Error Modal */}
+			<ErrorModal content={'Error searching for graph. See logs for more details.'} refresh={error}/>
+			
+			{ // Loading screen
+				loading && 
+				<Loading/>
+			}
 		</>
 	)
 }
