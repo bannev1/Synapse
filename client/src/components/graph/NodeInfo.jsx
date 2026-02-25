@@ -12,7 +12,7 @@ function NodeInfo({x, y, name, url, sourceName, location, medium, topics}) {
 				<p className='title'>{name}</p>
 
 				<div>
-					<p className='subtitle'>Source Name:</p>
+					<p className='subtitle'>Source:</p>
 					<p>{sourceName}</p>
 				</div>
 
