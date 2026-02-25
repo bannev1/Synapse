@@ -179,11 +179,20 @@ function Graph() {
 						// If on info tool
 						if (handTool == 1 && node != null) {
 							if (node.group == 'source' && graphRef.current) {
-								console.log(node.x, node.y)
 								const nodeCoords = graphRef.current.graph2ScreenCoords(node.x, node.y) // Remember to rmv height of toolbar and search bar
-								setNodeInfo(<NodeInfo x={nodeCoords.x} y={nodeCoords.y - 55 - 70} name={node.site} url={node.url}/>)
-							}
-							
+								
+								setNodeInfo(<NodeInfo 
+												x={nodeCoords.x} 
+												y={nodeCoords.y - 55 - 70} 
+												name={node.name} 
+												url={node.source} 
+												sourceName={node.sourceName}
+												location={node.location}
+												medium={node.medium}
+												topics={node.topics}
+											/>)
+							} else
+								setNodeInfo(<></>)
 						}
 						if (node != null) {
 							switch (node.group) {
