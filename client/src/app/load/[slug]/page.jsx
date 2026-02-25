@@ -5,7 +5,7 @@ import { notFound, useParams } from 'next/navigation'
 import Image from 'next/image'
 
 import '@/styles/view/styles.css'
-import { loadID } from '@/scripts/requests/load'
+import { loadID } from '@/scripts/save'
 
 import TabBar from '@/components/TabBar'
 import SearchBar from '@/components/SearchBar'

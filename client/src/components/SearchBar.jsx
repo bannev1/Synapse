@@ -3,8 +3,6 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 
-import { search } from '@/scripts/requests/search';
-
 // Icons
 import searchBlack from '/public/icons/searchBlack.svg';
 import searchWhite from '/public/icons/searchWhite.svg';
@@ -12,7 +10,7 @@ import sendWhite from '/public/icons/sendWhite.svg';
 
 
 function SearchBar({
-	onSearch = search,
+	onSearch,
 	placeholder = 'Search',
 	isPlaceholder = true, // If to use fancy styling for placeholder or not (otherwise placeholder looks like inputted text)
 	inverted = false,
