@@ -68,7 +68,7 @@ export const colorNodes = (coloredTopics, nodes) => {
 				// Darken
 				let color = blendRBGColors([
 					coloredTopics[node.name],
-					[50, 50, 50] // Darker color
+					[100, 100, 100] // Darker color
 				])
 				
 				// Convert color to hex
