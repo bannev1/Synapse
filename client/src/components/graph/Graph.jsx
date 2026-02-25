@@ -223,8 +223,8 @@ function Graph() {
 									padding = fontSize * 0.8
 
 									// If label too long then truncate
-									if (label.length > 8)
-										label = label.slice(0, 6) + '...'
+									if (label.length > 10)
+										label = label.slice(0, 7) + '...'
 		
 									ctx.font = `700 ${fontSize}px Montserrat, Sans-Serif`
 									textWidth = ctx.measureText(label).width
