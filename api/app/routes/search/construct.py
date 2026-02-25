@@ -12,7 +12,7 @@ from config import Config
 search = Routes().search
 
 
-@search.get('/')
+@search.post('/')
 def construct() -> Graph:
 	"""
 	Construct a graph
