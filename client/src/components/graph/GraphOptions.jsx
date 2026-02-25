@@ -1,12 +1,17 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Image from 'next/image'
 
 // Components
 import AddNodeModal from '../modals/graphFunctions/AddNodeModal'
 import DeleteNodeModal from '../modals/graphFunctions/DeleteNodeModal'
 import PathFinderModal from '../modals/graphFunctions/PathFinderModal'
+import Loading from '../Loading'
+import ErrorModal from '../modals/ErrorModal'
+
+import { TabContext } from '../contexts/TabContext'
+import { addNode, deleteNode, findPath } from '@/scripts/search'
 
 // Icons
 import searchBlack from '/public/icons/searchBlack.svg'
@@ -19,25 +24,84 @@ import deleteWhite from '/public/icons/deleteWhite.svg'
 import pathWhite from '/public/icons/pathWhite.svg'
 
 
-function GraphOptions() {
+function GraphOptions({ tabName, graph }) {
+	const { tabs, setTabs } = useContext(TabContext)
+
 	const [opened, setOpened] = useState(false);
 	const [currentModal, setCurrentModal] = useState(0) // 0 means no modal, 1 means source, 2 means note, 3 means path finder
+	
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState(false)
 
 
 	// Add Node
-	const addNode = (source) => {
+	const addNodeHandler = async (sourceUrl) => {
+		setLoading(true) // Show loading
 
+		// Call API to add node to current graph
+		const updatedGraph = await addNode(graph, sourceUrl)
+		
+		if (updatedGraph === 'error') {
+			console.log(updatedGraph)
+			setError(true)
+			setLoading(false)
+		}
+
+		// Update the current tab with the new graph
+		const updatedTabs = tabs.map(tab => {
+			if (tab.name === tabName)
+				return {
+					...tab,
+					graph: updatedGraph
+				}
+
+			return tab
+		})
+
+		// Update tabs in context
+		setTabs(updatedTabs)
+
+		// Close modal
+		setCurrentModal(0)
+		setLoading(false)
 	}
 
 
 	// Delete Node
-	const deleteNode = (source) => {
+	const deleteNodeHandler = async (sourceUrl) => {
+		setLoading(true) // Show loading
 
+		// Call API to add node to current graph
+		const updatedGraph = await deleteNode(graph, sourceUrl)
+		
+		if (updatedGraph === 'error') {
+			console.log(updatedGraph)
+			setError(true)
+			setLoading(false)
+		}
+
+		// Update the current tab with the new graph
+		const updatedTabs = tabs.map(tab => {
+			if (tab.name === tabName)
+				return {
+					...tab,
+					graph: updatedGraph
+				}
+
+			return tab
+		})
+
+		// Update tabs in context
+		setTabs(updatedTabs)
+
+		// Close modal
+		setCurrentModal(0)
+		setLoading(false)
 	}
 
 
 	// Find Path of Node
-	const findPath = (source) => {
+	const findPathHandler = (source) => {
 
 	}
 
@@ -93,9 +157,18 @@ function GraphOptions() {
 					</div>
 
 					{/* Modals */}
-					<AddNodeModal refresh={currentModal == 1} onSubmit={addNode}/>
-					<DeleteNodeModal refresh={currentModal == 2} onSubmit={deleteNode}/>
-					<PathFinderModal refresh={currentModal == 3} onSubmit={findPath}/>
+					<AddNodeModal refresh={currentModal == 1} onSubmit={addNodeHandler}/>
+					<DeleteNodeModal refresh={currentModal == 2} onSubmit={deleteNodeHandler}/>
+					<PathFinderModal refresh={currentModal == 3} onSubmit={findPathHandler}/>
+
+					
+					{ // Loading
+						loading && 
+						<Loading/>
+					}
+
+					{/* Error Modal */}
+					<ErrorModal content={'Error completing graph operation. Please try again.'} refresh={error}/>
 				</>
 			}
 		</>

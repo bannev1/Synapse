@@ -31,9 +31,6 @@ export default function View() {
 		allTopics: []
 	})
 
-	const [handTool, setHandTool] = useState(0)
-	const [showComparePopup, setShowComparePopup] = useState(false)
-
 
 	// Find the current tab + load its graph
 	useEffect(() => {
@@ -121,9 +118,9 @@ export default function View() {
 					<SearchOptions onChangeOptions={() => {}} inverted={true} canEdit={false} />
 				</div>
 
-				<Graph />
+				<Graph/>
 
-				<GraphOptions/>
+				<GraphOptions tabName={pid} graph={graph}/>
 			</div>
 		</GraphProvider>
 	)
