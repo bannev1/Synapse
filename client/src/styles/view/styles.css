@@ -558,6 +558,8 @@
   background-color: #FEEFDD;
   position: relative;
   overflow-y: hidden;
+  padding: 0;
+  margin: 0;
 }
 
 #search {
