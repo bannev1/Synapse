@@ -8,11 +8,13 @@ from config import Config
 
 class LocationalGraph(Graph):
 	def __init__(self, query: str, depth: int, locations: list[str] = Config.DEFAULT_LOCATIONS) -> None:
+		# Save locations
+		self.locationList = locations
+
 		# Save attributes of inherited function
 		super().__init__(query, 'locational', depth)
 
 		# Custom attribute for this class
-		self.locationList = locations
 		self.topicNodes = self.createTopicNodes(locations) # For topic nodes
 
 
