@@ -23,8 +23,17 @@ export const assignColorTopics = (topics) => {
 
 // Convert RGB to Hex
 const RGBtoHex = (RGB) => {
+	const hex = RGB.map(component => {
+		let hexVal = component.toString(16)
 
-} 
+		if (hexVal.length == 1) // leading zero
+			return '0' + hexVal
+		
+		return hexVal
+	})
+
+	return hex
+}
 
 
 // Blend multiple colors
