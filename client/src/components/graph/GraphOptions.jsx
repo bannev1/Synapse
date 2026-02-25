@@ -22,10 +22,12 @@ import saveBlack from '/public/icons/saveBlack.svg'
 import nodeAddWhite from '/public/icons/nodeAddWhite.svg'
 import deleteWhite from '/public/icons/deleteWhite.svg'
 import pathWhite from '/public/icons/pathWhite.svg'
+import { GraphContext } from '../contexts/GraphContext'
 
 
 function GraphOptions({ tabName, graph }) {
 	const { tabs, setTabs } = useContext(TabContext)
+	const { setHighlightNodes } = useContext(GraphContext)
 
 	const [opened, setOpened] = useState(false);
 	const [currentModal, setCurrentModal] = useState(0) // 0 means no modal, 1 means source, 2 means note, 3 means path finder
@@ -71,7 +73,7 @@ function GraphOptions({ tabName, graph }) {
 	const deleteNodeHandler = async (source) => {
 		setLoading(true) // Show loading
 
-		// Call API to add node to current graph
+		// Call API to delete node from current graph
 		const updatedGraph = await deleteNode(graph, source)
 		
 		if (updatedGraph === 'error') {
@@ -101,8 +103,24 @@ function GraphOptions({ tabName, graph }) {
 
 
 	// Find Path of Node
-	const findPathHandler = (source) => {
+	const findPathHandler = async (source) => {
+		setLoading(true) // Show loading
 
+		// Call API to get path
+		const path = await findPath(graph, source)
+		
+		if (path === 'error') {
+			console.log(path)
+			setError(true)
+			setLoading(false)
+		}
+
+		// Highlight path
+		setHighlightNodes(path)
+
+		// Close modal
+		setCurrentModal(0)
+		setLoading(false)
 	}
 
 
