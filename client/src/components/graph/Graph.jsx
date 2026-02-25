@@ -70,6 +70,15 @@ function Graph() {
 		imgBlack.crossOrigin = "anonymous"
 		imgBlack.src = "/icons/openInNewBlack.svg"
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack)
+
+		// Color nodes
+		setColoredNodes(nodes.map(node => {
+			if (node.group == 'title')
+				return {
+						...node,
+						color: '#201e1f'
+				}
+		}))
 	}, [nodes])
 
 	// Set graph coords when mouse change
@@ -151,8 +160,13 @@ function Graph() {
 					backgroundColor="#feefdd"
 
 					// Set up coloring
-					nodeAutoColorBy={d => d.id}
-					linkAutoColorBy={d => coloredNodes[d.source].id}
+					nodeAutoColorBy={d => {
+						if (d.group == 'topic')
+							return d.id
+						
+						if (d.group == 'source')
+							return d.topics[0]
+					}}
 
 					// Styling
 					className={freezeGraph ? 'nopan' : ''}
@@ -240,8 +254,9 @@ function Graph() {
 									ctx.shadowBlur = 15
 									ctx.shadowOffsetX = 0
 									ctx.shadowOffsetY = 4
-
+									
 									// Draw background
+									ctx.fillStyle = node.color
 									ctx.beginPath()
 									ctx.roundRect(
 										node.x - bckgDimensions[0] / 2,
@@ -251,7 +266,7 @@ function Graph() {
 										borderRadius,
 									)
 									ctx.fill()
-		
+									
 									ctx.restore() // Reset shadow for other elements
 		
 									// Draw text
@@ -295,8 +310,9 @@ function Graph() {
 									ctx.shadowBlur = 15
 									ctx.shadowOffsetX = 0
 									ctx.shadowOffsetY = 4
-
+									
 									// Draw background
+									ctx.fillStyle = node.color
 									ctx.beginPath()
 									ctx.roundRect(
 										node.x - bckgDimensions[0] / 2,
@@ -342,7 +358,7 @@ function Graph() {
 									ctx.shadowOffsetY = 4
 
 									// Draw background with shadow
-									ctx.fillStyle = "#201e1f"
+									ctx.fillStyle = '#201e1f' // Force background
 									ctx.beginPath()
 									ctx.roundRect(
 										node.x - bckgDimensions[0] / 2,
