@@ -9,7 +9,7 @@ from app.exceptions import RequestBodyException
 search = Routes().search
 
 
-@search.route('/nodeDelete')
+@search.post('/nodeDelete')
 def nodeDelete() -> None:
 	"""
 	Given a graph and a SourceNode's ID, delete it from the given graph

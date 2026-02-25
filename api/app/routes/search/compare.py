@@ -9,7 +9,7 @@ from app.exceptions import RequestBodyException
 search = Routes().search
 
 
-@search.route('/compare')
+@search.post('/compare')
 def compare() -> None:
 	"""
 	Create a compare graph given two graphs

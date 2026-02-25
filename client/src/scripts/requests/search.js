@@ -16,7 +16,7 @@ export const search = async (query, depth, graphType) => {
 
 	// Make request to server
 	const response = await fetch(url, {
-		method: 'GET',
+		method: 'POST',
 		mode: 'cors', 
 		credentials: 'same-origin',
 		headers: {
@@ -50,7 +50,7 @@ export const compare = async (graph1, graph2) => {
 
 	// Make request to server
 	const response = await fetch(url, {
-		method: 'GET',
+		method: 'POST',
 		mode: 'cors',
 		credentials: 'same-origin',
 		headers: {
@@ -84,7 +84,7 @@ export const addNode = async (graph, source) => {
 
 	// Make request to server
 	const response = await fetch(url, {
-		method: 'GET',
+		method: 'POST',
 		mode: 'cors',
 		credentials: 'same-origin',
 		headers: {
@@ -118,7 +118,7 @@ export const deleteNode = async (graph, source) => {
 
 	// Make request to server
 	const response = await fetch(url, {
-		method: 'GET',
+		method: 'POST',
 		mode: 'cors',
 		credentials: 'same-origin',
 		headers: {
@@ -152,7 +152,7 @@ export const findPath = async (graph, source) => {
 
 	// Make request to server
 	const response = await fetch(url, {
-		method: 'GET',
+		method: 'POST',
 		mode: 'cors',
 		credentials: 'same-origin',
 		headers: {

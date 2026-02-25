@@ -9,7 +9,7 @@ from app.exceptions import RequestBodyException
 search = Routes().search
 
 
-@search.route('/nodeAdd')
+@search.post('/nodeAdd')
 def nodeAdd() -> None:
 	"""
 	Function to add a node given an existing graph

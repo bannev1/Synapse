@@ -9,7 +9,7 @@ from app.exceptions import RequestBodyException
 search = Routes().search
 
 
-@search.route('/nodePath')
+@search.post('/nodePath')
 def nodePath() -> None:
 	"""
 	Given a graph and a SourceNode's ID, find its path
