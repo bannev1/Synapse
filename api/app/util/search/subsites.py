@@ -22,6 +22,10 @@ def subsites(url: str, maxSubsites: int = -1) -> list[str]:
 	while '/' in strippedURL: # Remove all / in URL until no more
 		strippedURL = strippedURL.replace('/', '')
 	
+	# Return empty list for PDFs
+	if '.pdf' in url:
+		return []
+
 	# Parse page for hyperlinks
 	for link in BeautifulSoup(page.content, 'html.parser', parse_only = SoupStrainer('a')):
 		# Make sure not breached subsites limit
