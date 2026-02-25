@@ -56,9 +56,6 @@ class LocationalGraph(Graph):
 				# Get neighboring SourceNodes recursively
 				node.neighbors = self.findNeighboringNodes(node)
 
-				# Add to topic
-				self.topicNodes[code].sourceNodes.append(node)
-
 
 	def findNeighboringNodes(self, node: SourceNode, currDepth: int = 1) -> list[SourceNode] | None:
 		"""
