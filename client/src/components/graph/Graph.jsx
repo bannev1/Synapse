@@ -27,8 +27,6 @@ function Graph() {
 	const animationRef = useRef()
 
 	// Store coords of graph
-	const [graphCoords, setGraphCoords] = useState({x: 0, y: 0})
-	const [graphZoom, setGraphZoom] = useState(100)
 	const [freezeGraph, setFreezeGraph] = useState(false)
 	
 	// Node Info
@@ -73,9 +71,6 @@ function Graph() {
 	// Set graph coords when mouse change
 	useEffect(() => {
 		if (graphRef.current) {
-			setGraphCoords(graphRef.current.centerAt())
-			setGraphZoom(graphRef.current.zoom())
-	
 			setFreezeGraph(handTool != 0)
 	
 			if (handTool == 0) // Reset node info popup if switched tools
@@ -159,15 +154,6 @@ function Graph() {
 							graphRef.current.d3Force("charge").strength(-100)
 							graphRef.current.d3Force("link").distance(100)
 						}
-
-						// Prevent movement if handtool not pan
-						// if (freezeGraph) {
-						// 	graphRef.current.centerAt({
-						// 		x: graphCoords.x,
-						// 		y: graphCoords.y
-						// 	})
-						// 	graphRef.current.zoom(graphZoom)
-						// }
 					}}
 
 					onNodeHover={(node, event) => {
