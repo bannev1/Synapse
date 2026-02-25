@@ -1,10 +1,35 @@
-'use client'
+"use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-function PathFinderModal({closeModal}) {
+
+function PathFinderModal({
+	refresh,
+	onSubmit
+}) {
+	const [exists, setExists] = useState(refresh);
+	
+	useEffect(() => {
+		setExists(refresh)
+	}, [refresh])
+
 	return (
-		<div>PathFinderModal</div>
+		<>
+			{
+				exists &&
+				<>
+					<div className='modalBackdrop' onClick={() => {setExists(false)}}/>
+
+					<div className='modal'>
+						<h1>Find Path of Node</h1>
+
+						<div className='buttons'>
+							<button onClick={() => onSubmit()}>Close</button>
+						</div>
+					</div>
+				</>
+			}
+		</>
 	)
 }
 

@@ -7,7 +7,6 @@ import { GraphContext } from "@/components/contexts/GraphContext"
 
 // Components
 import GraphToolbar from "./GraphToolbar"
-import GraphOptions from "./GraphOptions"
 import NodeInfo from "./NodeInfo"
 
 
@@ -378,7 +377,6 @@ function Graph() {
 					nodeInfo
 				}
 
-				<GraphOptions/>
 				<GraphToolbar handleFullScreen={handleFullScreen}/>
 		</div>
 	)

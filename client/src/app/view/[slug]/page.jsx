@@ -15,6 +15,7 @@ import SearchOptions from '@/components/SearchOptions';
 import Loading from '@/components/Loading';
 
 import { assignColorTopics, colorNodes } from '@/scripts/color';
+import GraphOptions from '@/components/graph/GraphOptions';
 
 
 export default function View() {
@@ -121,6 +122,8 @@ export default function View() {
 				</div>
 
 				<Graph />
+
+				<GraphOptions/>
 			</div>
 		</GraphProvider>
 	)

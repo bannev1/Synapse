@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 // Components
 import AddNodeModal from '../modals/graphFunctions/AddNodeModal'
-import AddCommentModal from '../modals/graphFunctions/AddCommentModal'
+import DeleteNodeModal from '../modals/graphFunctions/DeleteNodeModal'
 import PathFinderModal from '../modals/graphFunctions/PathFinderModal'
 
 // Icons
@@ -17,12 +17,29 @@ import saveBlack from '/public/icons/saveBlack.svg'
 import nodeAddWhite from '/public/icons/nodeAddWhite.svg'
 import deleteWhite from '/public/icons/deleteWhite.svg'
 import pathWhite from '/public/icons/pathWhite.svg'
-import commentAddWhite from '/public/icons/commentAddWhite.svg'
 
 
 function GraphOptions() {
 	const [opened, setOpened] = useState(false);
 	const [currentModal, setCurrentModal] = useState(0) // 0 means no modal, 1 means source, 2 means note, 3 means path finder
+
+
+	// Add Node
+	const addNode = (source) => {
+
+	}
+
+
+	// Delete Node
+	const deleteNode = (source) => {
+
+	}
+
+
+	// Find Path of Node
+	const findPath = (source) => {
+
+	}
 
 
 	return (
@@ -52,17 +69,12 @@ function GraphOptions() {
 								<span>Add Node</span>
 							</button>
 							
-							<button>
+							<button onClick={() => setCurrentModal(2)}>
 								<Image src={deleteWhite} alt='Delete Node Icon'/>
 								<span>Delete Node</span>
 							</button>
 							
-							{/* <button>
-								<Image src={commentAddWhite} alt='Add Comment Icon'/>
-								<span>Add Note</span>
-							</button> */}
-							
-							<button>
+							<button onClick={() => setCurrentModal(3)}>
 								<Image src={pathWhite} alt='Path Finder Icon'/>
 								<span>Find Path</span>
 							</button>
@@ -81,20 +93,9 @@ function GraphOptions() {
 					</div>
 
 					{/* Modals */}
-					{
-						currentModal == 1 &&
-						<AddNodeModal closeModal={() => {setCurrentModal(0)}}/>
-					}
-
-					{/* {
-						currentModal == 2 &&
-						<AddCommentModal closeModal={() => {setCurrentModal(0)}}/>
-					} */}
-					
-					{
-						currentModal == 3 &&
-						<PathFinderModal closeModal={() => {setCurrentModal(0)}}/>
-					}
+					<AddNodeModal refresh={currentModal == 1} onSubmit={addNode}/>
+					<DeleteNodeModal refresh={currentModal == 2} onSubmit={deleteNode}/>
+					<PathFinderModal refresh={currentModal == 3} onSubmit={findPath}/>
 				</>
 			}
 		</>
