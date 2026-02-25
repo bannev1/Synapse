@@ -466,20 +466,6 @@
   cursor: pointer;
 }
 
-#graphFade {
-  z-index: 1;
-  position: absolute;
-  width: 100vw;
-  height: 100%;
-}
-#graphFade .fader {
-  position: absolute;
-  width: 100vw;
-  height: 100%;
-  background-color: #FEEFDD;
-  opacity: 0.3;
-}
-
 .nodeInfo {
   position: absolute;
   width: 175px;
