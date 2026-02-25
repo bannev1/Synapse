@@ -25,7 +25,7 @@ class LocationalGraph(Graph):
 		topicNodes = {}
 
 		for location in locations:
-			topicNodes[location] = [TopicNode(location, [])]
+			topicNodes[location] = TopicNode(location, [])
 
 		return topicNodes
 
