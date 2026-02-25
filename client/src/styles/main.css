@@ -49,6 +49,9 @@
      -moz-user-select: none;
           user-select: none;
 }
+#search input[type=text].notEditable:hover {
+  cursor: default;
+}
 #search img {
   padding: 0;
 }

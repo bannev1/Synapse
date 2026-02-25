@@ -53,6 +53,10 @@
 		// For non-editable
 		&.notEditable {
 			user-select: none;
+
+			&:hover {
+				cursor: default;
+			}
 		}
 	}
 
