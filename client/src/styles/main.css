@@ -50,7 +50,7 @@
           user-select: none;
 }
 #search input[type=text].notEditable:hover {
-  cursor: default;
+  cursor: none;
 }
 #search img {
   padding: 0;
@@ -285,6 +285,15 @@
 }
 #searchOptions.inverted #graphType .dropdown div {
   background-color: #201E1F;
+}
+#searchOptions.noEdit > div {
+  padding: 0 5px;
+}
+#searchOptions.noEdit:hover {
+  cursor: none;
+}
+#searchOptions.noEdit p {
+  font-weight: 600;
 }
 
 .modalBackdrop {

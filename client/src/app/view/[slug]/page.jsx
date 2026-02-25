@@ -27,11 +27,6 @@ export default function View() {
 		allLinks: []
 	})
 
-	const [searchOptions, setSearchOptions] = useState({
-		depth: 6,
-		graphType: 'topical'
-	})
-
 	const [handTool, setHandTool] = useState(0)
 	const [showComparePopup, setShowComparePopup] = useState(false)
 
@@ -115,7 +110,7 @@ export default function View() {
 
 				<div id="toolbar">
 					<SearchBar inverted={true} editable={false} placeholder={currTab?.graph?.name || decodeURIComponent(pid)} isPlaceholder={false} />
-					<SearchOptions onChangeOptions={setSearchOptions} inverted={true} />
+					<SearchOptions onChangeOptions={() => {}} inverted={true} canEdit={false} />
 				</div>
 
 				<Graph />

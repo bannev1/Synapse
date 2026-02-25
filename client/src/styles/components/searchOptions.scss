@@ -249,4 +249,20 @@
 			}
 		}
 	}
+
+
+	// No edit
+	&.noEdit {
+		&>div {
+			padding: 0 5px;
+		}
+
+		&:hover {
+			cursor: none;
+		}
+
+		& p {
+			font-weight: 600;
+		}
+	}
 }

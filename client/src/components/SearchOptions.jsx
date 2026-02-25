@@ -35,40 +35,54 @@ function SearchOptions({
 	}, [depthVal, graphType])
 
 	return (
-		<div id="searchOptions" className={inverted ? 'inverted' : ''}>
+		<div id="searchOptions" className={(inverted ? 'inverted ' : '') + (!canEdit ? 'noEdit' : '')}>
 			{/* Depth Selector */}
 			<div id='depthSelect'>
-				<button onClick={() => {
-						if (canEdit)
-							setDepthVal(v => Math.min(9, v + 1))
-					}}>
+				{ // Plus button
+					canEdit &&
 
-					<Image src={inverted ? addBlack : addWhite} alt='Add Icon' />
-				</button>
+					<button onClick={() => {
+							if (canEdit)
+								setDepthVal(v => Math.min(9, v + 1))
+						}}>
+
+						<Image src={inverted ? addBlack : addWhite} alt='Add Icon' />
+					</button>
+				}
 
 				<label htmlFor='depthSelector'>Depth</label>
 				<input type='text' name='depthSelector' value={depthVal} readOnly/>
 
-				<button onClick={() => {
-						if (canEdit)
-							setDepthVal(v => Math.max(1, v - 1))
-					}}>
+				{ // Minus button
+					canEdit &&
 
-					<Image src={inverted ? removeBlack : removeWhite} alt='Remove Icon'/>
-				</button>
+					<button onClick={() => {
+							if (canEdit)
+								setDepthVal(v => Math.max(1, v - 1))
+						}}>
+
+						<Image src={inverted ? removeBlack : removeWhite} alt='Remove Icon'/>
+					</button>
+				}
 			</div>
 
 			{/* Graph Type Selector */}
 			<div id='graphType'>
-				<button className={showGraphTypes ? 'active' : ''} onClick={() => {
-						if (canEdit)
-							setShowGraphTypes(v => !v)
-					}}>
+				{ // Graph type
+					canEdit ?
+
+					<button className={showGraphTypes ? 'active' : ''} onClick={() => {
+							if (canEdit)
+								setShowGraphTypes(v => !v)
+						}}>
+
+						<p>{graphTypes[graphType]}</p>
+
+						<Image src={inverted ? dropdownBlack : dropdownWhite} alt="Dropdown Icon" className={showGraphTypes ? 'rotate' : ''}/>
+					</button> : 
 
 					<p>{graphTypes[graphType]}</p>
-
-					<Image src={inverted ? dropdownBlack : dropdownWhite} alt="Dropdown Icon" className={showGraphTypes ? 'rotate' : ''}/>
-				</button>
+				}
 
 				{/* Graph Type Dropdown */}
 				{ showGraphTypes &&
