@@ -16,7 +16,7 @@ class Graph:
 		self.depth: int = depth
 
 		# Define attributes which will be set later
-		self.topicNodes: list[TopicNode] = [] # List of all topicnodes (linked to sourceNodes)
+		self.topicNodes: dict[str, TopicNode] = {} # List of all topicnodes (linked to sourceNodes)
 		self.sources: dict[str, SourceNode] = {} # List of all sources (str URLs) and their corresponding SourceNode
 
 		# Construct graph
