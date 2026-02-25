@@ -14,6 +14,8 @@ import SearchBar from '@/components/SearchBar';
 import SearchOptions from '@/components/SearchOptions';
 import Loading from '@/components/Loading';
 
+import { assignColorTopics, colorNodes } from '@/scripts/color';
+
 
 export default function View() {
 	const params = useParams()
@@ -71,21 +73,23 @@ export default function View() {
 				source: 'titleNode'
 			}))
 
+			// Color nodes
+			const topicColors = assignColorTopics(topics)
+			const coloredNodes = colorNodes(topicColors, [
+				...sourceNodes,
+				...topicNodes,
+				titleNode
+			])
+
 			// Set graph
 			setGraph({
-				allNodes: [
-					...sourceNodes,
-					...topicNodes,
-					titleNode
-				],
+				allNodes: coloredNodes,
 
 				allLinks: [
 					...(matchingTab.graph?.topicLinks || []),
 					...(matchingTab.graph?.sourceLinks || []),
 					...titleLinks
-				],
-
-				allTopics: topics
+				]
 			});
 
 			console.log(graph)
@@ -103,7 +107,7 @@ export default function View() {
 
 	// If valid tab, render everything
 	return (
-		<GraphProvider allNodes={graph.allNodes} allLinks={graph.allLinks} allTopics={graph.allTopics}>
+		<GraphProvider allNodes={graph.allNodes} allLinks={graph.allLinks} >
 			<TabBar 
 				currTab={currTab ? decodeURIComponent(currTab.name) : ''} 
 			/>

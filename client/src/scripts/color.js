@@ -5,6 +5,7 @@
 export const assignColorTopics = (topics) => {
 	var coloredTopics = new Object() // Dictionary
 
+
 	topics.forEach((topic) => {
 		// Generate color
 		const randomColor = [
@@ -66,7 +67,7 @@ export const colorNodes = (coloredTopics, nodes) => {
 			case 'topic':
 				// Darken
 				let color = blendRBGColors([
-					coloredTopics[node.id],
+					coloredTopics[node.name],
 					[50, 50, 50] // Darker color
 				])
 				

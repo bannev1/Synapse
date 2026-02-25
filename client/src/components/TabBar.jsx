@@ -12,9 +12,6 @@ import { redirect } from 'next/navigation'
 function TabBar({ currTab = '', isNewTab = false }) {
 	const {tabs, setTabs} = useContext(TabContext)
 
-	console.log('tabs:', tabs)
-	console.log('currTab:', currTab)
-
 	const handleDelete = (idx) => {
 		setTabs(prevTabs => prevTabs.filter((_, index) => index !== idx))
 	}

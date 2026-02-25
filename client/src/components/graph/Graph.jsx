@@ -10,20 +10,15 @@ import GraphToolbar from "./GraphToolbar"
 import GraphOptions from "./GraphOptions"
 import NodeInfo from "./NodeInfo"
 
-import { assignColorTopics, colorNodes } from "@/scripts/color"
-
 
 function Graph() {
-	const { handTool, nodes, links, topics } = useContext(GraphContext)
+	const { handTool, nodes, links } = useContext(GraphContext)
 	const graphRef = useRef(null)
 	const graphContainerRef = useRef(null)
 
 	// Set up Images
 	const [whiteOpenNewImg, setWhiteOpenNewImg] = useState(null)
 	const [blackOpenNewImg, setBlackOpenNewImg] = useState(null)
-
-	// Colored nodes
-	const [coloredNodes, setColoredNodes] = useState(nodes)
 
 	// Hover state with animation
 	const [hoveredNodeLink, setHoveredNodeLink] = useState(null)
@@ -73,10 +68,6 @@ function Graph() {
 		imgBlack.crossOrigin = "anonymous"
 		imgBlack.src = "/icons/openInNewBlack.svg"
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack)
-
-		// Color nodes
-		const topicColors = assignColorTopics(topics)
-		setColoredNodes(colorNodes(topicColors, nodes))
 	}, [nodes])
 
 	// Set graph coords when mouse change
@@ -147,7 +138,7 @@ function Graph() {
 				<ForceGraph
 					ref={graphRef}
 					graphData={{
-						nodes: coloredNodes,
+						nodes: nodes,
 						links: links,
 					}}
 					enableNodeDrag={false}
