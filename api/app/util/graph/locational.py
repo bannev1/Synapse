@@ -10,7 +10,7 @@ class LocationalGraph(Graph):
 	def __init__(self, query: str, depth: int, locations: list[str] = Config.DEFAULT_LOCATIONS) -> None:
 		# Custom attribute for this class
 		self.locationList = locations
-		self.locations = self.createTopicNodes(locations) # For topic nodes
+		self.topicNodes = self.createTopicNodes(locations) # For topic nodes
 		
 		# Save attributes of inherited function
 		super().__init__(query, 'locational', depth)
@@ -40,7 +40,7 @@ class LocationalGraph(Graph):
 		searchedSites = googleLocation(self.query, self.locationList)
 
 		# Create SourceNodes
-		for code, location in self.locations.items():
+		for code, location in self.topicNodes.items():
 			for site in searchedSites[code]:
 				# Get metadata
 				medium = siteMedium(site['Link'])
@@ -48,7 +48,7 @@ class LocationalGraph(Graph):
 				# Create new SourceNode
 				node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, location)
 
-				self.locations[code].sourceNodes.append(node)
+				self.topicNodes[code].sourceNodes.append(node)
 				self.sources[node.source] = node
 
 				# Get neighboring SourceNodes recursively
@@ -92,8 +92,8 @@ class LocationalGraph(Graph):
 				self.sources[site] = newNode
 
 				# Determine if can link to TopicNode
-				if location in list(self.locations.keys()):
-					self.locations[location].sourceNodes.append(newNode)
+				if location in list(self.topicNodes.keys()):
+					self.topicNodes[location].sourceNodes.append(newNode)
 
 				# Get neighboring nodes
 				newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)

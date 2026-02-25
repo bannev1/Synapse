@@ -12,7 +12,7 @@ class MediumGraph(Graph):
 		super().__init__(query, 'medium', depth)
 
 		# Custom attribute for this class
-		self.mediums = {} # Store all main mediums with corresponding topic node
+		self.topicNodes = {} # Store all main mediums with corresponding topic node
 
 
 
@@ -37,12 +37,12 @@ class MediumGraph(Graph):
 			node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location)
 			
 			# Check if topicnode for medium exists
-			if medium in list(self.mediums.keys()):
-				self.mediums[medium].sourceNodes.append(node)
+			if medium in list(self.topicNodes.keys()):
+				self.topicNodes[medium].sourceNodes.append(node)
 
 			# Otherwise create TopicNode
 			else:
-				self.mediums[medium] = TopicNode(medium, [])
+				self.topicNodes[medium] = TopicNode(medium, [])
 
 			self.sources[node.source] = node
 
@@ -85,8 +85,8 @@ class MediumGraph(Graph):
 				self.sources[site] = newNode
 
 				# Determine if can link to TopicNode
-				if medium in list(self.mediums.keys()):
-					self.mediums[medium].sourceNodes.append(newNode)
+				if medium in list(self.topicNodes.keys()):
+					self.topicNodes[medium].sourceNodes.append(newNode)
 
 				# Get neighboring nodes
 				newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
