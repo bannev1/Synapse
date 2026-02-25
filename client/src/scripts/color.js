@@ -29,7 +29,20 @@ const RGBtoHex = (RGB) => {
 
 // Blend multiple colors
 const blendRBGColors = (colors) => {
+	// Get components of colors
+	const Rs = colors.map(color => color[0])
+	const Gs = colors.map(color => color[1])
+	const Bs = colors.map(color => color[2])
 
+	// Calculate averages
+	const finalColor = [
+		Rs.reduce((r1, r2) => r1 + r2) / Rs.length,
+		Gs.reduce((g1, g2) => g1 + g2) / Gs.length,
+		Bs.reduce((b1, b2) => b1 + b2) / Bs.length
+	]
+
+	// Convert to int
+	return finalColor.map(component => Math.floor(component))
 }
 
 
