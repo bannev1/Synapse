@@ -84,13 +84,15 @@ function Graph() {
 
 	// Set graph coords when mouse change
 	useEffect(() => {
-		setGraphCoords(graphRef.current.centerAt())
-		setGraphZoom(graphRef.current.zoom())
-
-		setFreezeGraph(handTool != 0)
-
-		if (handTool == 0) // Reset node info popup if switched tools
-			setNodeInfo(<></>)
+		if (graphRef.current) {
+			setGraphCoords(graphRef.current.centerAt())
+			setGraphZoom(graphRef.current.zoom())
+	
+			setFreezeGraph(handTool != 0)
+	
+			if (handTool == 0) // Reset node info popup if switched tools
+				setNodeInfo(<></>)
+		}
 	}, [handTool])
 
 	// For mouse effect check
@@ -178,14 +180,14 @@ function Graph() {
 					}}
 
 					onNodeHover={(node, event) => {
-						if (event) {
+						if (event && graphRef.current) {
 							const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY)
 							setMousePos(graphCoords)
 						}
 						
 						// If on info tool
 						if (handTool == 1 && node != null) {
-							if (node.group == 'source') {
+							if (node.group == 'source' && graphRef.current) {
 								console.log(node.x, node.y)
 								const nodeCoords = graphRef.current.graph2ScreenCoords(node.x, node.y) // Remember to rmv height of toolbar and search bar
 								setNodeInfo(<NodeInfo x={nodeCoords.x} y={nodeCoords.y - 55 - 70} name={node.site} url={node.url}/>)
@@ -238,9 +240,8 @@ function Graph() {
 									ctx.shadowBlur = 15
 									ctx.shadowOffsetX = 0
 									ctx.shadowOffsetY = 4
-		
-									// Draw background with shadow
-									ctx.fillStyle = node.color
+
+									// Draw background
 									ctx.beginPath()
 									ctx.roundRect(
 										node.x - bckgDimensions[0] / 2,
@@ -270,7 +271,7 @@ function Graph() {
 										node.__iconArea = { x: iconX, y: iconY, width: iconSize, height: iconSize }
 									}
 								
-									break;
+									break
 
 
 								// Draw Topic Nodes
@@ -295,8 +296,7 @@ function Graph() {
 									ctx.shadowOffsetX = 0
 									ctx.shadowOffsetY = 4
 
-									// Draw background with shadow
-									ctx.fillStyle = node.color
+									// Draw background
 									ctx.beginPath()
 									ctx.roundRect(
 										node.x - bckgDimensions[0] / 2,
@@ -375,7 +375,7 @@ function Graph() {
 
 					onNodeClick={(node, event) => {
 						if (node.group == 'source') {
-							if (!blackOpenNewImg || !whiteOpenNewImg) {
+							if (!blackOpenNewImg || !whiteOpenNewImg || !graphRef.current) {
 								return
 							}
 	
