@@ -77,7 +77,7 @@ class RequestGraph(Graph):
 
 
 
-	def addNode(self, source: str) -> None:
+	def addNode(self, source: str, topic: str | None = None) -> None:
 		"""
 		Method to add a node by its URL
 		"""
@@ -96,6 +96,34 @@ class RequestGraph(Graph):
 		neighbors = []
 
 		subsources = subsites(source)
+
+		# If graph is medium/locational, add to relevant topic
+		if self.type == 'medium' or self.type == 'locational':
+			for currTopic in self.topics:
+				# For medium-type graphs
+				if self.type == 'medium':
+					if currTopic == medium:
+						# Add link
+						self.topicLinks.append({
+							'target': currTopic,
+							'source': source
+						})
+				
+				# For locational-type graphs
+				elif self.type == 'locational':
+					if currTopic == location:
+						# Add link
+						self.topicLinks.append({
+							'target': currTopic,
+							'source': source
+						})
+		
+		# For topical graphs, directly add link to topic
+		elif self.type == 'topical':
+			self.topicLinks.append({
+				'target': topic,
+				'source': source
+			})
 
 		# Make links (if any)
 		for subsource in subsources:

@@ -49,6 +49,10 @@ def nodeAdd() -> None:
 	# Parse request
 	try:
 		body = checkStructure(SAMPLE_REQUEST_DATA, request.get_json())
+	
+		# If graph type is topical, make sure "topic" argument exists
+		if body['graph']['type'] == 'topical':
+			body['topic'] # Try to get the topic
 	except RequestBodyException as e: # If error with parsing data then return error
 		print(traceback.format_exc())
 		return jsonify({
@@ -61,8 +65,12 @@ def nodeAdd() -> None:
 		# Use RequestGraph
 		graph = RequestGraph(body['graph'])
 
-		# Call addNode for source
-		graph.addNode(body['source'])
+		# Add node depending on type of graph
+		if graph.type == 'topical':
+			graph.addNode(body['source'], body['topic'])
+
+		else:
+			graph.addNode(body['source'])
 
 		# Return updated graph
 		return jsonify({
