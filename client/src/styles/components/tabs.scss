@@ -67,7 +67,7 @@
 			& button {
 				// Switch tab button
 				&.invisible {
-					padding: none;
+					padding: auto 0px;
 					border: none;
 					opacity: 1;
 					width: 100%;
