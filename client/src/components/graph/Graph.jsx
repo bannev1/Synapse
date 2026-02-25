@@ -26,8 +26,6 @@ function Graph() {
 	const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 	const animationRef = useRef()
 
-	const [coloredNodes, setColoredNodes] = useState(nodes)
-
 	// Store coords of graph
 	const [graphCoords, setGraphCoords] = useState({x: 0, y: 0})
 	const [graphZoom, setGraphZoom] = useState(100)
@@ -70,15 +68,6 @@ function Graph() {
 		imgBlack.crossOrigin = "anonymous"
 		imgBlack.src = "/icons/openInNewBlack.svg"
 		imgBlack.onload = () => setBlackOpenNewImg(imgBlack)
-
-		// Color nodes
-		setColoredNodes(nodes.map(node => {
-			if (node.group == 'title')
-				return {
-						...node,
-						color: '#201e1f'
-				}
-		}))
 	}, [nodes])
 
 	// Set graph coords when mouse change
