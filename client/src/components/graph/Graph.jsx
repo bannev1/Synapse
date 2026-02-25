@@ -9,8 +9,8 @@ import { generateNodeColor } from "@/scripts/colorSystem"
 // Components
 import GraphToolbar from "./GraphToolbar"
 import GraphOptions from "./GraphOptions"
-import GraphFade from "./GraphFade"
 import NodeInfo from "./NodeInfo"
+
 
 function Graph() {
 	const { handTool, nodes, links, graphView } = useContext(GraphContext)
