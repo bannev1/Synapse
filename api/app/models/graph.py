@@ -83,7 +83,7 @@ class Graph:
 		# Add current node
 		self.traversed.append(node.source)
 
-		nodeDict = dict(node)
+		nodeDict = node.toDict()
 		nodeDict['id'] = node.source # Set ID
 		self.graph['sources'].append(nodeDict)
 

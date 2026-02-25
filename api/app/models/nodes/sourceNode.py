@@ -28,31 +28,18 @@ class SourceNode(Node):
 		self.neighbors: list['SourceNode'] | None = neighbors
 
 	
-	# For conversion of dictionary
-	def keys(self):
-		"""
-		Return the keys of the dictionary
-		"""
-		yield ['source', 'name', 'sourceName', 'topics', 'medium', 'location', 'neighbors']
 
-
-	def __getitem__(self, key: str):
+	def toDict(self):
 		"""
-		Return an item/value for a key
+		Convert this node to dictionary
 		"""
 
-		match key:
-			case 'source':
-				return self.source
-			case 'name':
-				return self.query
-			case 'sourceName':
-				return self.sourceName
-			case 'topics':
-				return self.topics
-			case 'medium':
-				return self.medium
-			case 'location':
-				return self.location
-			case 'neighbors':
-				return [node.source for node in self.neighbors]
+		return {
+			'source': self.source, 
+			'name': self.name, 
+			'sourceName': self.sourceName,
+			'topics': self.topics, 
+			'medium': self.medium, 
+			'location': self.location, 
+			'neighbors': self.neighbors
+		}
