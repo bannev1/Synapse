@@ -35,7 +35,7 @@ def getTopics(query: str)-> list[str]:
 				# Make sure appropriate topic level
 				if section['tocLevel'] == 1:
 					# Add capitalized topics
-					topics.append(' '.join(i.capitalize() for i in [section['line'].split(' ')]))
+					topics.append(' '.join(i.capitalize() for i in section['line'].split(' ')))
 
 		return topics
 
