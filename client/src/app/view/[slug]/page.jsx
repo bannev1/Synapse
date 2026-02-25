@@ -62,7 +62,7 @@ export default function View() {
 			}))
 
 			// Create Title Node
-			const title = matchingTab.graph?.query || decodeURIComponent(pid)
+			const title = matchingTab.graph?.name || decodeURIComponent(pid)
 			const titleNode = {
 				id: 'titleNode',
 				name: title,
@@ -114,7 +114,7 @@ export default function View() {
 				<div id="toolbarPlaceholder" />
 
 				<div id="toolbar">
-					<SearchBar inverted={true} />
+					<SearchBar inverted={true} editable={false} placeholder={currTab?.graph?.name || decodeURIComponent(pid)} isPlaceholder={false} />
 					<SearchOptions onChangeOptions={setSearchOptions} inverted={true} />
 				</div>
 
