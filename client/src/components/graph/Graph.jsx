@@ -11,7 +11,8 @@ import NodeInfo from "./NodeInfo"
 
 
 function Graph() {
-	const { handTool, nodes, links, highlightNodes } = useContext(GraphContext)
+	const { handTool, nodes, links, highlightNodes, selectedNode, setSelectedNode } = useContext(GraphContext)
+	
 	const graphRef = useRef(null)
 	const graphContainerRef = useRef(null)
 
@@ -136,7 +137,6 @@ function Graph() {
 						links: links,
 					}}
 					enableNodeDrag={false}
-					// enableNavigationControls={handTool == 0} // Only allow cam movement if on pan tool (0)
 					
 					// Set up links
 					linkWidth={3}
@@ -363,13 +363,32 @@ function Graph() {
 									ctx.fill()
 								}
 							}
-						}
-					}
+
+							// If selected node stylize it
+							if (node.id === selectedNode?.id) {
+								const bckgDimensions = node.__bckgDimensions;
+								const borderRadius = 4;
+
+								ctx.save();
+								ctx.strokeStyle = '#007bff'; // Blue border
+								ctx.lineWidth = 4;
+								ctx.beginPath();
+								ctx.roundRect(
+									node.x - bckgDimensions[0] / 2 - 2,
+									node.y - bckgDimensions[1] / 2 - 2,
+									bckgDimensions[0] + 4,
+									bckgDimensions[1] + 4,
+									borderRadius + 2
+								)
+								ctx.stroke()
+								ctx.restore()
+							}
+						}}
 
 					nodePointerAreaPaint={(node, color, ctx) => {
 						ctx.fillStyle = color
 						const bckgDimensions = node.__bckgDimensions
-						bckgDimensions &&
+						if (bckgDimensions)
 							ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions)
 					}}
 
@@ -378,10 +397,19 @@ function Graph() {
 						if (node.group == 'source') {							
 							window.open(node.source, "_blank")
 						}
+
+						// Remove selection for right click
+						setSelectedNode(null)
+					}}
+
+					onNodeRightClick={(node) => {
+						// 'Select' node on right click
+						if (node.group === 'source')
+							setSelectedNode(node)
 					}}
 				/>
 
-				{
+				{ // Node info modal
 					handTool == 1 && // ensure that on info mode
 					nodeInfo
 				}
