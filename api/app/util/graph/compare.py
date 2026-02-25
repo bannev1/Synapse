@@ -57,11 +57,3 @@ class CompareGraph(RequestGraph):
 
 		# Save locally
 		self.sources = sources
-
-	
-	
-	def parse(self):
-		"""
-		Convert graph to JSON
-		"""
-		return super().parse()
