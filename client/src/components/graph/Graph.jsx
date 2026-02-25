@@ -215,12 +215,16 @@ function Graph() {
 								// Draw source nodes
 								case 'source':
 									// Set up node
-									label = node.site
+									label = node.name
 									fontSize = 8
 									const baseIconSize = 12
 									const iconSize = animatedIconSizes[node.id] || baseIconSize
 									const iconSpacing = 4
 									padding = fontSize * 0.8
+
+									// If label too long then truncate
+									if (label.length > 8)
+										label = label.slice(0, 6) + '...'
 		
 									ctx.font = `700 ${fontSize}px Montserrat, Sans-Serif`
 									textWidth = ctx.measureText(label).width
@@ -369,29 +373,10 @@ function Graph() {
 							ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions)
 					}}
 
-					onNodeClick={(node, event) => {
-						if (node.group == 'source') {
-							if (!blackOpenNewImg || !whiteOpenNewImg || !graphRef.current) {
-								return
-							}
-	
-							// Check if clicked on icon
-							const graphCoords = graphRef.current.screen2GraphCoords(event.clientX, event.clientY)
-							if (node.__iconArea) {
-								const ia = node.__iconArea
-								if (
-									graphCoords.x >= ia.x &&
-									graphCoords.x <= ia.x + ia.width &&
-									graphCoords.y >= ia.y &&
-									graphCoords.y <= ia.y + ia.height
-								) {
-									event.preventDefault()
-									window.open(node.link, "_blank")
-									return
-								}
-							}
-	
-							console.log("Node clicked:", node)
+					onNodeClick={(node) => {
+						// Open link to sourceNode
+						if (node.group == 'source') {							
+							window.open(node.source, "_blank")
 						}
 					}}
 				/>
