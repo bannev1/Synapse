@@ -25,7 +25,7 @@ export default function View() {
 	const [graph, setGraph] = useState({
 		allNodes: [],
 		allLinks: [],
-		topics: []
+		allTopics: []
 	})
 
 	const [handTool, setHandTool] = useState(0)
@@ -85,7 +85,7 @@ export default function View() {
 					...titleLinks
 				],
 
-				topics: topics
+				allTopics: topics
 			});
 
 			console.log(graph)
@@ -103,7 +103,7 @@ export default function View() {
 
 	// If valid tab, render everything
 	return (
-		<GraphProvider allNodes={graph.allNodes} allLinks={graph.allLinks} topics={graph.topics}>
+		<GraphProvider allNodes={graph.allNodes} allLinks={graph.allLinks} allTopics={graph.allTopics}>
 			<TabBar 
 				currTab={currTab ? decodeURIComponent(currTab.name) : ''} 
 			/>

@@ -5,11 +5,11 @@ import React, { createContext, useState, useEffect } from 'react'
 
 export const GraphContext = createContext();
 
-export const GraphProvider = ({ allNodes, allLinks, topics, children }) => {
+export const GraphProvider = ({ allNodes, allLinks, topics: allTopics, children }) => {
 	const [handTool, setHandTool] = useState(0);
 	const [nodes, setNodes] = useState(allNodes || []);
 	const [links, setLinks] = useState(allLinks || []);
-	const [topics, setTopics] = useState(topics || []);
+	const [topics, setTopics] = useState(allTopics || []);
 	
 	useEffect(() => {
 		setNodes(allNodes || [])
@@ -20,8 +20,8 @@ export const GraphProvider = ({ allNodes, allLinks, topics, children }) => {
 	}, [allLinks])
 
 	useEffect(() => {
-		setLinks(topics || [])
-	}, [topics])
+		setTopics(allTopics || [])
+	}, [allTopics])
 
 	return (
 		<GraphContext.Provider value={{ 
