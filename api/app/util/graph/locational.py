@@ -65,7 +65,7 @@ class LocationalGraph(Graph):
 			return None
 		
 		# Get neighboring sources
-		neighborSites = subsites(node.source)
+		neighborSites = subsites(node.source, Config.MAX_SUBSITES)
 		neighborNodes = []
 		
 		for site in neighborSites:

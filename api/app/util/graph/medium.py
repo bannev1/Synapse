@@ -3,6 +3,7 @@ from app.models.nodes import SourceNode, TopicNode
 from app.util.search.google import google
 from app.util.search.siteMetadata import siteMedium, siteLocationAndName, siteTitle
 from app.util.search import subsites
+from config import Config
 
 
 class MediumGraph(Graph):
@@ -60,7 +61,7 @@ class MediumGraph(Graph):
 			return None
 		
 		# Get neighboring sources
-		neighborSites = subsites(node.source)
+		neighborSites = subsites(node.source, Config.MAX_SUBSITES)
 		neighborNodes = []
 		
 		for site in neighborSites:

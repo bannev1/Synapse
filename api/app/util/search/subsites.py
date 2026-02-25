@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup, SoupStrainer
 
 from config import Config
 
-def subsites(url: str) -> list[str]:
+def subsites(url: str, maxSubsites: int = -1) -> list[str]:
 	"""
 	Gets the sub-urls within a url (the urls referenced/cited)
 	"""
@@ -24,6 +24,11 @@ def subsites(url: str) -> list[str]:
 	
 	# Parse page for hyperlinks
 	for link in BeautifulSoup(page.content, 'html.parser', parse_only = SoupStrainer('a')):
+		# Make sure not breached subsites limit
+		if maxSubsites >= 0 and len(links) >= maxSubsites:
+			break # Break for loop
+
+		# Otherwise get link
 		if link.has_attr('href') and 'https://' in link:
 			# Make sure to not add links from the same domain
 			strippedLink = link.replace('https', '').replace('://', '')

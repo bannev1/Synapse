@@ -89,7 +89,7 @@ class TopicalGraph(Graph):
 		
 
 		# Get neighboring sites
-		neighboringSites = subsites(node.source)
+		neighboringSites = subsites(node.source, Config.MAX_SUBSITES)
 		neighboringNodes = []
 
 		for site in neighboringSites:
