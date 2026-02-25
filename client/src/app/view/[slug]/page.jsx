@@ -25,12 +25,17 @@ function View() {
 
 	const {tabs, setTabs} = useContext(TabContext);
 
+	const [currTab, setTab] = useState(undefined)
+	const [graph, setGraph] = useState({
+		'allNodes': [],
+		'allLinks': []
+	})
+
+
 	const [searchOptions, setSearchOptions] = useState({
 		'depth': 6,
 		'graphType': 'topical'
 	})
-
-	const [showListView, setShowListView] = useState(false)
 
 	// Tools
 	const [handTool, setHandTool] = useState(0) // 0 is pan, 1 is info
@@ -39,17 +44,23 @@ function View() {
 
 	// Find tab
 	useEffect(() => {
-		var tab = undefined;
 		tabs.forEach(tabElem => {
-			if (tabElem.name == refTab)
-				tab = tabElem
+			console.log('hello')
+			console.log(tabElem.name)
+			if (tabElem.name == refTab) {
+				setTab(tabElem)
+
+				// Get links and nodes
+				setGraph({
+					'allNodes': tabElem.graph['sources'] + tabElem.graph['topics'],
+					'allLinks': tabElem.graph['topicLinks'] + tabElem.graph['sourceLinks']
+				})
+			}
 		});
 	
 		// Check if tab exists
-		if (tab == undefined)
+		if (currTab == undefined)
 			notFound()
-
-		const graph = tab.graph;
 	}, [])
 
 	return (
@@ -57,60 +68,13 @@ function View() {
 			<TabProvider>
 				<TabBar isNewTab={true}/>
 
-				<GraphProvider allNodes={[{
-					'id': 'id1',
-					'site': 'NY Times',
-					'url': 'https://nytimes.com',
-					'group': 'source'
-				},{'id': 'id2',
-					'site': 'BBC',
-					'url': 'https://bbc.com',
-					'group': 'source'
-				}, {
-					'id': 'id3',
-					'group': 'topic',
-					'name': 'Cryptography'
-				}, {
-					'id': 'id4',
-					'group': 'title',
-					'name': 'Title'
-				}]} allLinks={[{
-					'target': 'id1',
-					'source': 'id2',
-				}, {
-					'target': 'id3',
-					'source': 'id2'
-				}]}>
+				<GraphProvider allNodes={graph['allNodes']} allLinks={graph['allLinks']}>
 					<div id="home">
 						<div id="toolbarPlaceholder"/>
 						<div id="toolbar">
 							<SearchBar inverted={true}/>
 
 							<SearchOptions onChangeOptions={setSearchOptions} inverted={true}/>
-
-							{/* <div id="listView">
-								<div className={`labels ${showListView ? 'active' : ''}`} onClick={() => setShowListView(v => !v)}>
-								<div>
-								<Image className='downArrow' src={downRed} alt='Down Icon'/>
-								<p>List View</p>
-								</div>
-								
-								<button>
-								<Image src={filterRed} alt='Filter Icon'/>
-								</button>
-								</div>
-								
-								{
-									showListView &&
-									<div id='listContainer'>
-									{
-										listView.forEach((listItem, idx) => {
-											<div key={idx} className='container'></div>
-											})
-											}
-											</div>
-											}
-											</div> */}
 						</div>
 
 						<Graph/>
