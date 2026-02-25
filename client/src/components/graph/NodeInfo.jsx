@@ -31,8 +31,8 @@ function NodeInfo({x, y, name, url, sourceName, location, medium, topics}) {
 
 					<ul className='topics'>
 						{
-							topics.map(topic => (
-								<li>{topic}</li>
+							topics.map((topic, idx) => (
+								<li key={idx}>{topic}</li>
 							))
 						}
 					</ul>
