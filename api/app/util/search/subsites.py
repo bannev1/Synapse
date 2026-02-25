@@ -15,11 +15,25 @@ def subsites(url: str) -> list[str]:
 		return [] # Assume empty page
 	
 	links = []
+
+	# Remove https and / from URL (only get base) for no host domain
+	strippedURL = url.replace('https', '').replace('http', '').replace('://', '')
+	strippedURL = strippedURL[:strippedURL.find('/') if strippedURL.find('/') > 0 else len(strippedURL)] # Get rid of anything past the first /
+	while '/' in strippedURL: # Remove all / in URL until no more
+		strippedURL = strippedURL.replace('/', '')
 	
 	# Parse page for hyperlinks
 	for link in BeautifulSoup(page.content, 'html.parser', parse_only = SoupStrainer('a')):
-		if link.has_attr('href'):
-			links.append(link)
+		if link.has_attr('href') and 'https://' in link:
+			# Make sure to not add links from the same domain
+			strippedLink = link.replace('https', '').replace('://', '')
+			strippedLink = strippedLink[:strippedLink.find('/') if strippedLink.find('/') > 0 else len(strippedLink)] # Get rid of anything past the first /
+			while '/' in strippedLink: # Remove all / in URL until no more
+				strippedLink = strippedLink.replace('/', '')
+
+			# Check equivalence
+			if strippedLink.strip().lower() != strippedURL.strip().lower():
+				links.append(link)
 
 		# Make sure not too many links
 		if len(links) == Config.MAX_SUBSITES:
