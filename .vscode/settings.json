@@ -1,7 +1,0 @@
-{
-	"liveSassCompile.settings.excludeList": [
-		"client/src/styles/components/**",
-		"client/src/styles/view/components/**",
-		"client/src/styles/variables.scss",
-	]
-}
