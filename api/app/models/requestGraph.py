@@ -129,6 +129,8 @@ class RequestGraph(Graph):
 				'source': source
 			})
 
+			topics.append(topic)
+
 		# Make links (if any)
 		for subsource in subsources:
 			if subsource in allSites:
