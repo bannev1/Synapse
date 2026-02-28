@@ -147,7 +147,7 @@ function GraphOptions({ tabName }) {
 		}
 
 		// Redirect to saved graph site
-		router.push(`/load/${iresult}`)
+		router.push(`/load/${result}`)
 	}
 
 
