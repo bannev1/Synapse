@@ -61,7 +61,7 @@ function Search({forceNewTabView = false}) {
 
 	return (
 		<>
-			{tabsExist && 
+			{ tabsExist && 
 				<TabBar isNewTab={true}/>
 			}
 
@@ -78,7 +78,7 @@ function Search({forceNewTabView = false}) {
 			
 			<ErrorModal content={'Error searching for graph. See logs for more details.'} refresh={error}/>
 			
-			{loading && 
+			{ loading && 
 				<Loading/>
 			}
 		</>
