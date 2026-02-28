@@ -26,9 +26,9 @@ import deleteWhite from '/public/icons/deleteWhite.svg'
 import pathWhite from '/public/icons/pathWhite.svg'
 
 
-function GraphOptions({ tabName, graph }) {
+function GraphOptions({ tabName }) {
 	const { tabs, setTabs } = useContext(TabContext)
-	const { setHighlightNodes } = useContext(GraphContext)
+	const { rawGraph, setHighlightNodes } = useContext(GraphContext)
 	
 	const router = useRouter()
 
@@ -45,7 +45,7 @@ function GraphOptions({ tabName, graph }) {
 		setLoading(true) // Show loading
 
 		// Call API to add node to current graph
-		const updatedGraph = await addNode(graph, source)
+		const updatedGraph = await addNode(rawGraph, source)
 		
 		if (updatedGraph === 'error') {
 			console.log(updatedGraph)
@@ -78,7 +78,7 @@ function GraphOptions({ tabName, graph }) {
 		setLoading(true) // Show loading
 
 		// Call API to delete node from current graph
-		const updatedGraph = await deleteNode(graph, source)
+		const updatedGraph = await deleteNode(rawGraph, source)
 		
 		if (updatedGraph === 'error') {
 			console.log(updatedGraph)
@@ -111,7 +111,7 @@ function GraphOptions({ tabName, graph }) {
 		setLoading(true) // Show loading
 
 		// Call API to get path
-		const path = await findPath(graph, source)
+		const path = await findPath(rawGraph, source)
 		
 		if (path === 'error') {
 			console.log(path)
@@ -133,7 +133,7 @@ function GraphOptions({ tabName, graph }) {
 		setLoading(true)
 
 		const updatedGraph = { 
-			...graph, 
+			...rawGraph, 
 			name: newName 
 		}
 

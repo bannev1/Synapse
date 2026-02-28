@@ -114,7 +114,7 @@ export default function View() {
 
 	// If valid tab, render everything
 	return (
-		<GraphProvider allNodes={graph.allNodes} allLinks={graph.allLinks} >
+		<GraphProvider allNodes={graph.allNodes} allLinks={graph.allLinks} graph={currTab?.graph}>
 			<TabBar 
 				currTab={currTab ? currTab.name : ''} 
 			/>
@@ -129,7 +129,7 @@ export default function View() {
 
 				<Graph/>
 
-				<GraphOptions tabName={pid} graph={graph}/>
+				<GraphOptions tabName={pid}/>
 			</div>
 		</GraphProvider>
 	)

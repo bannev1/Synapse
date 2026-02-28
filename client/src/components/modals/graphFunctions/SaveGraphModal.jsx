@@ -17,10 +17,6 @@ function SaveGraphModal({
 			setGraphName('')
 	}, [refresh])
 
-	const handleSubmit = () => {
-		onSubmit(graphName)
-	}
-
 	const handleClose = () => {
 		setExists(false)
 	}
@@ -40,7 +36,7 @@ function SaveGraphModal({
 
 						<div className='buttons'>
 							<button onClick={handleClose}>Close</button>
-							<button onClick={handleSubmit}>Upload</button>
+							<button onClick={() => {onSubmit(graphName)}}>Upload</button>
 						</div>
 					</div>
 				</>

@@ -5,7 +5,8 @@ import React, { createContext, useState, useEffect } from 'react'
 
 export const GraphContext = createContext();
 
-export const GraphProvider = ({ allNodes, allLinks, children }) => {
+export const GraphProvider = ({ allNodes, allLinks, graph, children }) => {
+	const [rawGraph, setRawGraph] = useState(graph || {});
 	const [handTool, setHandTool] = useState(0);
 	const [nodes, setNodes] = useState(allNodes || []);
 	const [links, setLinks] = useState(allLinks || []);
@@ -20,8 +21,13 @@ export const GraphProvider = ({ allNodes, allLinks, children }) => {
 		setLinks(allLinks || [])
 	}, [allLinks])
 
+	useEffect(() => {
+		setRawGraph(graph || [])
+	}, [graph])
+
 	return (
-		<GraphContext.Provider value={{ 
+		<GraphContext.Provider value={{
+			rawGraph, setRawGraph,
 			handTool, setHandTool, 
 			nodes, setNodes, 
 			links, setLinks,
