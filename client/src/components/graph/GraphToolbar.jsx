@@ -52,7 +52,7 @@ function GraphToolbar({handleFullScreen}) {
 
 				{
 					showComparePopup &&
-					<SearchComparisonModal/>
+					<SearchComparisonModal setShowPopup={setShowComparePopup}/>
 				}
 			</div>
 
