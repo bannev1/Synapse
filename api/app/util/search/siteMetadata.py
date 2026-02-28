@@ -84,6 +84,10 @@ def siteMedium(url: str) -> str:
 	:param url: Website URL to get location of
 	"""
 
+	# Check if medium needed
+	if not Config.ENABLE_MEDIUM:
+		return 'Unknown'
+
 	# Get key
 	sessKey = SiteCategorySess().key
 

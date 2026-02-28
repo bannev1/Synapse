@@ -21,6 +21,9 @@ class Config:
 	# Enable Cache
 	ENABLE_CACHE = False
 
+	# Enable Medium
+	ENABLE_MEDIUM = False
+
 	# Unwanted Topics
 	UNWANTED_TOPICS = ['See also', 'References', 'Further reading', 'External links', 'Introduction', 'Notes']
 
