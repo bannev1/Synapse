@@ -43,7 +43,7 @@ class LocationalGraph(Graph):
 		searchedSites = googleLocation(self.query, self.locationList)
 
 		# Create SourceNodes
-		for code, location in self.topicNodes.items():
+		for code in self.topicNodes.keys():
 			for site in searchedSites[code]:
 				# Get metadata
 				medium = siteMedium(site['Link'])
@@ -56,6 +56,7 @@ class LocationalGraph(Graph):
 
 				# Get neighboring SourceNodes recursively
 				node.neighbors = self.findNeighboringNodes(node)
+
 
 
 
@@ -93,7 +94,7 @@ class LocationalGraph(Graph):
 				self.sources[site] = newNode
 
 				# Determine if can link to TopicNode
-				if location in list(self.topicNodes.keys()):
+				if location in self.locationList:
 					self.topicNodes[location].sourceNodes.append(newNode)
 
 				# Get neighboring nodes
