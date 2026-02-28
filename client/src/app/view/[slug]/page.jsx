@@ -89,8 +89,9 @@ export default function View() {
 				allNodes: coloredNodes,
 
 				allLinks: [
-					...(matchingTab.graph?.topicLinks || []),
-					...(matchingTab.graph?.sourceLinks || []),
+					// Deepcopy objects
+					...(matchingTab.graph?.topicLinks || []).map(link => ({ ...link })),
+					...(matchingTab.graph?.sourceLinks || []).map(link => ({ ...link })),
 					...titleLinks
 				],
 
