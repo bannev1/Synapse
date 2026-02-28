@@ -49,7 +49,7 @@ class TopicalGraph(Graph):
 						medium = siteMedium(site['Link'])
 
 						# Create node
-						node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [topic])
+						node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [topic], [])
 						sourceNodes.append(node)
 						self.sources[site['Link']] = node # Add site to sources
 
@@ -58,6 +58,7 @@ class TopicalGraph(Graph):
 
 						# Add link
 						self.topicNodes[topic].sourceNodes.append(node)
+
 
 
 	def createTopicNodes(self) -> dict[str, TopicNode]:

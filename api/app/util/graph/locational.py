@@ -49,7 +49,7 @@ class LocationalGraph(Graph):
 				medium = siteMedium(site['Link'])
 
 				# Create new SourceNode
-				node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, location)
+				node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, code, [], [])
 
 				self.topicNodes[code].sourceNodes.append(node)
 				self.sources[node.source] = node
@@ -88,7 +88,7 @@ class LocationalGraph(Graph):
 				title = siteTitle(site)
 
 				# Create node
-				newNode = SourceNode(title, site, sourceName, self.query, medium, location)
+				newNode = SourceNode(title, site, sourceName, self.query, medium, location, [], [])
 
 				self.sources[site] = newNode
 
@@ -98,3 +98,5 @@ class LocationalGraph(Graph):
 
 				# Get neighboring nodes
 				newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
+
+		return neighborNodes

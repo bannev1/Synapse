@@ -34,7 +34,7 @@ class MediumGraph(Graph):
 			medium = siteMedium(site['Link'])
 
 			# Create new SourceNode
-			node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location)
+			node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [], [])
 			
 			# Check if topicnode for medium exists
 			if medium in list(self.topicNodes.keys()):
@@ -80,7 +80,7 @@ class MediumGraph(Graph):
 				title = siteTitle(site)
 
 				# Create node
-				newNode = SourceNode(title, site, sourceName, self.query, medium, location)
+				newNode = SourceNode(title, site, sourceName, self.query, medium, location, [], [])
 
 				self.sources[site] = newNode
 
@@ -90,3 +90,5 @@ class MediumGraph(Graph):
 
 				# Get neighboring nodes
 				newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
+		
+		return neighborNodes
