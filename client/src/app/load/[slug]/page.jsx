@@ -115,8 +115,8 @@ function Load() {
 			{
 				graphLoaded ?
 
-				<GraphProvider allNodes={graph.allNodes} allLinks={graph.allLinks} graph={rawGraph}>
-					<Loaded graphID={graphID} url={url}/>
+				<GraphProvider allNodes={graph?.allNodes} allLinks={graph?.allLinks} graph={rawGraph}>
+					<Loaded graphID={graphID} url={url} name={graph?.name}/>
 				</GraphProvider> :
 
 				<Loading/>
@@ -128,7 +128,8 @@ function Load() {
 
 function Loaded({
 	graphID,
-	url
+	url,
+	name
 }) {
 	const { rawGraph } = useContext(GraphContext)
 
@@ -149,7 +150,7 @@ function Loaded({
 				{/* Graph Toolbar */}
 				<div id="toolbarPlaceholder"/>
 				<div id="toolbar">
-					<SearchBar editable={false} inverted={true} isPlaceholder={false} placeholder={graph.name}/>
+					<SearchBar editable={false} inverted={true} isPlaceholder={false} placeholder={name}/>
 				
 					{/* URL for copy paste */}
 					<GraphID link={url}/>
