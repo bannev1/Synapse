@@ -173,4 +173,4 @@ def siteTitle(url: str) -> str:
 		# If error, then get title from domain
 		title = tldextract.extract(url).domain
 
-		return title
+		return title.capitalize()
