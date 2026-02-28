@@ -92,7 +92,10 @@ class LocationalGraph(Graph):
 
 
 					# Merge topics
-					topics = list(set(node.topics + [location])) # Also remove duplicates
+					topics = node.topics
+
+					if (location in self.topicNodes.keys()) and (location not in topics):
+						topics.append(location) # Add current as topic
 
 					# Create node
 					newNode = SourceNode(title, site, sourceName, self.query, medium, location, topics, [])

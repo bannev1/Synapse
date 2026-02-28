@@ -82,8 +82,11 @@ class MediumGraph(Graph):
 					sourceName = info['sourceName']
 
 					# Merge topics
-					topics = list(set(node.topics + [medium])) # Also remove duplicates
+					topics = node.topics
 
+					if (medium in self.topicNodes.keys()) and (medium not in topics):
+						topics.append(medium) # Add current as topic
+						
 					# Create node
 					newNode = SourceNode(title, site, sourceName, self.query, medium, location, topics, [])
 
