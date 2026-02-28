@@ -7,11 +7,11 @@ export const assignColorTopics = (topics) => {
 
 
 	topics.forEach((topic) => {
-		// Generate color
+		// Generate color (at upper spectrum of color)
 		const randomColor = [
-			Math.floor(Math.random() * 256), // R
-			Math.floor(Math.random() * 256), // G
-			Math.floor(Math.random() * 256) // B
+			Math.floor(Math.random() * 156 + 100), // R
+			Math.floor(Math.random() * 156 + 100), // G
+			Math.floor(Math.random() * 156 + 100) // B
 		]
 
 		// Assign topic
