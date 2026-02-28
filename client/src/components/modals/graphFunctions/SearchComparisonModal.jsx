@@ -1,12 +1,35 @@
-'use client'
+"use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-function SearchComparisonModal() {
+
+function SearchComparisonModal({
+	refresh,
+	onSubmit
+}) {
+	const [exists, setExists] = useState(refresh);
+	
+	useEffect(() => {
+		setExists(refresh)
+	}, [refresh])
+
 	return (
-		<div id="searchComparison" className='popup'>
-			SearchComparison
-		</div>
+		<>
+			{
+				exists &&
+				<>
+					<div className='modalBackdrop' onClick={() => {setExists(false)}}/>
+
+					<div className='modal'>
+						<h1>Create Compare Graph</h1>
+
+						<div className='buttons'>
+							<button>Close</button>
+						</div>
+					</div>
+				</>
+			}
+		</>
 	)
 }
 
