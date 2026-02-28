@@ -26,7 +26,7 @@ import deleteWhite from '/public/icons/deleteWhite.svg'
 import pathWhite from '/public/icons/pathWhite.svg'
 
 
-function GraphOptions({ tabName, canSave = false }) {
+function GraphOptions({ tabName, canSave = true }) {
 	const { tabs, setTabs } = useContext(TabContext)
 	const { rawGraph, setHighlightNodes } = useContext(GraphContext)
 	
