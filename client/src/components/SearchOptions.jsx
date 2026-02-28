@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import Image from 'next/image';
 
 import addBlack from '/public/icons/addBlack.svg';
@@ -35,6 +35,11 @@ function SearchOptions({
 		})
 
 	}, [depthVal, graphType])
+
+	useEffect(() => {
+		setDepthVal(defaultDepth)
+		setGraphType(defaultType)
+	}, [defaultDepth, defaultType])
 
 	return (
 		<div id="searchOptions" className={(inverted ? 'inverted ' : '') + (!canEdit ? 'noEdit' : '')}>
