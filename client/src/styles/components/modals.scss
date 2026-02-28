@@ -52,6 +52,7 @@
 		opacity: .7;
 	}
 
+	// Buttons
 	& .buttons {
 		width: 100%;
 		display: flex;
@@ -110,5 +111,10 @@
 			opacity: .7;
 			cursor: pointer;
 		}
+	}
+
+	// Inputs
+	& input[type="text"] {
+		color: v.$background-color;
 	}
 }

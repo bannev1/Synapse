@@ -2,6 +2,7 @@
 
 import React, { useContext, useState } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 // Components
 import AddNodeModal from '../modals/graphFunctions/AddNodeModal'
@@ -9,9 +10,12 @@ import DeleteNodeModal from '../modals/graphFunctions/DeleteNodeModal'
 import PathFinderModal from '../modals/graphFunctions/PathFinderModal'
 import Loading from '../Loading'
 import ErrorModal from '../modals/ErrorModal'
+import SaveGraphModal from '../modals/graphFunctions/SaveGraphModal'
 
+import { GraphContext } from '../contexts/GraphContext'
 import { TabContext } from '../contexts/TabContext'
 import { addNode, deleteNode, findPath } from '@/scripts/search'
+import { uploadGraph } from '@/scripts/save'
 
 // Icons
 import appsWhite from '/public/icons/appsWhite.svg'
@@ -20,13 +24,13 @@ import saveBlack from '/public/icons/saveBlack.svg'
 import nodeAddWhite from '/public/icons/nodeAddWhite.svg'
 import deleteWhite from '/public/icons/deleteWhite.svg'
 import pathWhite from '/public/icons/pathWhite.svg'
-import { GraphContext } from '../contexts/GraphContext'
-import SaveGraphModal from '../modals/graphFunctions/SaveGraphModal'
 
 
 function GraphOptions({ tabName, graph }) {
 	const { tabs, setTabs } = useContext(TabContext)
 	const { setHighlightNodes } = useContext(GraphContext)
+	
+	const router = useRouter()
 
 	const [opened, setOpened] = useState(false);
 	// 0 means no modal, 1 means source, 2 means note, 3 means path finder, 4 means save
@@ -124,6 +128,29 @@ function GraphOptions({ tabName, graph }) {
 	}
 
 
+	// Save Graph
+	const saveGraphHandler = async (newName) => {
+		setLoading(true)
+
+		const updatedGraph = { 
+			...graph, 
+			name: newName 
+		}
+
+		// Save
+		const result = await uploadGraph(updatedGraph)
+
+		if (result === 'error') {
+			setError(true)
+			setLoading(false)
+			return
+		}
+
+		// Redirect to saved graph site
+		router.push(`/load/${iresult}`)
+	}
+
+
 	return (
 		<>
 			<button onClick={() => setOpened(true)} id="options">
@@ -167,7 +194,7 @@ function GraphOptions({ tabName, graph }) {
 					<AddNodeModal refresh={currentModal == 1} onSubmit={addNodeHandler}/>
 					<DeleteNodeModal refresh={currentModal == 2} onSubmit={deleteNodeHandler}/>
 					<PathFinderModal refresh={currentModal == 3} onSubmit={findPathHandler}/>
-					<SaveGraphModal refresh={currentModal == 4}/>
+					<SaveGraphModal refresh={currentModal == 4} onSubmit={saveGraphHandler}/>
 
 					
 					{ // Loading

@@ -395,6 +395,9 @@
   opacity: 0.7;
   cursor: pointer;
 }
+.modal input[type=text] {
+  color: #FEEFDD;
+}
 
 #tabGroup {
   width: 100%;

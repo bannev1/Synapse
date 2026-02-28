@@ -7,24 +7,40 @@ function SaveGraphModal({
 	refresh,
 	onSubmit
 }) {
-	const [exists, setExists] = useState(refresh);
-	
+	const [exists, setExists] = useState(refresh)
+	const [graphName, setGraphName] = useState('')
+
 	useEffect(() => {
 		setExists(refresh)
+
+		if (refresh)
+			setGraphName('')
 	}, [refresh])
+
+	const handleSubmit = () => {
+		onSubmit(graphName)
+	}
+
+	const handleClose = () => {
+		setExists(false)
+	}
 
 	return (
 		<>
 			{
 				exists &&
 				<>
-					<div className='modalBackdrop' onClick={() => {setExists(false)}}/>
+					<div className='modalBackdrop' onClick={handleClose}/>
 
 					<div className='modal'>
 						<h1>Save Graph</h1>
 
+						<label>Graph Name:</label>
+						<input type="text" onChange={(e) => setGraphName(e.target.value)} placeholder="Enter graph name"/>
+
 						<div className='buttons'>
-							<button>Close</button>
+							<button onClick={handleClose}>Close</button>
+							<button onClick={handleSubmit}>Upload</button>
 						</div>
 					</div>
 				</>
