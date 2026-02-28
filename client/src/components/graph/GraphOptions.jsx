@@ -185,7 +185,10 @@ function GraphOptions({ tabName, canSave = true }) {
 
 						{/* Close and save buttons */}
 						<div className='optionModalButtons'>
-							<button onClick={() => setOpened(false)}>
+							<button onClick={() => {
+								setOpened(false)
+								setCurrentModal(0)
+							}}>
 								<Image src={closeWhite} alt='Close Icon'/>
 							</button>
 
