@@ -19,7 +19,7 @@ class Config:
 	# ==============
 
 	# Enable Cache
-	ENABLE_CACHE = False
+	ENABLE_CACHE = True
 
 	# Enable Medium
 	ENABLE_MEDIUM = False
