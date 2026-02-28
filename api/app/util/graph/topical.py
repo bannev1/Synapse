@@ -37,6 +37,7 @@ class TopicalGraph(Graph):
 					if site['Link'] in list(self.sources.keys()):
 						# Add this topic to the SourceNode
 						self.sources[site['Link']].topics.append(topicNode.name)
+						self.topicNodes[topic].sourceNodes.append(node)
 						sourceNodes.append(self.sources[site['Link']])
 					
 					# Otherwise create new SourceNode
