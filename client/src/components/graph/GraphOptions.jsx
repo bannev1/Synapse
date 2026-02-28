@@ -29,7 +29,8 @@ function GraphOptions({ tabName, graph }) {
 	const { setHighlightNodes } = useContext(GraphContext)
 
 	const [opened, setOpened] = useState(false);
-	const [currentModal, setCurrentModal] = useState(0) // 0 means no modal, 1 means source, 2 means note, 3 means path finder
+	// 0 means no modal, 1 means source, 2 means note, 3 means path finder, 4 means save
+	const [currentModal, setCurrentModal] = useState(0)
 	
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(false)
