@@ -139,7 +139,7 @@ class SavedGraph(RequestGraph):
 		else:
 			Database().modify(f'''
 				INSERT INTO saved (id, name, graphType) 
-				VALUES ('{graphID}', '{graph.query.replace("'", "''")}', '{graph.type}';''')
+				VALUES ('{graphID}', '{graph.query.replace("'", "''")}', '{graph.type}');''')
 
 		# Save all sourceNodes
 		sourceNodes = {} # Dict of (source, id)
