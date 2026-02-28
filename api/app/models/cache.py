@@ -52,6 +52,13 @@ class CacheGraph(RequestGraph):
 		Convert cached retrieved graph into dictionary format
 		'''
 
+		# Add base attributes
+		self.graph = {
+			'name': self.query,
+			'depth': self.depth,
+			'type': self.type
+		}
+
 		# Retrieve topicNodes
 		topics = {}
 		for topic in self.topicNodes:
