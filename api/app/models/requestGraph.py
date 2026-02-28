@@ -90,7 +90,11 @@ class RequestGraph(Graph):
 
 		# Get node attributes
 		name = siteTitle(source)
-		location = siteLocationAndName(source)
+
+		info = siteLocationAndName(source)
+		location = info['location']
+		sourceName = info['sourceName']
+
 		medium = siteMedium(source)
 		topics = []
 		neighbors = []
@@ -148,6 +152,7 @@ class RequestGraph(Graph):
 			'id': source,
 			'source': source,
 			'name': name,
+			'sourceName': sourceName,
 			'location': location,
 			'medium': medium,
 			'topics': list(set(topics)),
