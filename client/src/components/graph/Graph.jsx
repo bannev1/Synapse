@@ -225,13 +225,20 @@ function Graph() {
 		
 									// Draw backdrop shadow
 									ctx.save()
-									ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
 									ctx.shadowBlur = 15
 									ctx.shadowOffsetX = 0
 									ctx.shadowOffsetY = 4
 									
+									// Set colors depending on if highlighted or not
+									if (highlightNodes.includes(node.id)) {
+										ctx.shadowColor = "rgba(0, 0, 0, 0.7)" // Bolder back shadow
+										ctx.fillStyle = "#ed3e3e" // Highlight node in red
+									} else {
+										ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
+										ctx.fillStyle = node.color
+									}
+									
 									// Draw background
-									ctx.fillStyle = node.color
 									ctx.beginPath()
 									ctx.roundRect(
 										node.x - bckgDimensions[0] / 2,
@@ -353,15 +360,6 @@ function Graph() {
 									ctx.fillText(label, node.x - (fontSize - paddingWidth)/2, node.y)
 								
 									break;
-							}
-							
-							// If needs to be highlighted
-							if (node.group != 'title') {
-								if (highlightNodes.includes(node.id)) {
-									ctx.shadowColor = "rgba(0, 0, 0, 0.7)" // Bolder back shadow
-									ctx.fillStyle = "#ed3e3e" // Highlight node in red
-									ctx.fill()
-								}
 							}
 
 							// If selected node stylize it
