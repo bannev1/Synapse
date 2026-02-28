@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { redirect } from 'next/navigation';
 
 import closeBlack from '/public/icons/closeBlack.svg'
-import ConfirmModal from './modals/ConfirmModal';
+
 
 function Tab({
 	tabName,
