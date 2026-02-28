@@ -136,7 +136,7 @@ function Graph() {
 						nodes: nodes,
 						links: links,
 					}}
-					enableNodeDrag={false}
+					enableNodeDrag={handTool == 0} // Node drag only for pan
 					
 					// Set up links
 					linkWidth={3}
