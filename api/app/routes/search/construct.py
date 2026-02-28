@@ -51,6 +51,8 @@ def construct() -> Graph:
 		
 		# Find CacheGraph
 		graph = CacheGraph(query, graphType, depth)
+
+		print('Graph found in cache\n')
 		
 	except GraphNotFound:
 		# Construct Graph

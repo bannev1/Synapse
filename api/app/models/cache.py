@@ -18,7 +18,7 @@ class CacheGraph(RequestGraph):
 
 			raise GraphNotFound(f'No cached graph for {query=}, {graphType=}, {depth=}')
 		
-		self.id = graphID[0]
+		self.id = graphID[0][0]
 		
 		# Save attributes 
 		super().__init__(None)
@@ -36,7 +36,7 @@ class CacheGraph(RequestGraph):
 		
 		# Retrieve topic nodes and source nodes
 		self.topicNodes = Database().fetch(f'SELECT id, name FROM cacheTopicNodes WHERE graph=\'{self.id}\';')
-		self.sourceNodes = Database().fetch(f'SELECT id, name, source, location, medium, topics FROM cacheSourceNodes WHERE graph=\'{self.id}\';')
+		self.sourceNodes = Database().fetch(f'SELECT id, name, source, sourceName, location, medium, topics FROM cacheSourceNodes WHERE graph=\'{self.id}\';')
 		
 		# Retrieve links
 		self.topicSourceLinks = Database().fetch(f'SELECT topicNode, sourceNode FROM cacheTopicSourceJoinTable WHERE graph=\'{self.id}\';')
@@ -114,7 +114,7 @@ class CacheGraph(RequestGraph):
 		# Save base graph
 		graphID = Database().modifyAndReturn(f'''
 			INSERT INTO cache (query, graphType, depth) 
-			VALUES ('{parsedGraph["query"].replace("'", "''")}', '{parsedGraph["type"]}', {parsedGraph["depth"]}) 
+			VALUES ('{parsedGraph["name"].replace("'", "''")}', '{parsedGraph["type"]}', {parsedGraph["depth"]}) 
 			RETURNING id;''')[0]
 
 		# Save all sourceNodes
@@ -167,4 +167,4 @@ class CacheGraph(RequestGraph):
 		'''
 
 		# Remove 30 day old records from cache (as cascade set so others will delete subsequently)
-		Database().modify('DELETE FROM cache WHERE STR_TO_DATE(timestamp,%Y-%m-%d %H:%M:%S) < (NOW() - INTERVAL 30 DAY);')
+		Database().modify("DELETE FROM cache WHERE timestamp < (NOW() - INTERVAL '30 days');")
