@@ -74,11 +74,22 @@ def construct() -> Graph:
 						}), 400
 				
 			print(f'Successfully constructed graph!\n')
+
+			# Parse graph into JSON
+			parsed = graph.parse()
+
+			# Save graph in cache
+			if Config.ENABLE_CACHE:
+				print('Saving graph in cache...\n')
+
+				CacheGraph.saveCache(parsed)
+
+				print('Saved graph to cache!\n')
 				
 			# Return graph (parsed)
 			return jsonify({
 					'status': 'success',
-					"graph": graph.parse()
+					"graph": parsed
 				}), 200
 		
 		# If caught an error during construction

@@ -15,7 +15,7 @@ class CacheGraph(RequestGraph):
 		# Check if any
 		if len(graphID) <= 0:
 			print('Graph not in cache\n')
-			
+
 			raise GraphNotFound(f'No cached graph for {query=}, {graphType=}, {depth=}')
 		
 		self.id = graphID[0]
@@ -106,24 +106,21 @@ class CacheGraph(RequestGraph):
 
 
 	@staticmethod
-	def saveCache(graph: RequestGraph) -> None:
+	def saveCache(parsedGraph: dict) -> None:
 		'''
 		Save graph to the Cache database
 		'''
 
-		# Parse graph
-		parsed = graph.parse()
-
 		# Save base graph
 		graphID = Database().modifyAndReturn(f'''
 			INSERT INTO cache (query, graphType, depth) 
-			VALUES ('{graph.query.replace("'", "''")}', '{graph.type}', {graph.depth}) 
+			VALUES ('{parsedGraph["query"].replace("'", "''")}', '{parsedGraph["type"]}', {parsedGraph["depth"]}) 
 			RETURNING id;''')[0]
 
 		# Save all sourceNodes
 		sourceNodes = {} # Dict of (source, id)
 
-		for node in parsed['sources']:
+		for node in parsedGraph['sources']:
 			nodeTopics = ','.join(node['topics']) 
 			nodeID = Database().modifyAndReturn(f'''
 				INSERT INTO cacheSourceNodes (graph, name, source, sourceName, location, medium, topics)
@@ -136,7 +133,7 @@ class CacheGraph(RequestGraph):
 		# Save all topic nodes
 		topicNodes = {} # Dict of (topic, id)
 		
-		for topic in parsed['topics']:
+		for topic in parsedGraph['topics']:
 			topicID = Database().modifyAndReturn(f'''
 				INSERT INTO cacheTopicNodes (graph, name)
 				VALUES ('{graphID}', '{topic.replace("'", "''")}')
@@ -145,7 +142,7 @@ class CacheGraph(RequestGraph):
 			topicNodes[topic] = topicID
 
 		# Save topic-source links
-		for link in parsed['topicLinks']:
+		for link in parsedGraph['topicLinks']:
 			topicID = topicNodes[link['target']]
 			sourceID = sourceNodes[link['source']]
 
@@ -154,7 +151,7 @@ class CacheGraph(RequestGraph):
 					 		VALUES ('{graphID}', '{topicID}', '{sourceID}');''')
 
 		# Save source-source links
-		for link in parsed['sourceLinks']:
+		for link in parsedGraph['sourceLinks']:
 			node1 = sourceNodes[link['target']]
 			node2 = sourceNodes[link['source']]
 
