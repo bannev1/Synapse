@@ -77,8 +77,10 @@ export const colorNodes = (coloredTopics, nodes) => {
 
 			case 'source':
 				// Return grey if no topics associated
-				if (node.topics.length == 0)
+				if (node.topics.length == 0) {
 					node.color = '#7d7d7d'
+					break;
+				}
 
 				// Get all associated colors
 				let colorList = node.topics.map(topic => coloredTopics[topic]) 
