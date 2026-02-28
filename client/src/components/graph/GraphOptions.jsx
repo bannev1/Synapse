@@ -28,7 +28,7 @@ import pathWhite from '/public/icons/pathWhite.svg'
 
 function GraphOptions({ tabName, canSave = true }) {
 	const { tabs, setTabs } = useContext(TabContext)
-	const { rawGraph, setHighlightNodes } = useContext(GraphContext)
+	const { rawGraph, updateProvidedGraph, setHighlightNodes } = useContext(GraphContext)
 	
 	const router = useRouter()
 
@@ -57,20 +57,25 @@ function GraphOptions({ tabName, canSave = true }) {
 			setError(true)
 			setLoading(false)
 		}
+		
+		// Update graph context
+		updateProvidedGraph(updatedGraph)
 
 		// Update the current tab with the new graph
-		const updatedTabs = tabs.map(tab => {
-			if (tab.name === tabName)
-				return {
-					...tab,
-					graph: updatedGraph
-				}
-
-			return tab
-		})
-
-		// Update tabs in context
-		setTabs(updatedTabs)
+		if (tabName != '') {
+			const updatedTabs = tabs.map(tab => {
+				if (tab.name === tabName)
+					return {
+						...tab,
+						graph: updatedGraph
+					}
+	
+				return tab
+			})
+	
+			// Update tabs in context
+			setTabs(updatedTabs)
+		}
 
 		// Close modal
 		setCurrentModal(0)
@@ -90,20 +95,25 @@ function GraphOptions({ tabName, canSave = true }) {
 			setError(true)
 			setLoading(false)
 		}
+		
+		// Update graph context
+		updateProvidedGraph(updatedGraph)
 
 		// Update the current tab with the new graph
-		const updatedTabs = tabs.map(tab => {
-			if (tab.name === tabName)
-				return {
-					...tab,
-					graph: updatedGraph
-				}
-
-			return tab
-		})
-
-		// Update tabs in context
-		setTabs(updatedTabs)
+		if (tabName != '') {
+			const updatedTabs = tabs.map(tab => {
+				if (tab.name === tabName)
+					return {
+						...tab,
+						graph: updatedGraph
+					}
+	
+				return tab
+			})
+	
+			// Update tabs in context
+			setTabs(updatedTabs)
+		}
 
 		// Close modal
 		setCurrentModal(0)
