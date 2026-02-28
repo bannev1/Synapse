@@ -31,17 +31,20 @@ def subsites(url: str, maxSubsites: int = -1) -> list[str]:
 		if maxSubsites >= 0 and len(links) >= maxSubsites:
 			break # Break for loop
 
-		# Otherwise get link
-		if link.has_attr('href') and 'https://' in link:
-			# Make sure to not add links from the same domain
-			strippedLink = link.replace('https', '').replace('://', '')
-			strippedLink = strippedLink[:strippedLink.find('/') if strippedLink.find('/') > 0 else len(strippedLink)] # Get rid of anything past the first /
-			while '/' in strippedLink: # Remove all / in URL until no more
-				strippedLink = strippedLink.replace('/', '')
+		# Otherwise get valid link only
+		if link.has_attr('href'):
+			sublink = link['href']
 
-			# Check equivalence
-			if strippedLink.strip().lower() != strippedURL.strip().lower():
-				links.append(link)
+			if 'https://' in sublink:
+				# Make sure to not add links from the same domain
+				strippedLink = sublink.replace('https', '').replace('://', '')
+				strippedLink = strippedLink[:strippedLink.find('/') if strippedLink.find('/') > 0 else len(strippedLink)] # Get rid of anything past the first /
+				while '/' in strippedLink: # Remove all / in URL until no more
+					strippedLink = strippedLink.replace('/', '')
+
+				# Check equivalence
+				if strippedLink.strip().lower() != strippedURL.strip().lower():
+					links.append(sublink)
 
 
 	return links
