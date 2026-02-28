@@ -154,10 +154,18 @@ def siteTitle(url: str) -> str:
 	Get title given a url
 	"""
 
+	# Try searching
 	try:
 		page = requests.get(url).raw
 		soup = BeautifulSoup(page, 'html.parser') # Parse response
+	except Exception as e:
+		raise FailedSearchException(f'Failed to reach {url}, error: {str(e)}')
 
+	# Try getting title
+	try:
 		return soup.find('title').string # Return title
-	except:
-		raise FailedSearchException(f'Failed to reach {url}')
+	except AttributeError:
+		# If error, then get title from domain
+		title = tldextract.extract(url).domain
+
+		return title
