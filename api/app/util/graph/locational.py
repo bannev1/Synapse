@@ -107,6 +107,9 @@ class LocationalGraph(Graph):
 
 					# Get neighboring nodes
 					newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
+
+					# Add to neighboring nodes
+					neighborNodes.append(newNode)
 				
 				# If failed, means link unavailable and skip
 				except UnavailableLink:

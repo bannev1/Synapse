@@ -86,7 +86,7 @@ class MediumGraph(Graph):
 
 					if (medium in self.topicNodes.keys()) and (medium not in topics):
 						topics.append(medium) # Add current as topic
-						
+
 					# Create node
 					newNode = SourceNode(title, site, sourceName, self.query, medium, location, topics, [])
 
@@ -98,6 +98,9 @@ class MediumGraph(Graph):
 
 					# Get neighboring nodes
 					newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
+
+					# Add to neighboring nodes
+					neighborNodes.append(newNode)
 
 				# If failed, means link unavailable and skip
 				except UnavailableLink:
