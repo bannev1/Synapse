@@ -49,7 +49,7 @@ class LocationalGraph(Graph):
 				medium = siteMedium(site['Link'])
 
 				# Create new SourceNode
-				node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, code, [], [])
+				node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, code, [code], [])
 
 				self.topicNodes[code].sourceNodes.append(node)
 				self.sources[node.source] = node
@@ -88,8 +88,11 @@ class LocationalGraph(Graph):
 				medium = siteMedium(site)
 				title = siteTitle(site)
 
+				# Merge topics
+				topics = list(set(node.topics + [location])) # Also remove duplicates
+
 				# Create node
-				newNode = SourceNode(title, site, sourceName, self.query, medium, location, [], [])
+				newNode = SourceNode(title, site, sourceName, self.query, medium, location, topics, [])
 
 				self.sources[site] = newNode
 

@@ -34,7 +34,7 @@ class MediumGraph(Graph):
 			medium = siteMedium(site['Link'])
 
 			# Create new SourceNode
-			node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [], [])
+			node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [medium], [])
 			
 			# Check if topicnode for medium exists
 			if medium in list(self.topicNodes.keys()):
@@ -79,8 +79,11 @@ class MediumGraph(Graph):
 				medium = siteMedium(site)
 				title = siteTitle(site)
 
+				# Merge topics
+				topics = list(set(node.topics + [medium])) # Also remove duplicates
+
 				# Create node
-				newNode = SourceNode(title, site, sourceName, self.query, medium, location, [], [])
+				newNode = SourceNode(title, site, sourceName, self.query, medium, location, topics, [])
 
 				self.sources[site] = newNode
 
