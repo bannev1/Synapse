@@ -134,6 +134,9 @@ function Loaded({
 
 	const saveUpdatedGraph = async () => {
 		const result = updateGraph(graphID, rawGraph)
+
+		if (result === 'error')
+			console.log('Error saving')
 	}
 
 	return (
