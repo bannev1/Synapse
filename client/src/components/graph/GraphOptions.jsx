@@ -14,8 +14,6 @@ import { TabContext } from '../contexts/TabContext'
 import { addNode, deleteNode, findPath } from '@/scripts/search'
 
 // Icons
-import searchBlack from '/public/icons/searchBlack.svg'
-import sendWhite from '/public/icons/sendWhite.svg'
 import appsWhite from '/public/icons/appsWhite.svg'
 import closeWhite from '/public/icons/closeWhite.svg'
 import saveBlack from '/public/icons/saveBlack.svg'
@@ -23,6 +21,7 @@ import nodeAddWhite from '/public/icons/nodeAddWhite.svg'
 import deleteWhite from '/public/icons/deleteWhite.svg'
 import pathWhite from '/public/icons/pathWhite.svg'
 import { GraphContext } from '../contexts/GraphContext'
+import SaveGraphModal from '../modals/graphFunctions/SaveGraphModal'
 
 
 function GraphOptions({ tabName, graph }) {
@@ -133,17 +132,6 @@ function GraphOptions({ tabName, graph }) {
 			{ opened &&
 				<>
 					<div id='optionsModal' className='popup'>
-						{/* Search bar */}
-						<div className='graphSearch'>
-							<Image src={searchBlack} alt='Search Icon'/>
-
-							<input type='text' placeholder='Graph Search...'/>
-
-							<button>
-								<Image src={sendWhite} alt='Send Icon'/>
-							</button>
-						</div>
-
 						{/* Buttons */}
 						<div className='graphOptions'>
 							<button onClick={() => setCurrentModal(1)}>
@@ -168,7 +156,7 @@ function GraphOptions({ tabName, graph }) {
 								<Image src={closeWhite} alt='Close Icon'/>
 							</button>
 
-							<button className='active'>
+							<button className='active' onClick={() => setCurrentModal(4)}>
 								<Image src={saveBlack} alt='Save Icon'/>
 							</button>
 						</div>
@@ -178,6 +166,7 @@ function GraphOptions({ tabName, graph }) {
 					<AddNodeModal refresh={currentModal == 1} onSubmit={addNodeHandler}/>
 					<DeleteNodeModal refresh={currentModal == 2} onSubmit={deleteNodeHandler}/>
 					<PathFinderModal refresh={currentModal == 3} onSubmit={findPathHandler}/>
+					<SaveGraphModal refresh={currentModal == 4}/>
 
 					
 					{ // Loading
