@@ -47,6 +47,7 @@
 			justify-content: space-evenly;
 			position: relative;
 			opacity: .8;
+			overflow: hidden;
 	
 			&.active {
 				opacity: 1;
@@ -57,7 +58,7 @@
 			& p {
 				font-size: 13px;
 				text-align: left;
-				width: calc(100% - 70px);
+				width: 100%;
 
 				&.newTab {
 					font-style: italic;
@@ -83,6 +84,8 @@
 
 				// Close button
 				&.close {
+					width: fit-content;
+					height: fit-content;
 					border: none;
 					border-radius: 100%;
 					padding: 0;

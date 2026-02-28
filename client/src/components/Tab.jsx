@@ -17,9 +17,6 @@ function Tab({
 	if (graph == undefined && !isCurrTab)
 		return null
 
-	const [showConfirmModal, setShowConfirmModal] = useState(false)
-
-
 	const closeTab = () => {
 		if (!isCurrTab) {
 			onDelete()
@@ -39,7 +36,7 @@ function Tab({
 				<div/>
 
 				<button className='invisible' onClick={switchTab}>
-					<p className={isNewTab ? 'newTab' : ''}>{isNewTab ? 'New Tab' : tabName}</p>
+					<p className={isNewTab ? 'newTab' : ''}>{isNewTab ? 'New Tab' : (tabName.length >= 19 ? tabName.slice(0, 16) + '...' : tabName)}</p>
 				</button>
 
 				{

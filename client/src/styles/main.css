@@ -437,6 +437,7 @@
   justify-content: space-evenly;
   position: relative;
   opacity: 0.8;
+  overflow: hidden;
 }
 #tabGroup #tabs .tab.active {
   opacity: 1;
@@ -445,7 +446,7 @@
 #tabGroup #tabs .tab p {
   font-size: 13px;
   text-align: left;
-  width: calc(100% - 70px);
+  width: 100%;
 }
 #tabGroup #tabs .tab p.newTab {
   font-style: italic;
@@ -463,6 +464,10 @@
   cursor: pointer;
 }
 #tabGroup #tabs .tab button.close {
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   border: none;
   border-radius: 100%;
   padding: 0;
