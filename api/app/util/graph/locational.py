@@ -14,9 +14,7 @@ class LocationalGraph(Graph):
 		# Save attributes of inherited function
 		super().__init__(query, 'locational', depth)
 
-		# Custom attribute for this class
-		self.topicNodes = self.createTopicNodes(locations) # For topic nodes
-
+		
 
 
 	def createTopicNodes(self, locations: list[str]) -> dict[str, TopicNode]:
@@ -37,7 +35,10 @@ class LocationalGraph(Graph):
 		"""
 		Construct a locational-type graph
 		"""
-		
+
+		# Create topic nodes
+		self.topicNodes = self.createTopicNodes(self.locationList) # For topic nodes
+
 		# Get base SourceNodes (only sites)
 		searchedSites = googleLocation(self.query, self.locationList)
 
@@ -55,6 +56,7 @@ class LocationalGraph(Graph):
 
 				# Get neighboring SourceNodes recursively
 				node.neighbors = self.findNeighboringNodes(node)
+
 
 
 	def findNeighboringNodes(self, node: SourceNode, currDepth: int = 1) -> list[SourceNode] | None:
