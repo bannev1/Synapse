@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { notFound, useParams } from 'next/navigation'
 import Image from 'next/image'
 
 import '@/styles/view/styles.css'
-import { loadGraph } from '@/scripts/save'
+import { loadGraph, updateGraph } from '@/scripts/save'
 import { assignColorTopics, colorNodes } from '@/scripts/color'
 
 import TabBar from '@/components/TabBar'
@@ -15,7 +15,7 @@ import Graph from '@/components/graph/Graph'
 import GraphID from '@/components/graph/GraphID'
 import GraphOptions from '@/components/graph/GraphOptions'
 
-import { GraphProvider } from '@/components/contexts/GraphContext'
+import { GraphContext, GraphProvider } from '@/components/contexts/GraphContext'
 
 // Icons
 import saveWhite from '/public/icons/saveWhite.svg'
@@ -25,9 +25,10 @@ function Load() {
 	const params = useParams()
 	const graphID = params.slug
 	const url = window.location.href
-
-	const [graphLoaded, setGraphLoaded] = useState(false) // If graph loaded
+	
 	const [graph, setGraph] = useState({})
+	const [rawGraph, setRawGraph] = useState({})
+	const [graphLoaded, setGraphLoaded] = useState(false) // If graph loaded
 
 	// Log
 	console.log(graphID)
@@ -101,61 +102,70 @@ function Load() {
 
 			console.log(graph)
 			
+			setRawGraph(result)
 			setGraphLoaded(true)
 		}
 
 		fetchGraph()
 	}, [])
-
+	
 	return (
 		<>
 			{/* Loading for graph */}
 			{
-				!graphLoaded &&
+				graphLoaded ?
+
+				<GraphProvider allNodes={graph.allNodes} allLinks={graph.allLinks} graph={rawGraph}>
+					<Loaded graphID={graphID} url={url}/>
+				</GraphProvider> :
+
 				<Loading/>
-			}
-
-
-			{/* Main page */}
-			{
-				graphLoaded &&
-				<>
-					{/* Tab bar */}
-					<TabBar/>
-
-
-					{/* Main Page */}
-					<GraphProvider
-						allNodes={graph.allNodes}
-						allLinks={graph.allLinks}
-						graph={graph}
-					>
-						<div id="home">
-							{/* Graph Toolbar */}
-							<div id="toolbarPlaceholder"/>
-							<div id="toolbar">
-								<SearchBar editable={false} inverted={true} isPlaceholder={false} placeholder={graph.name}/>
-							
-								{/* URL for copy paste */}
-								<GraphID link={url}/>
-
-								{/* Save Icon */}
-								<button id="save">
-									<Image src={saveWhite} alt='Save Icon'/>
-								</button>
-							</div>
-						
-							{/* Graph */}
-							<Graph/>
-
-							{/* Graph Toolbar/Options */}
-							<GraphOptions tabName={''} canSave={false}/>
-						</div>
-					</GraphProvider>
-				</>
 			}
 		</>
 	)
 }
+
+
+function Loaded({
+	graphID,
+	url
+}) {
+	const { rawGraph } = useContext(GraphContext)
+
+	const saveUpdatedGraph = async () => {
+		const result = updateGraph(graphID, rawGraph)
+	}
+
+	return (
+		<>
+			{/* Tab bar */}
+			<TabBar/>
+
+			{/* Main Page */}
+			<div id="home">
+				{/* Graph Toolbar */}
+				<div id="toolbarPlaceholder"/>
+				<div id="toolbar">
+					<SearchBar editable={false} inverted={true} isPlaceholder={false} placeholder={graph.name}/>
+				
+					{/* URL for copy paste */}
+					<GraphID link={url}/>
+
+					{/* Save Icon */}
+					<button id="save" onClick={saveUpdatedGraph}>
+						<Image src={saveWhite} alt='Save Icon'/>
+					</button>
+				</div>
+			
+				{/* Graph */}
+				<Graph/>
+
+				{/* Graph Toolbar/Options */}
+				<GraphOptions tabName={''} canSave={false}/>
+			</div>
+		</>
+	)
+}
+
 
 export default Load
