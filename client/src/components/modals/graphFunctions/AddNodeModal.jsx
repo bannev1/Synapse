@@ -7,6 +7,7 @@ import { GraphContext } from '@/components/contexts/GraphContext';
 
 function AddNodeModal({
 	refresh,
+	updateRefresh,
 	onSubmit
 }) {
 	const { rawGraph } = useContext(GraphContext)
@@ -57,7 +58,10 @@ function AddNodeModal({
 			{
 				exists &&
 				<>
-					<div className='modalBackdrop' onClick={() => {setExists(false)}}/>
+					<div className='modalBackdrop' onClick={() => {
+						setExists(false)
+						updateRefresh()
+					}}/>
 
 					<div className='modal'>
 						<h1>Add Node</h1>

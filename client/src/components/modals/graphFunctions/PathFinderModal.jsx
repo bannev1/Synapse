@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 function PathFinderModal({
 	refresh,
+	updateRefresh,
 	onSubmit
 }) {
 	const [exists, setExists] = useState(refresh);
@@ -18,7 +19,10 @@ function PathFinderModal({
 			{
 				exists &&
 				<>
-					<div className='modalBackdrop' onClick={() => {setExists(false)}}/>
+					<div className='modalBackdrop' onClick={() => {
+						setExists(false)
+						updateRefresh()
+					}}/>
 
 					<div className='modal'>
 						<h1>Find Path of Node</h1>

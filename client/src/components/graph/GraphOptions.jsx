@@ -33,12 +33,17 @@ function GraphOptions({ tabName, canSave = true }) {
 	const router = useRouter()
 
 	const [opened, setOpened] = useState(false);
-	// 0 means no modal, 1 means source, 2 means note, 3 means path finder, 4 means save
+	// 0 means no modal, 1 means add, 2 means delete, 3 means path finder, 4 means save
 	const [currentModal, setCurrentModal] = useState(0)
 	
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(false)
 
+
+	// Close modal
+	const closeModal = () => {
+		setCurrentModal(0)
+	}
 
 	// Add Node
 	const addNodeHandler = async (source, topic = null) => {
@@ -194,10 +199,10 @@ function GraphOptions({ tabName, canSave = true }) {
 					</div>
 
 					{/* Modals */}
-					<AddNodeModal refresh={currentModal == 1} onSubmit={addNodeHandler}/>
-					<DeleteNodeModal refresh={currentModal == 2} onSubmit={deleteNodeHandler}/>
-					<PathFinderModal refresh={currentModal == 3} onSubmit={findPathHandler}/>
-					<SaveGraphModal refresh={currentModal == 4} onSubmit={saveGraphHandler}/>
+					<AddNodeModal refresh={currentModal == 1} onSubmit={addNodeHandler} updateRefresh={closeModal}/>
+					<DeleteNodeModal refresh={currentModal == 2} onSubmit={deleteNodeHandler} updateRefresh={closeModal}/>
+					<PathFinderModal refresh={currentModal == 3} onSubmit={findPathHandler} updateRefresh={closeModal}/>
+					<SaveGraphModal refresh={currentModal == 4} onSubmit={saveGraphHandler} updateRefresh={closeModal}/>
 
 					
 					{ // Loading

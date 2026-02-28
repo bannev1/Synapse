@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 function SaveGraphModal({
 	refresh,
+	updateRefresh,
 	onSubmit
 }) {
 	const [exists, setExists] = useState(refresh)
@@ -26,7 +27,10 @@ function SaveGraphModal({
 			{
 				exists &&
 				<>
-					<div className='modalBackdrop' onClick={handleClose}/>
+					<div className='modalBackdrop' onClick={() => {
+						setExists(false)
+						updateRefresh()
+					}}/>
 
 					<div className='modal'>
 						<h1>Save Graph</h1>
