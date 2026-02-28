@@ -46,17 +46,27 @@ class LocationalGraph(Graph):
 		# Create SourceNodes
 		for code in self.topicNodes.keys():
 			for site in searchedSites[code]:
-				# Get metadata
-				medium = siteMedium(site['Link'])
+				siteLink = site['Link']
 
-				# Create new SourceNode
-				node = SourceNode(site['Title'], site['Link'], site['Source'], self.query, medium, code, [code], [])
+				# Add links to existing node if already exists
+				if siteLink in self.sources.keys():
+					self.sources[siteLink].topics.append(code)
+					self.sources[siteLink].location = 'Global' # For multiple locations
+					self.topicNodes[code].sourceNodes.append(self.sources[siteLink])
 
-				self.topicNodes[code].sourceNodes.append(node)
-				self.sources[node.source] = node
+				# Create source node
+				else:
+					# Get metadata
+					medium = siteMedium(siteLink)
 
-				# Get neighboring SourceNodes recursively
-				node.neighbors = self.findNeighboringNodes(node)
+					# Create new SourceNode
+					node = SourceNode(site['Title'], siteLink, site['Source'], self.query, medium, code, [code], [])
+
+					self.topicNodes[code].sourceNodes.append(node)
+					self.sources[siteLink] = node
+
+					# Get neighboring SourceNodes recursively
+					node.neighbors = self.findNeighboringNodes(node)
 
 
 
