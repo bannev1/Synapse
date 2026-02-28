@@ -31,7 +31,6 @@ function DeleteNodeModal({
 				exists &&
 				<>
 					<div className='modalBackdrop' onClick={() => {
-						setExists(false)
 						updateRefresh()
 					}}/>
 
@@ -45,7 +44,7 @@ function DeleteNodeModal({
 								<p>Do you want to delete this node?</p>
 								<input type="text" value={selectedNode?.source ?? ''} readOnly={true}/>
 								<div className='buttons'>
-									<button className="no" onClick={() => setExists(false)}>No</button>
+									<button className="no" onClick={() => updateRefresh()}>No</button>
 									<button className="yes" onClick={handleDelete}>Yes</button>
 								</div>
 							</>
@@ -54,7 +53,7 @@ function DeleteNodeModal({
 							<>
 								<p>Please select a source node by right-clicking it first before deleting it.</p>
 								<div className='buttons'>
-									<button onClick={() => setExists(false)}>Close</button>
+									<button onClick={() => updateRefresh()}>Close</button>
 								</div>
 							</>
 						)}

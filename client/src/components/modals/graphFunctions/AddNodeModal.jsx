@@ -50,7 +50,7 @@ function AddNodeModal({
 		// Reset form and close modal
 		setUrl('')
 		setSelectedTopic('')
-		setExists(false)
+		updateRefresh()
 	}
 
 	return (
@@ -59,7 +59,6 @@ function AddNodeModal({
 				exists &&
 				<>
 					<div className='modalBackdrop' onClick={() => {
-						setExists(false)
 						updateRefresh()
 					}}/>
 
@@ -94,7 +93,7 @@ function AddNodeModal({
 							}
 
 							<div className='buttons'>
-								<button type="button" onClick={() => setExists(false)}>Close</button>
+								<button type="button" onClick={() => updateRefresh()}>Close</button>
 								<button type="submit">Add</button>
 							</div>
 						</form>

@@ -20,7 +20,6 @@ function PathFinderModal({
 				exists &&
 				<>
 					<div className='modalBackdrop' onClick={() => {
-						setExists(false)
 						updateRefresh()
 					}}/>
 
