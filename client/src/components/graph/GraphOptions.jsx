@@ -26,7 +26,7 @@ import deleteWhite from '/public/icons/deleteWhite.svg'
 import pathWhite from '/public/icons/pathWhite.svg'
 
 
-function GraphOptions({ tabName }) {
+function GraphOptions({ tabName, canSave = false }) {
 	const { tabs, setTabs } = useContext(TabContext)
 	const { rawGraph, setHighlightNodes } = useContext(GraphContext)
 	
@@ -184,9 +184,12 @@ function GraphOptions({ tabName }) {
 								<Image src={closeWhite} alt='Close Icon'/>
 							</button>
 
-							<button className='active' onClick={() => setCurrentModal(4)}>
-								<Image src={saveBlack} alt='Save Icon'/>
-							</button>
+							{ // Only if can save
+								canSave &&
+								<button className='active' onClick={() => setCurrentModal(4)}>
+									<Image src={saveBlack} alt='Save Icon'/>
+								</button>
+							}
 						</div>
 					</div>
 

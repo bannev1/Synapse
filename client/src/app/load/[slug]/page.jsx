@@ -5,7 +5,7 @@ import { notFound, useParams } from 'next/navigation'
 import Image from 'next/image'
 
 import '@/styles/view/styles.css'
-import { loadID } from '@/scripts/save'
+import { loadGraph } from '@/scripts/save'
 
 import TabBar from '@/components/TabBar'
 import SearchBar from '@/components/SearchBar'
@@ -13,58 +13,38 @@ import Loading from '@/components/Loading'
 import Graph from '@/components/graph/Graph'
 import GraphID from '@/components/graph/GraphID'
 
-import { TabContext, TabProvider } from '@/components/contexts/TabContext'
 import { GraphProvider } from '@/components/contexts/GraphContext'
 
 // Icons
 import saveWhite from '/public/icons/saveWhite.svg'
 
 
-function LoadGraph() {
+function Load() {
 	const params = useParams()
 	const graphID = params.slug
 	const url = window.location.href
 
 	const [graphLoaded, setGraphLoaded] = useState(false) // If graph loaded
-	const [graph, setGraph] = useState({
-		"name": "My Graph",
-		"allNodes": [{
-					'id': 'id1',
-					'site': 'NY Times',
-					'url': 'https://nytimes.com',
-					'group': 'source'
-				},{'id': 'id2',
-					'site': 'BBC',
-					'url': 'https://bbc.com',
-					'group': 'source'
-				}],
-		"allLinks": [{
-					'target': 'id1',
-					'source': 'id2',
-				}]
-	})
+	const [graph, setGraph] = useState({})
 
 	// Log
 	console.log(graphID)
 
 	// Load graph
 	useEffect(() => {
-		const loadGraph = loadID(graphID)
+		const result = loadGraph(graphID)
 
 		// If not dictionary, means returned error code not graph
-		if (!(loadGraph.constructor == Object && loadGraph != null && loadGraph !== undefined)) {
+		if (!(result.constructor == Object && result != null && result !== undefined)) {
 			// Console log error
-			console.log(loadGraph)
+			console.log(result)
 			return notFound() // Show 404 page
 		}
 
 		// Save loaded graph
-		// setGraph(loadGraph)
+		setGraph(result)
 		setGraphLoaded(true)
 	}, [])
-
-	// Load tabs context
-	const {tabs, setTabs} = useContext(TabContext);
 
 	return (
 		<>
@@ -88,6 +68,7 @@ function LoadGraph() {
 					<GraphProvider
 						allNodes={graph.allNodes}
 						allLinks={graph.allLinks}
+						graph={graph}
 					>
 						<div id="home">
 							{/* Graph Toolbar */}
@@ -106,6 +87,9 @@ function LoadGraph() {
 						
 							{/* Graph */}
 							<Graph/>
+
+							{/* Graph Toolbar/Options */}
+							<GraphOptions tabName={pid} canSave={false}/>
 						</div>
 					</GraphProvider>
 				</TabProvider>
@@ -114,4 +98,4 @@ function LoadGraph() {
 	)
 }
 
-export default LoadGraph
+export default Load
