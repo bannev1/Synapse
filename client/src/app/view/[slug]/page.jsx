@@ -116,7 +116,7 @@ export default function View() {
 	return (
 		<GraphProvider allNodes={graph.allNodes} allLinks={graph.allLinks} >
 			<TabBar 
-				currTab={currTab ? decodeURIComponent(currTab.name) : ''} 
+				currTab={currTab ? currTab.name : ''} 
 			/>
 
 			<div id="home">
