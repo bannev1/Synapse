@@ -28,7 +28,8 @@ export default function View() {
 	const [graph, setGraph] = useState({
 		allNodes: [],
 		allLinks: [],
-		allTopics: []
+		depth: 0,
+		type: 0
 	})
 
 
@@ -79,6 +80,10 @@ export default function View() {
 				titleNode
 			])
 
+			// Get type of graph
+			const graphType = matchingTab.graph?.type || 'topical'
+			const types = ['topical', 'medium', 'locational']
+
 			// Set graph
 			setGraph({
 				allNodes: coloredNodes,
@@ -87,7 +92,10 @@ export default function View() {
 					...(matchingTab.graph?.topicLinks || []),
 					...(matchingTab.graph?.sourceLinks || []),
 					...titleLinks
-				]
+				],
+
+				depth: matchingTab.graph?.depth || 0,
+				type: types.indexOf(graphType)
 			});
 
 			console.log(graph)
@@ -115,7 +123,7 @@ export default function View() {
 
 				<div id="toolbar">
 					<SearchBar inverted={true} editable={false} placeholder={currTab?.graph?.name || decodeURIComponent(pid)} isPlaceholder={false} />
-					<SearchOptions onChangeOptions={() => {}} inverted={true} canEdit={false} />
+					<SearchOptions onChangeOptions={() => {}} inverted={true} canEdit={false} defaultDepth={graph.depth} defaultType={graph.type} />
 				</div>
 
 				<Graph/>

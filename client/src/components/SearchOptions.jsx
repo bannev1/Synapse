@@ -14,11 +14,13 @@ import dropdownBlack from '/public/icons/dropdownBlack.svg';
 function SearchOptions({
 	onChangeOptions,
 	inverted = false,
-	canEdit = true
+	canEdit = true,
+	defaultDepth = 6,
+	defaultType = 0
 }) {
-	const [depthVal, setDepthVal] = useState(6)
+	const [depthVal, setDepthVal] = useState(defaultDepth)
 	const [showGraphTypes, setShowGraphTypes] = useState(false)
-	const [graphType, setGraphType] = useState(0) // either 0 for topical, 1 for medium, and 2 for location
+	const [graphType, setGraphType] = useState(defaultType) // either 0 for topical, 1 for medium, and 2 for location
 	
 	const graphTypes =[
 		'Topical',
