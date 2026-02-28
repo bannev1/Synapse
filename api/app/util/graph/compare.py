@@ -14,13 +14,12 @@ class CompareGraph(RequestGraph):
 
 		self.graph1 = graph1
 		self.graph2 = graph2
+		self.sites = [] # List of all sites
 
 		super().__init__(None)
 		self.query = query
 		self.type = graphType
 		self.depth = depth
-
-		self.sites = [] # List of all sites
 
 	
 
@@ -56,4 +55,4 @@ class CompareGraph(RequestGraph):
 				sources[url] = source
 
 		# Save locally
-		self.sources = sources
+		self.sourceNodes = sources
