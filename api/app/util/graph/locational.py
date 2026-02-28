@@ -3,6 +3,7 @@ from app.models.nodes import SourceNode, TopicNode
 from app.util.search.google import googleLocation
 from app.util.search.siteMetadata import siteMedium, siteLocationAndName, siteTitle
 from app.util.search import subsites
+from app.exceptions import UnavailableLink
 from config import Config
 
 
@@ -80,27 +81,33 @@ class LocationalGraph(Graph):
 			
 			# Create new source
 			else:
-				# Get metadata
-				info = siteLocationAndName(site)
-				location = info['location']
-				sourceName = info['sourceName']
+				try:
+					# Get metadata
+					title = siteTitle(site)
+					medium = siteMedium(site)
 
-				medium = siteMedium(site)
-				title = siteTitle(site)
+					info = siteLocationAndName(site)
+					location = info['location']
+					sourceName = info['sourceName']
 
-				# Merge topics
-				topics = list(set(node.topics + [location])) # Also remove duplicates
 
-				# Create node
-				newNode = SourceNode(title, site, sourceName, self.query, medium, location, topics, [])
+					# Merge topics
+					topics = list(set(node.topics + [location])) # Also remove duplicates
 
-				self.sources[site] = newNode
+					# Create node
+					newNode = SourceNode(title, site, sourceName, self.query, medium, location, topics, [])
 
-				# Determine if can link to TopicNode
-				if location in self.locationList:
-					self.topicNodes[location].sourceNodes.append(newNode)
+					self.sources[site] = newNode
 
-				# Get neighboring nodes
-				newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
+					# Determine if can link to TopicNode
+					if location in self.locationList:
+						self.topicNodes[location].sourceNodes.append(newNode)
+
+					# Get neighboring nodes
+					newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
+				
+				# If failed, means link unavailable and skip
+				except UnavailableLink:
+					continue
 
 		return neighborNodes

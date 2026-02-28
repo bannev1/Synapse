@@ -7,7 +7,7 @@ import tldextract
 
 from config import Config
 from app.util.search.siteCategorySess import SiteCategorySess
-from app.exceptions import FailedSearchException
+from app.exceptions import FailedSearchException, UnavailableLink
 
 
 
@@ -163,6 +163,9 @@ def siteTitle(url: str) -> str:
 	try:
 		page = requests.get(url).raw
 		soup = BeautifulSoup(page, 'html.parser') # Parse response
+	except requests.exceptions.SSLError:
+		raise UnavailableLink()
+	
 	except Exception as e:
 		raise FailedSearchException(f'Failed to reach {url}, error: {str(e)}')
 

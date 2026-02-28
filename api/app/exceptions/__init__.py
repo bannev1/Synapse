@@ -14,3 +14,6 @@ class GraphParseException(Exception):
 
 class GraphNotFound(Exception):
 	"""Failed to find graph in database"""
+
+class UnavailableLink(Exception):
+	"""Failed to open link"""

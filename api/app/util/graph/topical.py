@@ -3,7 +3,7 @@ from app.models.nodes import SourceNode, TopicNode
 from app.util.search import getTopics, subsites
 from app.util.search.google import google
 from app.util.search.siteMetadata import siteLocationAndName, siteMedium, siteTitle
-from app.exceptions import FailedSearchException
+from app.exceptions import FailedSearchException, UnavailableLink
 from config import Config
 
 
@@ -108,22 +108,25 @@ class TopicalGraph(Graph):
 
 				# Create new SourceNode
 				else:
-					# Get site title (if site inaccessible then go to next site)
 					try:
+						# Get metadata (location/medium)
 						title = siteTitle(site)
-					except FailedSearchException:
+						medium = siteMedium(site)
+
+						info = siteLocationAndName(site)
+						location = info['location']
+						sourceName = info['sourceName']
+
+						# Create node
+						neighbor = SourceNode(title, site, sourceName, self.query, medium, location, node.topics, [])
+						self.sources[site] = neighbor
+						neighboringNodes.append(neighbor)
+						
+						# Recursively get node's neighbors
+						neighbor.neighbors = self.findNeighboringNodes(neighbor, currDepth+1)
+				
+					# If failed, means link unavailable and skip
+					except UnavailableLink:
 						continue
-
-					# Get metadata (location/medium)
-					location = siteLocationAndName(site)
-					medium = siteMedium(site)
-
-					# Create node
-					neighbor = SourceNode(title, site, self.query, medium, location, node.topics)
-					self.sources[site] = neighbor
-					neighboringNodes.append(neighbor)
-					
-					# Recursively get node's neighbors
-					neighbor.neighbors = self.findNeighboringNodes(neighbor, currDepth+1)
 		
 		return neighboringNodes

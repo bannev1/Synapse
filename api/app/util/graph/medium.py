@@ -3,6 +3,7 @@ from app.models.nodes import SourceNode, TopicNode
 from app.util.search.google import google
 from app.util.search.siteMetadata import siteMedium, siteLocationAndName, siteTitle
 from app.util.search import subsites
+from app.exceptions import UnavailableLink
 from config import Config
 
 
@@ -71,27 +72,32 @@ class MediumGraph(Graph):
 			
 			# Create new source
 			else:
-				# Get metadata
-				info = siteLocationAndName(site)
-				location = info['location']
-				sourceName = info['sourceName']
+				try:
+					# Get metadata
+					medium = siteMedium(site)
+					title = siteTitle(site)
 
-				medium = siteMedium(site)
-				title = siteTitle(site)
+					info = siteLocationAndName(site)
+					location = info['location']
+					sourceName = info['sourceName']
 
-				# Merge topics
-				topics = list(set(node.topics + [medium])) # Also remove duplicates
+					# Merge topics
+					topics = list(set(node.topics + [medium])) # Also remove duplicates
 
-				# Create node
-				newNode = SourceNode(title, site, sourceName, self.query, medium, location, topics, [])
+					# Create node
+					newNode = SourceNode(title, site, sourceName, self.query, medium, location, topics, [])
 
-				self.sources[site] = newNode
+					self.sources[site] = newNode
 
-				# Determine if can link to TopicNode
-				if medium in list(self.topicNodes.keys()):
-					self.topicNodes[medium].sourceNodes.append(newNode)
+					# Determine if can link to TopicNode
+					if medium in list(self.topicNodes.keys()):
+						self.topicNodes[medium].sourceNodes.append(newNode)
 
-				# Get neighboring nodes
-				newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
+					# Get neighboring nodes
+					newNode.neighbors = self.findNeighboringNodes(newNode, currDepth+1)
+
+				# If failed, means link unavailable and skip
+				except UnavailableLink:
+					continue
 		
 		return neighborNodes
