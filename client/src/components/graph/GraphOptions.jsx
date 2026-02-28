@@ -41,11 +41,11 @@ function GraphOptions({ tabName, canSave = true }) {
 
 
 	// Add Node
-	const addNodeHandler = async (source) => {
+	const addNodeHandler = async (source, topic = null) => {
 		setLoading(true) // Show loading
 
 		// Call API to add node to current graph
-		const updatedGraph = await addNode(rawGraph, source)
+		const updatedGraph = await addNode(rawGraph, source, topic)
 		
 		if (updatedGraph === 'error') {
 			console.log(updatedGraph)

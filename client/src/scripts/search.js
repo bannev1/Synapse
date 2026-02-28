@@ -72,7 +72,7 @@ export const compare = async (graph1, graph2) => {
 };
 
 // Function to add a node
-export const addNode = async (graph, source) => {
+export const addNode = async (graph, source, topic = null) => {
 	const url = GRAPH['nodeAdd'];
 
 	console.log(`Fetching addNode from: ${url}`);
@@ -81,6 +81,9 @@ export const addNode = async (graph, source) => {
 		'graph': graph,
 		'source': source
 	};
+
+	if (topic)
+		body['topic'] = topic;
 
 	// Make request to server
 	const response = await fetch(url, {

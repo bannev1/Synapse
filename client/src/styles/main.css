@@ -637,6 +637,11 @@ input[type=text] {
   width: inherit;
 }
 
+select,
+option {
+  font-family: "Montserrat";
+}
+
 .underline {
   width: -moz-fit-content;
   width: fit-content;

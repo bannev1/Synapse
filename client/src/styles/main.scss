@@ -45,6 +45,12 @@ input[type="text"] {
 	width: inherit;
 }
 
+// Dropdowns
+select,
+option {
+	font-family: 'Montserrat';
+}
+
 // Special Underlines
 .underline {
 	width: fit-content;
