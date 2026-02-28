@@ -60,14 +60,14 @@ class LocationalGraph(Graph):
 
 
 
-	def findNeighboringNodes(self, node: SourceNode, currDepth: int = 1) -> list[SourceNode] | None:
+	def findNeighboringNodes(self, node: SourceNode, currDepth: int = 1) -> list[SourceNode]:
 		"""
 		Get nodes neighbor for medium graph
 		"""
 
 		# Base case
 		if currDepth == self.depth:
-			return None
+			return []
 		
 		# Get neighboring sources
 		neighborSites = subsites(node.source, Config.MAX_SUBSITES)
