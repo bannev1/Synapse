@@ -18,6 +18,7 @@ def subsites(url: str, maxSubsites: int = -1) -> list[str]:
 	# Remove https and / from URL (only get base) for no host domain
 	strippedURL = url.replace('https', '').replace('http', '').replace('://', '')
 	strippedURL = strippedURL[:strippedURL.find('/') if strippedURL.find('/') > 0 else len(strippedURL)] # Get rid of anything past the first /
+	strippedURL = strippedURL[:strippedURL.find('?') if strippedURL.find('?') > 0 else len(strippedURL)] # Get rid of anything past the first ?
 	while '/' in strippedURL: # Remove all / in URL until no more
 		strippedURL = strippedURL.replace('/', '')
 	
@@ -35,10 +36,11 @@ def subsites(url: str, maxSubsites: int = -1) -> list[str]:
 		if link.has_attr('href'):
 			sublink = link['href']
 
-			if 'https://' in sublink:
+			if sublink.startswith('https://'):
 				# Make sure to not add links from the same domain
 				strippedLink = sublink.replace('https', '').replace('://', '')
 				strippedLink = strippedLink[:strippedLink.find('/') if strippedLink.find('/') > 0 else len(strippedLink)] # Get rid of anything past the first /
+				strippedLink = strippedLink[:strippedLink.find('?') if strippedLink.find('?') > 0 else len(strippedLink)] # Get rid of anything past the first ?
 				while '/' in strippedLink: # Remove all / in URL until no more
 					strippedLink = strippedLink.replace('/', '')
 

@@ -22,6 +22,7 @@ def siteLocationAndName(url: str) -> str:
 	# Remove https and / from URL (only get base)
 	strippedUrl = url.replace('https', '').replace('http', '').replace('://', '')
 	strippedUrl = strippedUrl[:strippedUrl.find('/') if strippedUrl.find('/') > 0 else len(strippedUrl)] # Get rid of anything past the first /
+	strippedUrl = strippedUrl[:strippedUrl.find('?') if strippedUrl.find('?') > 0 else len(strippedUrl)] # Get rid of anything past the first ?
 	while '/' in strippedUrl: # Remove all / in URL until no more
 		strippedUrl = strippedUrl.replace('/', '')
 	

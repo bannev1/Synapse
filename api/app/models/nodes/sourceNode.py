@@ -4,7 +4,7 @@ from app.models.nodes.node import Node
 class SourceNode(Node):
 	def __init__(self, 
 			  	name: str, # Website Title
-				source: str,
+				source: str, # Website URL
 				sourceName: str, # Website Creator Title
 				query: str, 
 				medium: str,
@@ -41,5 +41,7 @@ class SourceNode(Node):
 			'topics': self.topics, 
 			'medium': self.medium, 
 			'location': self.location, 
-			'neighbors': self.neighbors
+
+			# Convert neighbors to string
+			'neighbors': [node.source for node in self.neighbors]
 		}

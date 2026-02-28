@@ -82,6 +82,7 @@ class TopicalGraph(Graph):
 		return self.topicNodes
 	
 
+
 	def findNeighboringNodes(self, node: SourceNode, currDepth: int = 1) -> list[SourceNode]:
 		"""
 		Get neighboring SourceNodes
@@ -89,7 +90,7 @@ class TopicalGraph(Graph):
 
 		# Base case
 		if currDepth == self.depth:
-			return None
+			return []
 		
 
 		# Get neighboring sites
