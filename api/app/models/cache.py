@@ -14,6 +14,8 @@ class CacheGraph(RequestGraph):
 
 		# Check if any
 		if len(graphID) <= 0:
+			print('Graph not in cache\n')
+			
 			raise GraphNotFound(f'No cached graph for {query=}, {graphType=}, {depth=}')
 		
 		self.id = graphID[0]
