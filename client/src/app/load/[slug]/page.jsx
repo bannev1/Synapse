@@ -6,6 +6,7 @@ import Image from 'next/image'
 
 import '@/styles/view/styles.css'
 import { loadGraph } from '@/scripts/save'
+import { assignColorTopics, colorNodes } from '@/scripts/color'
 
 import TabBar from '@/components/TabBar'
 import SearchBar from '@/components/SearchBar'
@@ -42,8 +43,64 @@ function Load() {
 				return notFound() // Show 404 page
 			}
 
-			// Save loaded graph
-			setGraph(result)
+			// Get sourceNodes
+			const sources = result.sources || []
+			const sourceNodes = sources.map(source => ({
+				...source,
+				group: 'source' // Add group
+			}))
+
+			// Get topicNodes
+			const topics = result.topics || []
+			const topicNodes = topics.map(topic => ({
+				id: topic,
+				name: topic,
+				group: 'topic'
+			}))
+
+			// Create Title Node
+			const title = result.name || decodeURIComponent(pid)
+			const titleNode = {
+				id: 'titleNode',
+				name: title,
+				group: 'title'
+			}
+
+			// Link TitleNode to topicNodes
+			const titleLinks = topics.map(topic => ({
+				target: topic,
+				source: 'titleNode'
+			}))
+
+			// Color nodes
+			const topicColors = assignColorTopics(topics)
+			const coloredNodes = colorNodes(topicColors, [
+				...sourceNodes,
+				...topicNodes,
+				titleNode
+			])
+
+			// Get type of graph
+			const graphType = result.type || 'topical'
+			const types = ['topical', 'medium', 'locational']
+
+			// Set graph
+			setGraph({
+				allNodes: coloredNodes,
+
+				allLinks: [
+					// Deepcopy objects
+					...(result.topicLinks || []).map(link => ({ ...link })),
+					...(result.sourceLinks || []).map(link => ({ ...link })),
+					...titleLinks
+				],
+
+				depth: result.depth || 0,
+				type: types.indexOf(graphType)
+			});
+
+			console.log(graph)
+			
 			setGraphLoaded(true)
 		}
 
