@@ -54,6 +54,8 @@ def save(id: str) -> None:
 				'message': str(e)
 			}), 422 # Unprocessable entity status code
 
+	print(f'Updating graph {id=} in database...\n')
+
 	# Upload to create a saved graph
 	try:
 		# Parse new graph
@@ -61,6 +63,8 @@ def save(id: str) -> None:
 
 		# Update saved graph
 		SavedGraph.updateByID(id, newGraph)
+
+		print('Successfully updated graph!\n')
 
 		return jsonify({
 				'status': 'success'

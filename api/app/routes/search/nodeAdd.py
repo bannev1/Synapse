@@ -60,6 +60,8 @@ def nodeAdd() -> None:
 				'message': str(e)
 			}), 422 # Unprocessable entity status code
 	
+	print('Adding node to graph...\n')
+
 	# Add node
 	try:
 		# Use RequestGraph
@@ -71,6 +73,8 @@ def nodeAdd() -> None:
 
 		else:
 			graph.addNode(body['source'])
+
+		print('Successfully added node!\n')
 
 		# Return updated graph
 		return jsonify({

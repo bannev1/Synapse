@@ -56,6 +56,8 @@ def nodeDelete() -> None:
 				'message': str(e)
 			}), 422 # Unprocessable entity status code
 	
+	print('Deleting node...\n')
+
 	# Delete node
 	try:
 		# Use RequestGraph
@@ -63,6 +65,8 @@ def nodeDelete() -> None:
 
 		# Delete the node using defined method
 		graph.deleteNode(body['source'])
+
+		print('Successfully deleted node!\n')
 
 		return jsonify({
 				'status': 'success',

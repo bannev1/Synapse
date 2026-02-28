@@ -12,10 +12,14 @@ def get(id: str) -> None:
 	"""
 	Get a graph saved in the local database given its ID
 	"""
+
+	print(f'Retrieving graph of {id=}...\n')
 	
 	try:
 		# Retrieve and parse graph
 		graph = SavedGraph(id)
+
+		print('Successfully found graph!\n')
 
 		return jsonify({
 			"status": "success",

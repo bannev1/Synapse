@@ -56,6 +56,8 @@ def nodePath() -> None:
 				'message': e
 			}), 422 # Unprocessable entity status code
 
+	print('Finding path of node...\n')
+
 	# Find path of node
 	try:
 		# Use RequestGraph
@@ -70,6 +72,8 @@ def nodePath() -> None:
 					'status': 'error',
 					'message': 'Path not found'
 				}), 500
+
+		print('Successfully found path!\n')
 
 		# Return found path
 		return jsonify({

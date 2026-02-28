@@ -42,6 +42,8 @@ def construct() -> Graph:
 
 	graph: Graph = None # Graph to save graph in
 
+	print(f'Constructing graph for {query=}, of type {graphType} and depth {depth}...\n')
+
 	# Check if exists in Cache
 	try:
 		if not Config.ENABLE_CACHE: # Check if Cache enabled
@@ -70,6 +72,8 @@ def construct() -> Graph:
 							'status': 'error',
 							'message': f'"{graphType}" is an invalid graph type.'
 						}), 400
+				
+			print(f'Successfully constructed graph!\n')
 				
 			# Return graph (parsed)
 			return jsonify({

@@ -54,6 +54,8 @@ def post() -> None:
 				'message': str(e)
 			}), 422 # Unprocessable entity status code
 
+	print(f'Uploading graph to database...\n')
+
 	# Upload to create a saved graph
 	try:
 		# Parse graph
@@ -61,6 +63,8 @@ def post() -> None:
 
 		# Create saved graph
 		id = SavedGraph.saveGraph(graph)
+
+		print(f'Successfully posted graph! Uploaded with {id=}\n')
 
 		return jsonify({
 				'status': 'success',
