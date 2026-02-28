@@ -90,11 +90,10 @@ class LocationalGraph(Graph):
 					location = info['location']
 					sourceName = info['sourceName']
 
-
 					# Merge topics
 					topics = node.topics
 
-					if (location in self.topicNodes.keys()) and (location not in topics):
+					if (location in self.locationList) and (location not in topics):
 						topics.append(location) # Add current as topic
 
 					# Create node
