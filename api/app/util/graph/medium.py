@@ -32,7 +32,7 @@ class MediumGraph(Graph):
 			location = info['location']
 			sourceName = info['sourceName']
 			
-			medium = siteMedium(site['Link'])
+			medium = siteMedium(site['Link'], overrideConfig=True)
 
 			# Create new SourceNode
 			node = SourceNode(site['Title'], site['Link'], sourceName, self.query, medium, location, [medium], [])

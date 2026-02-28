@@ -77,7 +77,7 @@ def siteLocationAndName(url: str) -> str:
 
 
 
-def siteMedium(url: str) -> str:
+def siteMedium(url: str, overrideConfig: bool = False) -> str:
 	"""
 	Return a website's medium given a url using the SiteCategory.com API
 
@@ -85,7 +85,7 @@ def siteMedium(url: str) -> str:
 	"""
 
 	# Check if medium needed
-	if not Config.ENABLE_MEDIUM:
+	if (not Config.ENABLE_MEDIUM) and (not overrideConfig):
 		return 'Unknown'
 
 	# Get key
