@@ -25,7 +25,7 @@ class Config:
 	ENABLE_MEDIUM = False
 
 	# Unwanted Topics
-	UNWANTED_TOPICS = ['See also', 'References', 'Further reading', 'External links', 'Introduction', 'Notes']
+	UNWANTED_TOPICS = ['See also', 'References', 'Further reading', 'External links', 'Introduction', 'Notes', 'Bibliography']
 
 	# Default Locations for locational search
 	DEFAULT_LOCATIONS = ['United States', 'United Kingdom', 'Canada', 'China', 'Germany']
