@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { notFound, useParams } from 'next/navigation'
 import Image from 'next/image'
 
@@ -12,6 +12,7 @@ import SearchBar from '@/components/SearchBar'
 import Loading from '@/components/Loading'
 import Graph from '@/components/graph/Graph'
 import GraphID from '@/components/graph/GraphID'
+import GraphOptions from '@/components/graph/GraphOptions'
 
 import { GraphProvider } from '@/components/contexts/GraphContext'
 
@@ -32,18 +33,21 @@ function Load() {
 
 	// Load graph
 	useEffect(() => {
-		const result = loadGraph(graphID)
+		const fetchGraph = async () => {
+			const result = await loadGraph(graphID)
 
-		// If not dictionary, means returned error code not graph
-		if (!(result.constructor == Object && result != null && result !== undefined)) {
-			// Console log error
-			console.log(result)
-			return notFound() // Show 404 page
+			// Check for error response
+			if (result === 'error') {
+				console.log(result)
+				return notFound() // Show 404 page
+			}
+
+			// Save loaded graph
+			setGraph(result)
+			setGraphLoaded(true)
 		}
 
-		// Save loaded graph
-		setGraph(result)
-		setGraphLoaded(true)
+		fetchGraph()
 	}, [])
 
 	return (
@@ -58,8 +62,7 @@ function Load() {
 			{/* Main page */}
 			{
 				graphLoaded &&
-
-				<TabProvider>
+				<>
 					{/* Tab bar */}
 					<TabBar/>
 
@@ -89,10 +92,10 @@ function Load() {
 							<Graph/>
 
 							{/* Graph Toolbar/Options */}
-							<GraphOptions tabName={pid} canSave={false}/>
+							<GraphOptions tabName={''} canSave={false}/>
 						</div>
 					</GraphProvider>
-				</TabProvider>
+				</>
 			}
 		</>
 	)
