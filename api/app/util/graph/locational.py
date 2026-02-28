@@ -62,12 +62,12 @@ class LocationalGraph(Graph):
 					# Create new SourceNode
 					node = SourceNode(site['Title'], siteLink, site['Source'], self.query, medium, code, [code], [])
 
-					self.topicNodes[code].sourceNodes.append(node)
-					self.sources[siteLink] = node
-
 					# Get neighboring SourceNodes recursively
 					node.neighbors = self.findNeighboringNodes(node)
 
+					# Save node
+					self.topicNodes[code].sourceNodes.append(node)
+					self.sources[siteLink] = node
 
 
 

@@ -80,6 +80,10 @@ class Graph:
 		Parse source nodes recursively to get links and sources
 		"""
 
+		# Make sure not already traversed
+		if node.source in self.traversed:
+			return
+
 		# Add current node
 		self.traversed.append(node.source)
 
