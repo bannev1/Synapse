@@ -55,4 +55,4 @@ class CompareGraph(RequestGraph):
 				sources[url] = source
 
 		# Save locally
-		self.sourceNodes = sources
+		self.sourceNodes = list(sources.values())
