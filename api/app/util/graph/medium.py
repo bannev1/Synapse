@@ -12,9 +12,6 @@ class MediumGraph(Graph):
 		# Save attributes of inherited function
 		super().__init__(query, 'medium', depth)
 
-		# Custom attribute for this class
-		self.topicNodes = {} # Store all main mediums with corresponding topic node
-
 
 
 	def construct(self) -> None:
