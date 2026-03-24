@@ -16,7 +16,7 @@
 
 Research made easy. Visualize graphically all your resources sorted into topics.
 
-Created for the IBDP Computer Science HL Internal Assessment.
+Created for the IBDP Computer Science HL Internal Assessment. See the video demo [here](https://youtu.be/kwMM-1aL-VA).
 
 Backend is written in Python Flask (with PostGreSQL) and stored in the `api` folder. Frontend is built with React Next.JS and SCSS and stored in `client`.
 
